@@ -1,23 +1,9 @@
-# go through file
-# for each line
-# check if token count in roman and urdu matches
-# if they are then write to dict
-
-# save roman and urdu dicts
-
-# read urdu and roman files
-# match token count
-# save to dict
-
+# STL
 import re
 import csv
 
-'''
-Simple evaluation function that returns percentage of tokens removed from dataset.
-'''
-def eval(input_size, output_size):
-    ratio = float(output_size)/input_size
-    print("Loss:    "+str(round((1-ratio) *100,3))+"%")
+# Custom
+from util import eval
 
 '''
 Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv
@@ -73,7 +59,10 @@ def prep_roman_ur_parl():
     # print loss evaluation
     print("Dataset: Roman Urdu Parl")
     eval(raw_count,valid_count)
-    
+
+'''
+Main
+'''
 def main():
     prep_roman_ur_parl()
 
