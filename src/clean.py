@@ -75,42 +75,44 @@ def is_inaccessible(token,set:set):
             return True
     return False
 
-def remove_inaccessible(native,roman):
-    # get set of accessible charachters
-    set_CRULP = set(read_json("keyboards/mappings/CRULP").keys())
-    set_Windows = set(read_json("keyboards/mappings/Windows").keys())
-    set_intersection = set_CRULP.intersection(set_Windows)
-
-    print("Set of Excluded Charachters:")
-    union = set_CRULP.union(set_Windows)
-    print(union.difference(set_intersection))
-
+def remove_inaccessible(a_text,b_text,set):
     # prepare output
-    native_accessible = []
-    roman_accessible = []
+    a_accessible = []
+    b_accessible = []
 
     print("Inaccessible Tokens:")
     # for each token
-    for i in range(len(native)):
+    for i in range(len(a_text)):
         # check if all chars accessible
-        if(native[i] != "</s>" and is_inaccessible(native[i],set_intersection)):
+        if(a_text[i] != "</s>" and is_inaccessible(a_text[i],set)):
             # ignore if they are not
-            print(native[i])
+            print(a_text[i])
             continue
         # add to ouput if they are
-        native_accessible.append(native[i])
-        roman_accessible.append(roman[i])
-    return native_accessible,roman_accessible
+        a_accessible.append(a_text[i])
+        b_accessible.append(b_text[i])
+    return a_accessible,b_accessible
 
 '''
 Main
 '''
 def main():
+    # get set of accessible charachters
+    set_CRULP = set(read_json("keyboards/mappings/CRULP").keys())
+    set_Windows = set(read_json("keyboards/mappings/Windows").keys())
+    native_set = set_CRULP.intersection(set_Windows)
+    roman_set = set(read_json("keyboards/QWERTY")["Mapping"].keys())
+
+    print("Set of Excluded Native Charachters:")
+    union = set_CRULP.union(set_Windows)
+    print(union.difference(native_set))
+
     print("Dataset: Dakshina")
     native,roman = read_tsv("prepared/dakshina_dataset")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
-    native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned)
+    native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)
+    roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
     output_tsv(native_cleaned,roman_cleaned,"cleaned/dakshina_dataset")
@@ -119,7 +121,8 @@ def main():
     native,roman = read_tsv("prepared/roUrParl_dataset")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
-    native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned)
+    native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)
+    roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
     
     eval(len(native),len(native_cleaned))
     output_tsv(native_cleaned,roman_cleaned,"cleaned/roUrParl_dataset")

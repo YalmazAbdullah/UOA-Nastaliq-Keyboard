@@ -1,5 +1,4 @@
 # Custom
-from util import eval
 from util import read_tsv,output_tsv
 from util import read_json
 
