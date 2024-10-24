@@ -35,9 +35,8 @@ def standardize(native, roman):
         "’’":'"',
         "‘":"'",
         "–":"-",
-        "ٴ":"ء",
         "ى ":"ی",
-        "ي":"ی"
+        "ي":"ی",
     }
     pattern = re.compile('|'.join(re.escape(key) for key in chars.keys()))
 
@@ -78,19 +77,19 @@ def is_inaccessible(token,set:set):
 
 def remove_inaccessible(native,roman):
     # get set of accessible charachters
-    set_CRULP = set(read_json("./keyboards/mappings/CRULP.json").keys())
-    set_Windows = set(read_json("./keyboards/mappings/Windows.json").keys())
+    set_CRULP = set(read_json("keyboards/mappings/CRULP").keys())
+    set_Windows = set(read_json("keyboards/mappings/Windows").keys())
     set_intersection = set_CRULP.intersection(set_Windows)
 
-    # compound charachters will be treated as exceptions
-    exceptions = set(["ؤ","أ","ٴ","ۂ"])
-
-    set_intersection = set_intersection.union(exceptions)
+    print("Set of Excluded Charachters:")
+    union = set_CRULP.union(set_Windows)
+    print(union.difference(set_intersection))
 
     # prepare output
     native_accessible = []
     roman_accessible = []
 
+    print("Inaccessible Tokens:")
     # for each token
     for i in range(len(native)):
         # check if all chars accessible
@@ -108,22 +107,22 @@ Main
 '''
 def main():
     print("Dataset: Dakshina")
-    native,roman = read_tsv("dakshina_dataset")
+    native,roman = read_tsv("prepared/dakshina_dataset")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned)
 
     eval(len(native),len(native_cleaned))
-    output_tsv(native_cleaned,roman_cleaned,"dakshina_dataset")
+    output_tsv(native_cleaned,roman_cleaned,"cleaned/dakshina_dataset")
 
     print("Dataset: Roman Urdu Parl")
-    native,roman = read_tsv("roUrParl_dataset")
+    native,roman = read_tsv("prepared/roUrParl_dataset")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned)
     
     eval(len(native),len(native_cleaned))
-    output_tsv(native_cleaned,roman_cleaned,"roUrParl_dataset")
+    output_tsv(native_cleaned,roman_cleaned,"cleaned/roUrParl_dataset")
 
 if __name__ == "__main__":
     main()

@@ -14,7 +14,7 @@ Read .tsv file, seperate into native and roman.
 '''
 def read_tsv(file_name):
     # Read the .tsv file
-    with open('./data/prepared/'+file_name+'.tsv', 'r', encoding='utf-8') as file:
+    with open('./data/'+file_name+'.tsv', 'r', encoding='utf-8') as file:
         native = []
         roman = []
 
@@ -34,7 +34,7 @@ def read_tsv(file_name):
 Read .tsv file, seperate into native and roman.
 '''
 def read_json(adress):
-    file = open(adress)
+    file = open("./"+adress+".json")
     data = json.load(file)
     file.close()
     return data
@@ -44,7 +44,7 @@ Write the arrays as .tsv file
 '''
 def output_tsv(native, roman, file_name):
     # write to headless .tsv
-    with open('./data/cleaned/'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
+    with open('./data/'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
         writer = csv.writer(tsvfile, delimiter='\t')
     
         for val1, val2 in zip(native, roman):
