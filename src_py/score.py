@@ -40,6 +40,7 @@ def main():
     df_roman = pd.DataFrame({
         'Key':qwerty_data["Keys"],
         'Frequency':frequency_roman.values(),
+        'Distance':distance_data,
         'Finger':finger_data,
         'Hand':hand_data
     })
