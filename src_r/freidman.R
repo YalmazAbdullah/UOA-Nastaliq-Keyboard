@@ -1,7 +1,6 @@
 library(tidyverse)
+library(ggpubr)
 library(rstatix)
-library(nlme)
-library(lme4)
 
 ################
 # Prepare Data #
@@ -37,19 +36,38 @@ data %>%
   group_by(Keyboard) %>%
   get_summary_stats(Base, type = "common") 
 
-##################################
-# Non linear mixed effects Model #
-##################################
-mod <- lme(Base ~  Keyboard *Hand_Finger , random = ~ Keyboard | Key, data =data)
-mod
-plot(mod)
-tut <- summary(mod)
-tabl = tut$tTable 
-tabl 
-anova(mod)
+####################
+# Key and Keyboard #
+####################
+res.fried <- data %>% friedman_test(Base ~ Keyboard | Key)
+res.fried
 
-modnlme1 <- nlme(Base ~  Keyboard *Hand_Finger, data = data,
-                 random = ~ Keyboard | Key,
-                 fixed = Hand_Finger+Keyboard,
-                 start = )
+# Effect size
+data %>% friedman_effsize(Base ~ Keyboard |Key) 
 
+# Post-hoc
+pwc <- data %>%
+  wilcox_test(Base ~ Keyboard, paired = TRUE, p.adjust.method = "hommel")
+pwc 
+ggboxplot(data, x = "Keyboard", y = "Base", add = "jitter")
+
+###########################
+# Hand_Finger and Keyboard #
+###########################
+
+data <- data %>%
+  group_by(Hand_Finger,Keyboard) %>%
+  summarise(Sum_Value = sum(Base), .groups = 'drop')
+view(data)
+
+res.fried <- data %>% friedman_test(Sum_Value ~ Keyboard | Hand_Finger)
+res.fried
+
+# Effect size
+data %>% friedman_effsize(Sum_Value ~ Keyboard |Hand_Finger) 
+
+# Post-hoc
+pwc <- data %>%
+  wilcox_test(Sum_Value ~ Keyboard, paired = TRUE, p.adjust.method = "hommel")
+pwc 
+ggboxplot(data, x = "Keyboard", y = "Sum_Value", add = "jitter")
