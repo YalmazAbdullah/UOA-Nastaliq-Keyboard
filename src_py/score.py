@@ -13,6 +13,12 @@ def calculate_freq(data,key_set,upper_set,key_mapping):
             frequency_data[key_mapping[char]]+=1
     return frequency_data 
 
+def calculate_sp(data):
+    for triad in data:
+        # figure out how this is gonna work
+        # TODO
+        pass
+
 def main():    
     # read keyboard data
     qwerty_data = read_json("keyboards/QWERTY")
@@ -36,6 +42,13 @@ def main():
     frequency_roman = calculate_freq(roman,key_set,upper_set,key_mapping)
     frequency_windows = calculate_freq(windows,key_set,upper_set,key_mapping)
     frequency_crulp = calculate_freq(crulp,key_set,upper_set,key_mapping)
+
+    crulp,roman = read_tsv("transformed/triad_CRULP/dakshina_dataset")
+    windows,roman = read_tsv("transformed/triad_Windows/dakshina_dataset")
+
+    strokePenalty_roman = calculate_sp()
+    strokePenalty_windows = calculate_sp()
+    strokePenalty_crulp = calculate_sp()
 
     df_roman = pd.DataFrame({
         'Key':qwerty_data["Keys"],
