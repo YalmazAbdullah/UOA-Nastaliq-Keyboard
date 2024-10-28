@@ -1,6 +1,5 @@
 # STL
 import re
-from pprint import pprint
 
 # Vendor
 from urduhack.preprocessing import remove_accents
@@ -108,7 +107,7 @@ def main():
     print(union.difference(native_set))
 
     print("Dataset: Dakshina")
-    native,roman = read_tsv("prepared/dakshina_dataset")
+    native,roman = read_tsv("raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)

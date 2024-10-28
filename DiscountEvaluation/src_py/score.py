@@ -46,9 +46,9 @@ def main():
     crulp,roman = read_tsv("transformed/triad_CRULP/dakshina_dataset")
     windows,roman = read_tsv("transformed/triad_Windows/dakshina_dataset")
 
-    strokePenalty_roman = calculate_sp()
-    strokePenalty_windows = calculate_sp()
-    strokePenalty_crulp = calculate_sp()
+    # strokePenalty_roman = calculate_sp()
+    # strokePenalty_windows = calculate_sp()
+    # strokePenalty_crulp = calculate_sp()
 
     df_roman = pd.DataFrame({
         'Key':qwerty_data["Keys"],

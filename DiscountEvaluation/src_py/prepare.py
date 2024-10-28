@@ -8,9 +8,7 @@ from util import eval
 '''
 Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv
 '''
-def prep_roman_ur_parl():
-    native_file_path = "./data/raw/Roman-Urdu-Parl/Urdu.txt"
-    roman_file_path = "./data/raw/Roman-Urdu-Parl/Roman-Urdu.txt"
+def prep_roman_ur_parl(native_file_path, roman_file_path):
     # read data
     file = open(native_file_path)
     native_data = file.readlines()
@@ -63,8 +61,9 @@ def prep_roman_ur_parl():
 '''
 Main
 '''
-def main():
-    prep_roman_ur_parl()
+
+def main(native_file_path, roman_file_path):
+    prep_roman_ur_parl(native_file_path, roman_file_path)
 
 if __name__ == "__main__":
     main()
