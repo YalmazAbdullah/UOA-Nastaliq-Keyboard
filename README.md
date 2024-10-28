@@ -12,4 +12,6 @@ pandas
 - figure out how to add keyboard results to the repo with lfs
 - descriptive stats 
 - set up stroke analysis code
+- add mac distances
+- add mac layouts
 
