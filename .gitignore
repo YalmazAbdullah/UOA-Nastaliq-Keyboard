@@ -161,3 +161,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+DiscountEvaluation/data/cleaned/*
+DiscountEvaluation/data/prepared/*
+DiscountEvaluation/data/transformed/keystroke_CRULP/*
+DiscountEvaluation/data/transformed/keystroke_Windows/*
+DiscountEvaluation/data/transformed/sentences/*
+DiscountEvaluation/data/transformed/triad_CRULP/*
+DiscountEvaluation/data/transformed/triad_Windows/*
