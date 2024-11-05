@@ -28,14 +28,10 @@ windows$Prob_Add1 <- (windows$Frequency+1)/(sum(windows$Frequency)+length(window
 data <- rbind(crulp, roman, windows)
 view(data)
 
-# Total distance calculation
+# Total distance calculation and log transformation
 data$Base <- data$Distance*data$Prob_Add1
+data$Base <- log(df$Base)
 view(data)
-
-# Summary stats
-data %>%
-  group_by(Keyboard) %>%
-  get_summary_stats(Base, type = "common") 
 
 ##################################
 # Non linear mixed effects Model #
@@ -43,9 +39,11 @@ data %>%
 mod <- lme(Base ~  Keyboard *Hand_Finger , random = ~ Keyboard | Key, data =data)
 mod
 plot(mod)
-tut <- summary(mod)
-tabl = tut$tTable 
-tabl 
+
+summary <- summary(mod)
+table = summary$tTable 
+table 
+
 anova(mod)
 
 modnlme1 <- nlme(Base ~  Keyboard *Hand_Finger, data = data,

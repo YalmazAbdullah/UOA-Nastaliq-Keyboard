@@ -31,11 +31,6 @@ view(data)
 data$Base <- data$Distance*data$Prob_Add1
 view(data)
 
-# Summary stats
-data %>%
-  group_by(Keyboard) %>%
-  get_summary_stats(Base, type = "common") 
-
 ####################
 # Key and Keyboard #
 ####################
