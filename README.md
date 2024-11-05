@@ -14,4 +14,6 @@ pandas
 - set up stroke analysis code
 - add mac distances
 - add mac layouts
+- number of keystrokes needed
+- 
 

@@ -20,15 +20,15 @@ crulp <- subset(data, Keyboard == "CRULP")
 roman <- subset(data, Keyboard == "Roman")
 windows <- subset(data, Keyboard == "Windows")
 
-crulp$Prob_Add1 <- (crulp$Frequency+1)/(sum(crulp$Frequency)+length(crulp$Frequency))
-roman$Prob_Add1 <- (roman$Frequency+1)/(sum(roman$Frequency)+length(roman$Frequency))
-windows$Prob_Add1 <- (windows$Frequency+1)/(sum(windows$Frequency)+length(windows$Frequency))
+crulp$Prob <- (crulp$Frequency)/(sum(crulp$Frequency))
+roman$Prob <- (roman$Frequency)/(sum(roman$Frequency))
+windows$Prob <- (windows$Frequency)/(sum(windows$Frequency))
 
 data <- rbind(crulp, roman, windows)
 view(data)
 
 # Total distance calculation
-data$Base <- data$Distance*data$Prob_Add1
+data$Base <- data$Distance*data$Prob
 view(data)
 
 # Summary stats
@@ -37,5 +37,25 @@ data %>%
   get_summary_stats(Base, type = "common") 
 
 # Finger distance graph
-# Row usage
-# finger usage
+new_data <- data %>%
+  group_by(Finger) %>%
+  summarise(Total_Base = sum(Base))
+ggplot(data, aes(fill=Keyboard, y=Base, x=Finger)) + 
+    geom_bar(position="dodge", stat="Base")
+
+# Finger freq
+new_data <- data %>%
+  group_by(Finger) %>%
+  summarise(Total_Base = sum(Frequency))
+ggplot(data, aes(fill=Keyboard, y=Frequency, x=Finger)) + 
+    geom_bar(position="dodge", stat="Frequency")
+
+# Hand
+new_data <- data %>%
+  group_by(Hand) %>%
+  summarise(Total_Base = sum(Frequency))
+ggplot(data, aes(fill=Keyboard, y=Frequency, x=Hand)) + 
+    geom_bar(position="dodge", stat="Frequency")
+
+# Row
+# Alternating
