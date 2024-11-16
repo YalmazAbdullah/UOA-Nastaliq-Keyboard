@@ -1,7 +1,6 @@
 library(tidyverse)
 library(rstatix)
 library(nlme)
-library(lme4)
 
 ################
 # Prepare Data #
@@ -30,24 +29,55 @@ view(data)
 
 # Total distance calculation and log transformation
 data$Base <- data$Distance*data$Prob_Add1
-data$Base <- log(df$Base)
+#sqrt transformation seems to work better 
+data$Transformed_Base <- sqrt(data$Base)
 view(data)
 
+print(sum(data$Frequency))
+
+#################
+# Winsorization #
+#################
+#let's use 10% of our data to winsorize, we have N = 207 and 10% = 20.7 ~ 21
+#I also tried 15% but I think 10% works better. You can try other alternatives
+percent = 21
+wins <- function(x, n=percent) { 
+  xx <- sort(unique(x)) 
+  x[x<=xx[n]] <- xx[n+percent]
+  x[x>=xx[length(xx)-n]] <- xx[length(xx)-n]
+  x 
+}
+
+data$Transformed_Base <- wins(data$Base,percent)
+
+view(data)
+ggplot(data=data, mapping=aes(x=Keyboard, y=Base))+geom_boxplot()
+ggplot(data, aes(Base, fill = Keyboard))+geom_histogram()
+
+ggplot(data=data, mapping=aes(x=Keyboard, y=Transformed_Base))+geom_boxplot()
+ggplot(data, aes(Transformed_Base, fill = Keyboard))+geom_histogram()
+
 ##################################
-# Non linear mixed effects Model #
+# linear mixed effects Model #
 ##################################
-mod <- lme(Base ~  Keyboard *Hand_Finger , random = ~ Keyboard | Key, data =data)
+mod <- lme(Transformed_Base ~  Keyboard *Hand_Finger , random = ~ Keyboard | Key, data =data)
 mod
-plot(mod)
+
+#get list of residuals 
+res <- resid(mod)
+plot(fitted(mod), res)
+#add a horizontal line at 0 
+abline(0,0)
+qqnorm(res)
+#add a straight diagonal line to the plot
+qqline(res) 
+plot(density(res))
 
 summary <- summary(mod)
-table = summary$tTable 
+table = as.data.frame(summary$tTable)
 table 
+significant <- subset(table, `p-value`< .05)
+knitr::kable(significant, format = "markdown")
 
-anova(mod)
-
-modnlme1 <- nlme(Base ~  Keyboard *Hand_Finger, data = data,
-                 random = ~ Keyboard | Key,
-                 fixed = Hand_Finger+Keyboard,
-                 start = )
+knitr::kable(anova(mod), format = "markdown")
 

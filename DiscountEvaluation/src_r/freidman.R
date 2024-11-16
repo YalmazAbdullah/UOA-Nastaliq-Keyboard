@@ -57,6 +57,7 @@ view(data)
 
 res.fried <- data %>% friedman_test(Sum_Value ~ Keyboard | Hand_Finger)
 res.fried
+knitr::kable(res.fried, format = "markdown")
 
 # Effect size
 data %>% friedman_effsize(Sum_Value ~ Keyboard |Hand_Finger) 
@@ -65,4 +66,6 @@ data %>% friedman_effsize(Sum_Value ~ Keyboard |Hand_Finger)
 pwc <- data %>%
   wilcox_test(Sum_Value ~ Keyboard, paired = TRUE, p.adjust.method = "hommel")
 pwc 
+knitr::kable(pwc, format = "markdown")
+
 ggboxplot(data, x = "Keyboard", y = "Sum_Value", add = "jitter")

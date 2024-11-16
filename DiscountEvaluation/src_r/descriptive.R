@@ -1,6 +1,8 @@
 library(tidyverse)
 library(ggpubr)
 library(rstatix)
+library(knitr)
+library(ggplot2)
 
 ################
 # Prepare Data #
@@ -34,28 +36,37 @@ view(data)
 # Summary stats
 data %>%
   group_by(Keyboard) %>%
-  get_summary_stats(Base, type = "common") 
+  get_summary_stats(Base, type = "common")
+
+knitr::kable(get_summary_stats(group_by(data,Keyboard),Base, type = "common"), format = "markdown")
+
+
 
 # Finger distance graph
-new_data <- data %>%
-  group_by(Finger) %>%
-  summarise(Total_Base = sum(Base))
-ggplot(data, aes(fill=Keyboard, y=Base, x=Finger)) + 
-    geom_bar(position="dodge", stat="Base")
+new_data <-  data %>%
+  group_by(Keyboard, Finger) %>%
+  summarize(Base = sum(Base), .groups = 'drop')
+new_data$Finger <- factor(new_data$Finger, levels = c("little", "ring", "middle", "index"))
+
+ggplot(new_data, aes(fill=Keyboard, y=Base, x=Finger)) + 
+    geom_bar(position="dodge", stat="identity")
 
 # Finger freq
-new_data <- data %>%
-  group_by(Finger) %>%
-  summarise(Total_Base = sum(Frequency))
-ggplot(data, aes(fill=Keyboard, y=Frequency, x=Finger)) + 
-    geom_bar(position="dodge", stat="Frequency")
+new_data <-  data %>%
+  group_by(Keyboard, Finger) %>%
+  summarize(Frequency = sum(Frequency), .groups = 'drop')
+new_data$Finger <- factor(new_data$Finger, levels = c("little", "ring", "middle", "index"))
+
+ggplot(new_data, aes(fill=Keyboard, y=Frequency, x=Finger)) + 
+    geom_bar(position="dodge", stat="identity")
 
 # Hand
-new_data <- data %>%
-  group_by(Hand) %>%
-  summarise(Total_Base = sum(Frequency))
-ggplot(data, aes(fill=Keyboard, y=Frequency, x=Hand)) + 
-    geom_bar(position="dodge", stat="Frequency")
+new_data <-  data %>%
+  group_by(Keyboard, Hand) %>%
+  summarize(Frequency = sum(Frequency), .groups = 'drop')
+
+ggplot(new_data, aes(fill=Keyboard, y=Frequency, x=Hand)) + 
+  geom_bar(position="dodge", stat="identity")
 
 # Row
 # Alternating
