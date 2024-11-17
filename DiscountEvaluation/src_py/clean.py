@@ -16,14 +16,15 @@ Standardizes the input, only has substitution and addition.
 No subtraction.
 '''
 def standardize(native, roman):
-    # roman dakshina has these random tokens that well remove
-    native = [s for s in native if s != '""""']
-    roman = [s for s in roman if s != '""""']
+    # # roman dakshina has these random tokens that well remove
+    # native = [s for s in native if s != '""""']
+    # roman = [s for s in roman if s != '""""']
 
     # The datasets contain a mix of ltr and rtl punctuations
     # It also contains charachters that are similar but not quite the same ex: - and –
     # We will be standardizing them using this table
     chars = {
+        # Punctuation and special
         ";":"؛",
         ",":"،",
         ".":"۔",
@@ -35,9 +36,24 @@ def standardize(native, roman):
         "’’":'"',
         "‘":"'",
         "–":"-",
+
+        # Numerals
+        "۱":"1",
+        "۲":"2",
+        "۳":"3",
+        "۴":"4",
+        "۵":"5",
+        "۶":"6",
+        "۷":"7",
+        "۸":"8",
+        "۹":"9",
+        "۰":"0",
+
+        # Same but different
         "ى ":"ی",
         "ي":"ی",
     }
+    
     pattern = re.compile('|'.join(re.escape(key) for key in chars.keys()))
 
     for i in range(len(native)):
@@ -121,7 +137,7 @@ def main():
     set_CRULP = set(read_json("keyboards/mappings/CRULP").keys())
     set_Windows = set(read_json("keyboards/mappings/Windows").keys())
     native_set = set_CRULP.intersection(set_Windows)
-    roman_set = set(read_json("keyboards/QWERTY")["Mapping"].keys())
+    roman_set = set(read_json("keyboards/QWERTY")["Charachters"])
 
     print("Set of Excluded Native Charachters:")
     union = set_CRULP.union(set_Windows)

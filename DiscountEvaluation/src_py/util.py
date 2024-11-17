@@ -20,7 +20,7 @@ def read_tsv(file_name):
 
         for line in file:
             # Split the line into two parts based on the tab character
-            parts = line.strip().split('\t')
+            parts = line.strip().replace('"""', '"').split('\t')
             
             # Check if the line has exactly two parts
             if len(parts) == 2:

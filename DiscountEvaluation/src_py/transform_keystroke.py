@@ -22,7 +22,7 @@ def main():
     write_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/dakshina_dataset")
     write_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/dakshina_dataset")
 
-    # Dataset: Roman Urdu Parl
+    # # Dataset: Roman Urdu Parl
     native,roman = read_tsv("transformed/sentences/roUrParl_dataset")
     transformed_CRULP = transform(native,"keyboards/mappings/CRULP")
     transformed_Windows = transform(native,"keyboards/mappings/Windows")

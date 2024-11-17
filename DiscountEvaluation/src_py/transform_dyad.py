@@ -1,32 +1,32 @@
 # Custom
-from util import read_tsv,output_tsv
+from util import read_tsv,write_tsv
+import json
 
-def transform(text):
+def generate_dyads(text):
     transformed = []
     for line in text:
         line = line.replace(" ", "") 
-        triads = [line[i:i+3] for i in range(len(line) - 3 + 1)]
+        triads = [line[i:i+2] for i in range(len(line) - 2 + 1)]
         transformed.append(triads)
     return transformed
 
-def main():
-    # Dataset: Dakshina
-    crulp,roman = read_tsv("transformed/keystroke_CRULP/dakshina_dataset")
-    windows,roman = read_tsv("transformed/keystroke_Windows/dakshina_dataset")
-    roman_traids = transform(roman)
-    crulp_triads = transform(crulp)
-    windows_triads = transform(windows)
-    output_tsv(crulp_triads,roman_traids,"transformed/triad_CRULP/dakshina_dataset")
-    output_tsv(windows_triads,roman_traids,"transformed/triad_Windows/dakshina_dataset")
+def write_triads(native1,native2,roman,path):
+    with open("./DiscountEvaluation/data/"+path+".json", "w") as file:
+        json.dump([native1,native2,roman], file, indent=4)
 
-    # Dataset: Roman Urdu Parl
-    crulp,roman = read_tsv("transformed/keystroke_CRULP/roUrParl_dataset")
-    windows,roman = read_tsv("transformed/keystroke_Windows/roUrParl_dataset")
-    roman_traids = transform(roman)
-    crulp_triads = transform(crulp)
-    windows_triads = transform(windows)
-    output_tsv(crulp_triads,roman_traids,"transformed/triad_CRULP/roUrParl_dataset")
-    output_tsv(windows_triads,roman_traids,"transformed/triad_Windows/roUrParl_dataset")    
+def transform(dataset_name):
+    crulp,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)
+    windows,roman = read_tsv("transformed/keystroke_Windows/"+dataset_name)
+    roman_dyads = generate_dyads(roman)
+    crulp_dyads = generate_dyads(crulp)
+    windows_dyads = generate_dyads(windows)
+    write_triads(crulp_dyads,windows_dyads,roman_dyads,"transformed/dyads/"+dataset_name)
+    return crulp_dyads,windows_dyads,roman_dyads
+
+def main():
+    transform("dakshina_dataset")
+    transform("roUrParl_dataset")
+    
 
 if __name__ == "__main__":
     main()

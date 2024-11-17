@@ -13,8 +13,8 @@ def transform(native,roman):
     for i in range(len(native)):
         if native[i] == "</s>":
             if token_count >1:
-                native_sentences.append(" ".join(n_current_sentence) + "۔")
-                roman_sentences.append(" ".join(r_current_sentence) + ".")
+                native_sentences.append(" ".join(n_current_sentence))
+                roman_sentences.append(" ".join(r_current_sentence))
             else:
                 lost_count+=1
             n_current_sentence = []
