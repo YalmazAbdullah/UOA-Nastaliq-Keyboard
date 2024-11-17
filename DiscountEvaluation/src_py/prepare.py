@@ -1,12 +1,12 @@
 # STL
 import re
-import csv
 
 # Custom
 from util import eval
+from util import write_tsv
 
 '''
-Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv
+Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv.
 '''
 def prep_roman_ur_parl(native_file_path, roman_file_path):
     # read data
@@ -30,7 +30,7 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
 
     # re formant the data
     for i in range(len(native_data)):
-        # normalize spaces
+        # standardize spaces
         native_data[i] =   re.sub(r'\s+', ' ', native_data[i])
         
         # tokenize
@@ -48,21 +48,19 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
             valid_count += len(native_tokens)           # storing count of valid tokens where both roman and native match for loss calculation.
     
     # write to headless .tsv
-    with open('./data/prepared/roUrParl_dataset.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
-        writer = csv.writer(tsvfile, delimiter='\t')
-    
-        for val1, val2 in zip(native_out, roman_out):
-            writer.writerow([val1, val2])
+    write_tsv(native_out, roman_out, 'prepared/roUrParl_dataset')
     
     # print loss evaluation
-    print("Dataset: Roman Urdu Parl")
+    print("=============Dataset: Roman Urdu Parl=============")
     eval(raw_count,valid_count)
 
 '''
 Main
 '''
-
-def main(native_file_path, roman_file_path):
+def main(
+        native_file_path = './DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
+        roman_file_path = './DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
+    ):
     prep_roman_ur_parl(native_file_path, roman_file_path)
 
 if __name__ == "__main__":

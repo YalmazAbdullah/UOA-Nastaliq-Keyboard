@@ -1,7 +1,6 @@
 # Custom
 from util import eval
-from util import read_tsv,output_tsv
-from util import read_json
+from util import read_tsv,write_tsv
 
 def transform(native,roman):
     native_sentences = []
@@ -28,19 +27,17 @@ def transform(native,roman):
     return native_sentences,roman_sentences,lost_count
 
 def main():
-    print("Dataset: Dakshina")
+    print("=============Dataset: Dakshina=============")
     native,roman = read_tsv("cleaned/dakshina_dataset")
     native_sentences,roman_sentences,lost_count = transform(native,roman)
-
     eval(len(native),len(native)-lost_count)
-    output_tsv(native_sentences,roman_sentences,"transformed/sentences/dakshina_dataset")
+    write_tsv(native_sentences,roman_sentences,"transformed/sentences/dakshina_dataset")
 
-    print("Dataset: Roman Urdu Parl")
+    print("=============Dataset: Roman Urdu Parl=============")
     native,roman = read_tsv("cleaned/roUrParl_dataset")
     native_sentences,roman_sentences,lost_count = transform(native,roman)
-
     eval(len(native),len(native)-lost_count)
-    output_tsv(native_sentences,roman_sentences,"transformed/sentences/roUrParl_dataset")
+    write_tsv(native_sentences,roman_sentences,"transformed/sentences/roUrParl_dataset")
 
 if __name__ == "__main__":
     main()

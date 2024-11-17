@@ -1,5 +1,5 @@
 # Custom
-from util import read_tsv,output_tsv
+from util import read_tsv, write_tsv
 from util import read_json
 
 def transform(native, mapping_adress):
@@ -19,15 +19,15 @@ def main():
     native,roman = read_tsv("transformed/sentences/dakshina_dataset")
     transformed_CRULP = transform(native,"keyboards/mappings/CRULP")
     transformed_Windows = transform(native,"keyboards/mappings/Windows")
-    output_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/dakshina_dataset")
-    output_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/dakshina_dataset")
+    write_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/dakshina_dataset")
+    write_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/dakshina_dataset")
 
     # Dataset: Roman Urdu Parl
     native,roman = read_tsv("transformed/sentences/roUrParl_dataset")
     transformed_CRULP = transform(native,"keyboards/mappings/CRULP")
     transformed_Windows = transform(native,"keyboards/mappings/Windows")
-    output_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/roUrParl_dataset")
-    output_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/roUrParl_dataset")
+    write_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/roUrParl_dataset")
+    write_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/roUrParl_dataset")
 
 if __name__ == "__main__":
     main()

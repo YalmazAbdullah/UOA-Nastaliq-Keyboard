@@ -1,0 +1,4 @@
+=============Dataset: Dakshina=============
+Loss:    0.315903%
+=============Dataset: Roman Urdu Parl=============
+Loss:    0.039673%

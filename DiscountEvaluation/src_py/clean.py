@@ -1,12 +1,13 @@
 # STL
 import re
+from pprint import pprint
 
 # Vendor
 from urduhack.preprocessing import remove_accents
 
 # Custom
 from util import eval
-from util import read_tsv,output_tsv
+from util import read_tsv,write_tsv
 from util import read_json
 
 
@@ -29,7 +30,7 @@ def standardize(native, roman):
         "?":"؟",
         "*":"٭",
         "“":'"',
-        "“":'"',
+        "”":'"',
         "‘‘":'"',
         "’’":'"',
         "‘":"'",
@@ -58,6 +59,9 @@ def standardize(native, roman):
 
     return native,roman
 
+'''
+Dakshina format uses ? for tokens that have no romanization. We will remove these pairs
+'''
 def remove_missing(native, roman):
     native_cleaned = []
     roman_cleaned = []
@@ -68,28 +72,45 @@ def remove_missing(native, roman):
         roman_cleaned.append(roman[i])
     return native_cleaned,roman_cleaned
 
+'''
+Checks to see if all charachters in token are accessabile to the keyboards
+'''
 def is_inaccessible(token,set:set):
     for char in token:
         if char not in set:
             return True
     return False
 
+'''
+Remove any token that is not fully accessible to all keyboards
+'''
 def remove_inaccessible(a_text,b_text,set):
     # prepare output
     a_accessible = []
     b_accessible = []
-
+    inaccessible_tokens = []
     print("Inaccessible Tokens:")
     # for each token
     for i in range(len(a_text)):
         # check if all chars accessible
         if(a_text[i] != "</s>" and is_inaccessible(a_text[i],set)):
             # ignore if they are not
+            inaccessible_tokens.append(a_text[i])
             print(a_text[i])
             continue
         # add to ouput if they are
         a_accessible.append(a_text[i])
         b_accessible.append(b_text[i])
+
+    # print out frequency of inaccessible charachters
+    freq = {}
+    for token in inaccessible_tokens:
+        for char in token:
+            if (char not in set):
+                freq[char] = freq.get(char,0)+1
+
+    print("Inaccessible frequency table")
+    pprint(freq)
     return a_accessible,b_accessible
 
 '''
@@ -106,7 +127,7 @@ def main():
     union = set_CRULP.union(set_Windows)
     print(union.difference(native_set))
 
-    print("Dataset: Dakshina")
+    print("=============Dataset: Dakshina=============")
     native,roman = read_tsv("raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
@@ -114,9 +135,9 @@ def main():
     roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
-    output_tsv(native_cleaned,roman_cleaned,"cleaned/dakshina_dataset")
+    write_tsv(native_cleaned,roman_cleaned,"cleaned/dakshina_dataset")
 
-    print("Dataset: Roman Urdu Parl")
+    print("=============Dataset: Roman Urdu Parl=============")
     native,roman = read_tsv("prepared/roUrParl_dataset")
     native,roman = standardize(native,roman)
     native_cleaned,roman_cleaned = remove_missing(native,roman)
@@ -124,7 +145,7 @@ def main():
     roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
     
     eval(len(native),len(native_cleaned))
-    output_tsv(native_cleaned,roman_cleaned,"cleaned/roUrParl_dataset")
+    write_tsv(native_cleaned,roman_cleaned,"cleaned/roUrParl_dataset")
 
 if __name__ == "__main__":
     main()
