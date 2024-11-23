@@ -7,7 +7,7 @@ score=false
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 [-a] [-b] [-c]"
+    echo "Usage: $0 [-c] [-t] [-s]"
     echo "  -clean      Run cleaning for datasets"
     echo "  -transform  Run transformations for dataset"
     echo "  -score      Run score monad and diad"

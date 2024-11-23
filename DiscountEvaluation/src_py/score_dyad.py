@@ -14,19 +14,36 @@ KEY_2_FINGER = QWERTY_DATA["Key_Finger"]
 KEY_2_ROW = QWERTY_DATA["Key_Row"]
 KEY_2_HOME = QWERTY_DATA["Key_Home"]
 KEY_COORD = QWERTY_DATA["Key_Coordinate"]
-# @TODO: get actual distances
-MOD_KEY_DIST = 1
-
-def read_dyad_tsv(path):
-    data = read_json(path)
-    return data["Native"],data["Roman"]
+PRESS_DEPTH = QWERTY_DATA["Press_Depth"]
+SCALE_FACTOR = QWERTY_DATA["Scale_Factor"]
 
 def travel_dist(a,b):
-    return 1
-    return math.dist(KEY_COORD[a],KEY_COORD[b])
+    '''
+    Euclidian distance between 2 keys using their coordinates
 
+    Args:
+        a (char): first key
+        b (char): second key
+    Returns:
+        distance (float): euclidian distance between keys
+    '''
+    return math.dist(KEY_COORD[a],KEY_COORD[b]) * SCALE_FACTOR
+
+RIGHT_MOD = travel_dist(KEY_2_HOME["r_shift"],"r_shift") * SCALE_FACTOR
+LEFT_MOD = travel_dist(KEY_2_HOME["l_shift"],"l_shift") * SCALE_FACTOR
 
 def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
+    '''
+    Calculate the travel distance for each finger for a particular dyad.
+
+    Args:
+        dyad (string): the dyad
+        keys (keys): decoded keys
+        is_same_finger (bool): true if the same finger is used to enter dyad
+        is_same_hand (bool): true if the same hand is used to enter dyad
+    Returns:
+        finger_distance (dict): the travel distance split up by finger. Keys are finger and value is distance.
+    '''
     # get keys used in dyad
     first_key = keys[0]
     second_key = keys[1]
@@ -47,37 +64,43 @@ def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
 
     if(is_same_finger):
         # add distance from first key to second key
-        finger_distance[first_finger] += travel_dist(first_key,second_key)
+        finger_distance[first_finger] += travel_dist(first_key,second_key) + PRESS_DEPTH
     else:
         # add distance from first key back to the home row
         finger_distance[first_finger] += travel_dist(first_key,KEY_2_HOME[first_key])
         # add distance from home row to second key
-        finger_distance[second_finger] += travel_dist(KEY_2_HOME[second_key],second_key)
+        finger_distance[second_finger] += travel_dist(KEY_2_HOME[second_key],second_key) + PRESS_DEPTH
 
     if (is_first_modified and is__second_modified):
         # if different hand
         if(not is_same_hand):
-            finger_distance["l_little"] += MOD_KEY_DIST
-            finger_distance["r_little"] += MOD_KEY_DIST
+            finger_distance["l_little"] += LEFT_MOD
+            finger_distance["r_little"] += RIGHT_MOD
+            if(is__second_modified):
+               finger_distance["r_little"] += PRESS_DEPTH
     elif (is_first_modified or is__second_modified):
         # check which side key is modified
         if(is_first_modified):
             # check which side is modified
             if (KEY_2_HAND[first_key] == "left"):
-                finger_distance["r_little"] += MOD_KEY_DIST
+                finger_distance["r_little"] += RIGHT_MOD
             else:
                 # has to be right
-                finger_distance["l_little"] += MOD_KEY_DIST
+                finger_distance["l_little"] += LEFT_MOD
         else:
             # has to be second
             if (KEY_2_HAND[second_key] == "left"):
-                finger_distance["r_little"] += MOD_KEY_DIST
+                finger_distance["r_little"] += RIGHT_MOD + PRESS_DEPTH
             else:
                 # has to be right
-                finger_distance["l_little"] += MOD_KEY_DIST
+                finger_distance["l_little"] += LEFT_MOD + PRESS_DEPTH
     return finger_distance
 
-def dyad_dist_special(char, key):
+def dyad_dist_special(char, key, is_end):
+    '''
+    Calcuating distances for special case which is start and end of
+    sentence dyads.
+    '''
     finger_distance = {
         "l_little" : 0,   "r_little" : 0,
         "l_ring" : 0,     "r_ring" : 0,
@@ -85,19 +108,31 @@ def dyad_dist_special(char, key):
         "l_index" : 0,    "r_index" : 0,
     }
 
+    # get travel distance
     finger = KEY_2_FINGER[key]
-    finger_distance[finger] += travel_dist(KEY_2_HOME[key], key)
+    finger_distance[finger] += travel_dist(KEY_2_HOME[key], key) + PRESS_DEPTH
 
+    # check if modified
     if(key != char):
         # add home to mod distance
         if(KEY_2_HAND[key] == "left"):
-            finger_distance["r_little"] += MOD_KEY_DIST
+            finger_distance["r_little"] += RIGHT_MOD if(is_end) else RIGHT_MOD + PRESS_DEPTH
         else:
-            finger_distance["l_little"] += MOD_KEY_DIST
+            finger_distance["l_little"] += LEFT_MOD if(is_end) else LEFT_MOD + PRESS_DEPTH
     return finger_distance
     
 
-def score(dataset_name):    
+def score(dataset_name):
+    '''
+    Score the dyads for the dataset by caculating travel distance, frequency
+    and checking if same finger, same key, same hand, reach, and hurdle. Results
+    are saved to output csv.
+
+    Args:
+        dataset_name (string): name of dataset
+    Returns:
+        None
+    '''
     output = {}
     two_char_permutations = list(product(CHAR_SET, repeat=2))
     permutation_strings = [''.join(p) for p in two_char_permutations]
@@ -130,10 +165,12 @@ def score(dataset_name):
         markers = ["<s>","</s>"]
         for i in range(len(markers)):
             mark = markers[i]
+            is_end = False
             if(i==0):
                 dyad = mark+char
             else:
                 dyad = char+mark
+                is_end = True
             key = CHAR_2_KEY[char]
             dyad_isReach[dyad]      = (KEY_2_ROW[key] != 0)
             # The following simply cannot be true because this dyad actually consists of just one key
@@ -142,7 +179,7 @@ def score(dataset_name):
             dyad_sameFinger[dyad]   = False
             dyad_isHurdle[dyad]     = False
             # distance is the same as naive distance
-            finger_distance[dyad]   = dyad_dist_special(char,key)
+            finger_distance[dyad]   = dyad_dist_special(char,key, is_end)
 
 
     # Retrive data for each keyboard diad frequency counting
@@ -180,10 +217,12 @@ def score(dataset_name):
     output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
     output.to_csv("./DiscountEvaluation/output/dyad/"+dataset_name+".csv", index=True)
 
+##################
+##     MAIN     ##
+##################
 def main():
     score("dakshina_dataset")
     score("roUrParl_dataset")
-    # print(dyad_dist("r?",("r","/"),False,False))
 
 if __name__ == "__main__":
     main()
