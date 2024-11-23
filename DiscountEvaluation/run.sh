@@ -55,7 +55,7 @@ fi
 if $transform; then
     echo "Transforming..."
     # transform
-    python ./DiscountEvaluation/src_py/transform_sentence.py > "$LOG_PATH"
+    python ./DiscountEvaluation/src_py/transform_sentence.py > "$LOG_PATH/3_sentence.log"
     python ./DiscountEvaluation/src_py/transform_keystroke.py
     python ./DiscountEvaluation/src_py/transform_dyad.py
 fi

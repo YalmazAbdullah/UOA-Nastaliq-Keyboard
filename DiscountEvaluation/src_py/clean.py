@@ -41,12 +41,12 @@ def standardize(native, roman):
     This function only does substitution and addition. No subtraction.
 
     Args:
-        native (list): list of lists holding urdu tokens
-        roman (list): list of lists holding roman tokens
+        native (list): list holding urdu tokens
+        roman (list): list holding roman tokens
     
     Returns:
-        native (list): list of lists holding urdu tokens 
-        roman (list): list of lists holding roman tokens
+        native (list): list holding urdu tokens 
+        roman (list): list holding roman tokens
     '''
     
     pattern = re.compile('|'.join(re.escape(key) for key in STANDARD_SUBSTITUTIONS.keys()))
@@ -78,12 +78,12 @@ def remove_missing(native, roman):
     Dakshina format uses ? for tokens that have no romanization. We will remove these pairs.
 
     Args:
-        native (list): list of lists holding urdu tokens
-        roman (list): list of lists holding roman tokens
+        native (list): list holding urdu tokens
+        roman (list): list holding roman tokens
     
     Returns:
-        native (list): list of lists holding urdu tokens 
-        roman (list): list of lists holding roman tokens
+        native (list): list holding urdu tokens 
+        roman (list): list holding roman tokens
     '''
     native_cleaned = []
     roman_cleaned = []
@@ -114,13 +114,13 @@ def remove_inaccessible(a_text,b_text,char_set):
     Remove any token that is not fully accessible to all keyboards
 
     Args:
-        a_text (list): list of lists holding tokens. Urdu or roman either is fine but urdu prefered.
-        b_text (list): list of lists holding tokens. Roman or roman either is fine but roman prefered.
+        a_text (list): list holding tokens. Urdu or roman either is fine but urdu prefered.
+        b_text (list): list holding tokens. Roman or roman either is fine but roman prefered.
         set (set): set of accessible tokens
         
     Returns:
-        a_text (list): list of lists holding tokens. 
-        b_text (list): list of lists holding tokens.
+        a_text (list): list holding tokens. 
+        b_text (list): list holding tokens.
     '''
     # prepare output
     a_accessible = []
