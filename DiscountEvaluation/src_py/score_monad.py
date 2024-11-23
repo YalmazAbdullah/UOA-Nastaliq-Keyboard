@@ -66,6 +66,10 @@ def score(dataset_name):
     output.to_csv("./DiscountEvaluation/output/monad/"+dataset_name+".csv", index=True)
 
 def main():
+    print("###############################################")
+    print("=====================SCORE=====================")
+    print("###############################################")
+    print()
     score("dakshina_dataset")
     score("roUrParl_dataset")
 

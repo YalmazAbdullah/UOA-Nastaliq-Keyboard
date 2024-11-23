@@ -5,14 +5,20 @@ import re
 from util import eval
 from util import write_tsv
 
-'''
-Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv.
-'''
+
 def prep_roman_ur_parl(native_file_path, roman_file_path):
+    '''
+    Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv. Prints out
+    the number of tokens in the raw file, the number of tokens after pre-processing, and the loss
+    ratio.
+    
+    Args:
+        native_file_path (string): path to native file.
+        roman_file_path (string): path to roman file.
+    '''
     # read data
     file = open(native_file_path)
     native_data = file.readlines()
-
     file = open(roman_file_path)
     roman_data = file.readlines()
 
@@ -45,22 +51,27 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
             roman_out.extend(roman_tokens)
             native_out.append("</s>")
             roman_out.append("</s>")
-            valid_count += len(native_tokens)           # storing count of valid tokens where both roman and native match for loss calculation.
+            valid_count += len(native_tokens)           # storing count of valid tokens where both roman and 
+                                                        # native match for loss calculation.
     
     # write to headless .tsv
     write_tsv(native_out, roman_out, 'prepared/roUrParl_dataset')
-    
     # print loss evaluation
     print("=============Dataset: Roman Urdu Parl=============")
     eval(raw_count,valid_count)
 
-'''
-Main
-'''
+
+##################
+##     MAIN     ##
+##################
 def main(
         native_file_path = './DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
         roman_file_path = './DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
     ):
+    print("###############################################")
+    print("====================PREPARE====================")
+    print("###############################################")
+    print()
     prep_roman_ur_parl(native_file_path, roman_file_path)
 
 if __name__ == "__main__":

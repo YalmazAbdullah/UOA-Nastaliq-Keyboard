@@ -27,6 +27,10 @@ def transform(native,roman):
     return native_sentences,roman_sentences,lost_count
 
 def main():
+    print("###############################################")
+    print("===================TRANSFORM===================")
+    print("###############################################")
+    print()
     print("=============Dataset: Dakshina=============")
     native,roman = read_tsv("cleaned/dakshina_dataset")
     native_sentences,roman_sentences,lost_count = transform(native,roman)

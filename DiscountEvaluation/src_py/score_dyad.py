@@ -1,13 +1,3 @@
-# Finger travel for each bigram (complicated)
-# Frequency of bigram
-# Is same hand
-# Is same finger not same key
-# Is hurdle
-# Is reach
-# SUM(f*variable)
-# Hand = 1
-# Other two=0.5
-
 from util import read_tsv,write_tsv
 from util import read_json
 import pandas as pd
@@ -32,6 +22,7 @@ def read_dyad_tsv(path):
     return data["Native"],data["Roman"]
 
 def travel_dist(a,b):
+    return 1
     return math.dist(KEY_COORD[a],KEY_COORD[b])
 
 
@@ -56,12 +47,12 @@ def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
 
     if(is_same_finger):
         # add distance from first key to second key
-        finger_distance[first_finger] = travel_dist(first_key,second_key)
+        finger_distance[first_finger] += travel_dist(first_key,second_key)
     else:
         # add distance from first key back to the home row
-        finger_distance[first_finger] = travel_dist(first_key,KEY_2_HOME[first_key])
+        finger_distance[first_finger] += travel_dist(first_key,KEY_2_HOME[first_key])
         # add distance from home row to second key
-        finger_distance[second_finger] = travel_dist(KEY_2_HOME[second_key],second_key)
+        finger_distance[second_finger] += travel_dist(KEY_2_HOME[second_key],second_key)
 
     if (is_first_modified and is__second_modified):
         # if different hand
@@ -79,7 +70,7 @@ def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
                 finger_distance["l_little"] += MOD_KEY_DIST
         else:
             # has to be second
-            if (KEY_2_HAND[first_key] == "left"):
+            if (KEY_2_HAND[second_key] == "left"):
                 finger_distance["r_little"] += MOD_KEY_DIST
             else:
                 # has to be right
@@ -95,7 +86,7 @@ def dyad_dist_special(char, key):
     }
 
     finger = KEY_2_FINGER[key]
-    finger_distance[finger] = travel_dist(KEY_2_HOME[key], key)
+    finger_distance[finger] += travel_dist(KEY_2_HOME[key], key)
 
     if(key != char):
         # add home to mod distance
@@ -105,6 +96,7 @@ def dyad_dist_special(char, key):
             finger_distance["l_little"] += MOD_KEY_DIST
     return finger_distance
     
+
 def score(dataset_name):    
     output = {}
     two_char_permutations = list(product(CHAR_SET, repeat=2))
@@ -190,7 +182,8 @@ def score(dataset_name):
 
 def main():
     score("dakshina_dataset")
-    # score("roUrParl_dataset")
+    score("roUrParl_dataset")
+    # print(dyad_dist("r?",("r","/"),False,False))
 
 if __name__ == "__main__":
     main()
