@@ -156,7 +156,7 @@ def score(dataset_name):
         # if one or more is not home
         dyad_isReach[dyad]      = (KEY_2_ROW[keys[0]] != 0) or (KEY_2_ROW[keys[1]] != 0)
         # if both are not home and different rows
-        dyad_isHurdle[dyad]     = ((KEY_2_ROW[keys[0]] != 0) and (KEY_2_ROW[keys[1]] != 0)) and (KEY_2_ROW[keys[0]] != KEY_2_ROW[keys[1]])
+        dyad_isHurdle[dyad]     =  ((KEY_2_ROW[keys[0]] != 0) and (KEY_2_ROW[keys[1]] != 0)) and dyad_sameHand[dyad]
         # distance required to go from one key in bigram to other
         finger_distance[dyad]   = dyad_dist(dyad,keys,dyad_sameFinger[dyad],dyad_sameHand[dyad])
 
@@ -201,14 +201,14 @@ def score(dataset_name):
             'SameKey'               : dyad_sameKey,
             'SameFinger'            : dyad_sameFinger,
             'Reach'                 : dyad_isReach,
-            'Hurde'                 : dyad_isHurdle,
+            'Hurdle'                 : dyad_isHurdle,
             'Frequency'             : dyad_freq,
         })
         # add distance col for each finger
         df = pd.concat([df, pd.DataFrame.from_dict(finger_distance, orient="index")], axis=1)
         df['left_total'] = df[['l_little', 'l_ring', 'l_middle', 'l_index']].sum(axis=1)
-        df['right_toal'] = df[['r_little', 'r_ring', 'r_middle', 'r_index']].sum(axis=1)
-        df['total_distance'] = df[['right_toal', 'left_total']].sum(axis=1)
+        df['right_total'] = df[['r_little', 'r_ring', 'r_middle', 'r_index']].sum(axis=1)
+        df['total_distance'] = df[['right_total', 'left_total']].sum(axis=1)
 
         df['Keyboard'] = keyboard
         output[keyboard] = df
