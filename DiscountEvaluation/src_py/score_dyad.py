@@ -206,9 +206,9 @@ def score(dataset_name):
         })
         # add distance col for each finger
         df = pd.concat([df, pd.DataFrame.from_dict(finger_distance, orient="index")], axis=1)
-        df['left_total'] = df[['l_little', 'l_ring', 'l_middle', 'l_index']].sum(axis=1)
-        df['right_total'] = df[['r_little', 'r_ring', 'r_middle', 'r_index']].sum(axis=1)
-        df['total_distance'] = df[['right_total', 'left_total']].sum(axis=1)
+        df['LeftTotal'] = df[['l_little', 'l_ring', 'l_middle', 'l_index']].sum(axis=1)
+        df['RightTotal'] = df[['r_little', 'r_ring', 'r_middle', 'r_index']].sum(axis=1)
+        df['KeyyingDistance'] = df[['RightTotal', 'LeftTotal']].sum(axis=1)
 
         df['Keyboard'] = keyboard
         output[keyboard] = df

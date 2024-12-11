@@ -170,7 +170,7 @@ def clean(name,path,native_set,roman_set):
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     # remove tokens that have charachters that are not accessible
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)
-    # roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
+    roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
     write_tsv(native_cleaned,roman_cleaned,"cleaned/"+name)
