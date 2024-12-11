@@ -16,7 +16,8 @@ STANDARD_SUBSTITUTIONS = {
     ";":"؛", ",":"،", ".":"۔",
     "?":"؟", "*":"٭", "“":'"',
     "”":'"', "‘‘":'"', "’’":'"',
-    "‘":"'", "–":"-",
+    "‘":"'", "’":"'", "–":"-",
+    "٬":"،","…":"...",
 
     # Numerals
     "۱":"1", "۲":"2", "۳":"3",
@@ -27,6 +28,9 @@ STANDARD_SUBSTITUTIONS = {
     # Same but different
     "ى ":"ی",
     "ي":"ی",
+    "ى":"ی",
+    "ه":"ہ",
+    "ك":"ک"
 }
 
 def standardize(native, roman):
@@ -94,7 +98,7 @@ def remove_missing(native, roman):
         roman_cleaned.append(roman[i])
     return native_cleaned,roman_cleaned
 
-
+g_inaccessable_chars = set()
 def is_inaccessible(token, char_set):
     '''
     Checks to see if all charachters in token are accessabile to the keyboards.
@@ -105,6 +109,7 @@ def is_inaccessible(token, char_set):
     '''
     for char in token:
         if char not in char_set:
+            g_inaccessable_chars.add(char)
             return True
     return False
 
@@ -165,7 +170,7 @@ def clean(name,path,native_set,roman_set):
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     # remove tokens that have charachters that are not accessible
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)
-    roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
+    # roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
     write_tsv(native_cleaned,roman_cleaned,"cleaned/"+name)
@@ -195,6 +200,9 @@ def main():
     clean("dakshina_dataset","raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned",native_set,roman_set)
     print("=============Dataset: Roman Urdu Parl=============")
     clean("roUrParl_dataset","prepared/roUrParl_dataset",native_set,roman_set)
+
+    print("Set of Unintentionally Exluded")
+    print(g_inaccessable_chars.difference(union.difference(native_set)))
 
 if __name__ == "__main__":
     main()
