@@ -1,0 +1,19 @@
+## Data Descriptions and Absolute Comparisons
+levinstien distance 
+Total Keypresses
+Total finger use
+Total hand use
+Total hand alternation
+
+bigrams:
+  - Total bigram distance
+  - Total bigram distance per finger
+  - Total same hand count
+    - Total same finger count
+      - Total reach count
+      - Total hurdle count
+  - Total reach count
+  - Total hurdle count
+
+## Inferential Statistics
+
