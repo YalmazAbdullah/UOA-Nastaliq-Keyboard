@@ -49,7 +49,7 @@ def transform_keystrokes(dataset_name):
     transformed_Windows = transform(native, WINDOWS_MAPPING)
     # write results
     write_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/"+dataset_name)
-    write_tsv(transformed_Windows,roman,"transformed/keystroke_CRULP/"+dataset_name)
+    write_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/"+dataset_name)
 
 
 ##################

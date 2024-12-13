@@ -15,11 +15,12 @@ from util import KEY_2_HAND,KEY_2_HOME, CHAR_2_KEY
 from util import RIGHT_MOD,LEFT_MOD
 
 def keyying_dist(keystrokes):
+    keystrokes = keystrokes.replace(" ", "")
     # calculate distance from key to home for first
-    key = CHAR_2_KEY[0]
+    key = CHAR_2_KEY[keystrokes[0]]
     dist = key_distance(KEY_2_HOME[key],key)
     if (key != keystrokes[0]):
-        if(KEY_2_HAND[is_current_modified]=="left"):
+        if(KEY_2_HAND[key]=="left"):
             # add distance to go from right home to mod
             dist += RIGHT_MOD
         else:
@@ -30,7 +31,7 @@ def keyying_dist(keystrokes):
     for i in range(1,len(keystrokes)):
         # for all the rest calculate teh dsitance from last to current
         key = CHAR_2_KEY[keystrokes[i]]
-        prev_key = CHAR_2_KEY[prev_key]
+        prev_key = CHAR_2_KEY[keystrokes[i-1]]
         dist+=key_distance(prev_key,key)
 
         is_current_modified = key != keystrokes[0]
@@ -39,7 +40,7 @@ def keyying_dist(keystrokes):
         # if current is modifed and previous is not
         if (is_current_modified and not is_prev_modified):
             # and modification on left hand
-            if(KEY_2_HAND[is_current_modified]=="left"):
+            if(KEY_2_HAND[key]=="left"):
                 # add distance to go from right home to mod
                 dist += RIGHT_MOD
             else:
@@ -49,7 +50,7 @@ def keyying_dist(keystrokes):
         # prev key not modified and current key is modified
         if (not is_current_modified and is_prev_modified):
             # and modification on left hand
-            if(KEY_2_HAND[is_current_modified]=="left"):
+            if(KEY_2_HAND[key]=="left"):
                 # add distance to go from right mod to hom
                 dist += RIGHT_MOD
             else:
@@ -57,10 +58,10 @@ def keyying_dist(keystrokes):
                 dist += LEFT_MOD
 
     # calcualte the distance of last key back to home
-    key = CHAR_2_KEY[len(keystrokes)-1]
+    key = CHAR_2_KEY[keystrokes[len(keystrokes)-1]]
     dist += key_distance(key, KEY_2_HOME[key])
     if (key != keystrokes[0]):
-        if(KEY_2_HAND[is_current_modified]=="left"):
+        if(KEY_2_HAND[key]=="left"):
             # add distance to go from right home to mod
             dist += RIGHT_MOD
         else:
@@ -71,8 +72,8 @@ def keyying_dist(keystrokes):
 def score(dataset_name):
     native,roman = read_tsv("transformed/sentences/"+dataset_name)
 
-    _,keystroke_CRULP,_ = transform(native, CRULP_MAPPTING)
-    _,keystroke_Windows,_ = transform(native, WINDOWS_MAPPING)
+    keystroke_CRULP = transform(native, CRULP_MAPPTING)
+    keystroke_Windows = transform(native, WINDOWS_MAPPING)
 
     crulp_roman_levin    = []
     windows_roman_levin  = []
@@ -83,12 +84,16 @@ def score(dataset_name):
     ime_dist  = []
     
     # calculate levinsteine distance
-    for i in range(len(roman)):
+    for i in tqdm(range(len(roman))):
         if(i==58):
             # this sentence is bugged. It is too long to reasonabily calculate the distance.
             crulp_roman_levin.append(None)
             windows_roman_levin.append(None)
             crulp_windows_levin.append(None)
+
+            crulp_dist.append(None)
+            windows_dist.append(None)
+            ime_dist.append(None)
             continue
         crulp_roman_levin.append(edit_distance(keystroke_CRULP[i],roman[i]))
         windows_roman_levin.append(edit_distance(keystroke_Windows[i],roman[i]))

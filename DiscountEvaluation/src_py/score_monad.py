@@ -27,6 +27,10 @@ def calculate_freq(data):
     for line in data:
         # for each char in sentence
         for char in line:
+            # skip spaces
+            if char == ' ':
+                continue
+
             # increment frequency of keys
             key = CHAR_2_KEY[char]
             freq[key] = freq.get(key,0)+1

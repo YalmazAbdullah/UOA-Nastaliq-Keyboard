@@ -169,7 +169,7 @@ DiscountEvaluation/data/transformed/sentences/*
 DiscountEvaluation/data/transformed/triad_CRULP/*
 DiscountEvaluation/data/transformed/triad_Windows/*
 DiscountEvaluation/data/transformed/dyads/*
-DiscountEvaluation/output/levinsteine/*
+DiscountEvaluation/output/sentence/*
 
 # History files
 .Rhistory

@@ -1,8 +1,5 @@
-#STL
-from tqdm import tqdm
-
 # Custom
-from util import read_tsv,write_tsv
+from util import read_tsv
 import json
 
 def generate_dyads(text):
@@ -26,6 +23,7 @@ def generate_dyads(text):
     '''
     transformed = []
     for line in text:
+        line = line.replace(" ", "") 
         dyads = ["<s>"+line[0]]
         dyads = dyads + [line[i:i+2] for i in range(len(line) - 1)]
         dyads = dyads + [line[len(line) - 1] + "</s>"]

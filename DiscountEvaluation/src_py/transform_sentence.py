@@ -32,8 +32,6 @@ def transform(native,roman):
             # and sentence is more than one token
             if token_count >1:
                 # form sentece strings
-                n_current_sentence = n_current_sentence.replace(" ", "") 
-                r_current_sentence = r_current_sentence.replace(" ", "") 
                 native_sentences.append(" ".join(n_current_sentence))
                 roman_sentences.append(" ".join(r_current_sentence))
             else:
