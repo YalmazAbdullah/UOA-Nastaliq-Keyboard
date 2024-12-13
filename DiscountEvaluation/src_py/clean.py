@@ -33,6 +33,7 @@ STANDARD_SUBSTITUTIONS = {
     "ك":"ک"
 }
 
+
 def standardize(native, roman):
     '''
     Standardizes the data. All diacritics are removed from the text.
@@ -98,7 +99,7 @@ def remove_missing(native, roman):
         roman_cleaned.append(roman[i])
     return native_cleaned,roman_cleaned
 
-g_inaccessable_chars = set()
+
 def is_inaccessible(token, char_set):
     '''
     Checks to see if all charachters in token are accessabile to the keyboards.
@@ -109,7 +110,6 @@ def is_inaccessible(token, char_set):
     '''
     for char in token:
         if char not in char_set:
-            g_inaccessable_chars.add(char)
             return True
     return False
 
@@ -200,9 +200,6 @@ def main():
     clean("dakshina_dataset","raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned",native_set,roman_set)
     print("=============Dataset: Roman Urdu Parl=============")
     clean("roUrParl_dataset","prepared/roUrParl_dataset",native_set,roman_set)
-
-    print("Set of Unintentionally Exluded")
-    print(g_inaccessable_chars.difference(union.difference(native_set)))
 
 if __name__ == "__main__":
     main()

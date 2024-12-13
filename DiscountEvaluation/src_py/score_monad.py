@@ -1,20 +1,13 @@
-from util import read_tsv
-from util import read_json
+# STL
 import pandas as pd
 import math
 
-QWERTY_DATA = read_json("keyboards/QWERTY")
-KEY_SET = set(QWERTY_DATA["Keys"])
-KEY_2_FINGER = QWERTY_DATA["Key_Finger"]
-KEY_2_HOME = QWERTY_DATA["Key_Home"]
-KEY_COORD = QWERTY_DATA["Key_Coordinate"]
-CHAR_2_KEY = QWERTY_DATA["Char_Key_Mapping"]
-KEY_2_HAND = QWERTY_DATA["Key_Hand"]
-PRESS_DEPTH = QWERTY_DATA["Press_Depth"]
-SCALE_FACTOR = QWERTY_DATA["Scale_Factor"]
+# CUSTOM
+from util import read_tsv
+from util import KEY_SET,KEY_COORD
+from util import KEY_2_FINGER,KEY_2_HAND,KEY_2_HOME,CHAR_2_KEY
+from util import PRESS_DEPTH,SCALE_FACTOR,RIGHT_MOD,LEFT_MOD
 
-RIGHT_MOD = math.dist(KEY_COORD[KEY_2_HOME["r_shift"]],KEY_COORD["r_shift"]) * SCALE_FACTOR
-LEFT_MOD = math.dist(KEY_COORD[KEY_2_HOME["l_shift"]],KEY_COORD["l_shift"]) * SCALE_FACTOR
 
 def calculate_freq(data):
     '''
@@ -34,10 +27,6 @@ def calculate_freq(data):
     for line in data:
         # for each char in sentence
         for char in line:
-            # skip spaces
-            if char == ' ':
-                continue
-
             # increment frequency of keys
             key = CHAR_2_KEY[char]
             freq[key] = freq.get(key,0)+1

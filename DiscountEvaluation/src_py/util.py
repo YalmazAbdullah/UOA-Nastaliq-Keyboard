@@ -1,6 +1,7 @@
 # STL
 import csv
 import json
+import math
 
 '''
 Simple evaluation function that returns percentage of tokens removed from dataset.
@@ -49,3 +50,28 @@ def write_tsv(native, roman, file_name):
     
         for val1, val2 in zip(native, roman):
             writer.writerow([val1, val2])
+
+
+CRULP_MAPPTING = read_json("keyboards/mappings/CRULP")
+WINDOWS_MAPPING = read_json("keyboards/mappings/Windows")
+
+QWERTY_DATA = read_json("keyboards/QWERTY")
+KEY_SET = set(QWERTY_DATA["Keys"])
+CHAR_SET = set(QWERTY_DATA["Charachters"])
+KEY_2_FINGER = QWERTY_DATA["Key_Finger"]
+KEY_2_HOME = QWERTY_DATA["Key_Home"]
+KEY_2_ROW = QWERTY_DATA["Key_Row"]
+KEY_COORD = QWERTY_DATA["Key_Coordinate"]
+CHAR_2_KEY = QWERTY_DATA["Char_Key_Mapping"]
+KEY_2_HAND = QWERTY_DATA["Key_Hand"]
+PRESS_DEPTH = QWERTY_DATA["Press_Depth"]
+SCALE_FACTOR = QWERTY_DATA["Scale_Factor"]
+
+RIGHT_MOD = math.dist(KEY_COORD[KEY_2_HOME["r_shift"]],KEY_COORD["r_shift"]) * SCALE_FACTOR
+LEFT_MOD = math.dist(KEY_COORD[KEY_2_HOME["l_shift"]],KEY_COORD["l_shift"]) * SCALE_FACTOR
+
+'''
+Euclidian distance between 2 keys using their coordinates
+'''
+def key_distance(a,b):
+    return math.dist(KEY_COORD[a],KEY_COORD[b]) * SCALE_FACTOR

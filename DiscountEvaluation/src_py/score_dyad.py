@@ -1,36 +1,16 @@
-from util import read_tsv,write_tsv
-from util import read_json
-import pandas as pd
+# STL
 from itertools import product
-import math
 
+# VENDOR
+import pandas as pd
+
+# CUSTOM
 from transform_dyad import transform
+from util import key_distance
+from util import CHAR_SET,KEY_COORD
+from util import KEY_2_FINGER,KEY_2_HAND,KEY_2_HOME,CHAR_2_KEY,KEY_2_ROW
+from util import PRESS_DEPTH,SCALE_FACTOR,RIGHT_MOD,LEFT_MOD
 
-QWERTY_DATA = read_json("keyboards/QWERTY")
-CHAR_SET = set(QWERTY_DATA["Charachters"])
-CHAR_2_KEY = QWERTY_DATA["Char_Key_Mapping"]
-KEY_2_HAND = QWERTY_DATA["Key_Hand"]
-KEY_2_FINGER = QWERTY_DATA["Key_Finger"]
-KEY_2_ROW = QWERTY_DATA["Key_Row"]
-KEY_2_HOME = QWERTY_DATA["Key_Home"]
-KEY_COORD = QWERTY_DATA["Key_Coordinate"]
-PRESS_DEPTH = QWERTY_DATA["Press_Depth"]
-SCALE_FACTOR = QWERTY_DATA["Scale_Factor"]
-
-def travel_dist(a,b):
-    '''
-    Euclidian distance between 2 keys using their coordinates
-
-    Args:
-        a (char): first key
-        b (char): second key
-    Returns:
-        distance (float): euclidian distance between keys
-    '''
-    return math.dist(KEY_COORD[a],KEY_COORD[b]) * SCALE_FACTOR
-
-RIGHT_MOD = travel_dist(KEY_2_HOME["r_shift"],"r_shift") * SCALE_FACTOR
-LEFT_MOD = travel_dist(KEY_2_HOME["l_shift"],"l_shift") * SCALE_FACTOR
 
 def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
     '''
@@ -64,12 +44,12 @@ def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
 
     if(is_same_finger):
         # add distance from first key to second key
-        finger_distance[first_finger] += travel_dist(first_key,second_key) + PRESS_DEPTH
+        finger_distance[first_finger] += key_distance(first_key,second_key) + PRESS_DEPTH
     else:
         # add distance from first key back to the home row
-        finger_distance[first_finger] += travel_dist(first_key,KEY_2_HOME[first_key])
+        finger_distance[first_finger] += key_distance(first_key,KEY_2_HOME[first_key])
         # add distance from home row to second key
-        finger_distance[second_finger] += travel_dist(KEY_2_HOME[second_key],second_key) + PRESS_DEPTH
+        finger_distance[second_finger] += key_distance(KEY_2_HOME[second_key],second_key) + PRESS_DEPTH
 
     if (is_first_modified and is__second_modified):
         # if different hand
@@ -96,6 +76,7 @@ def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
                 finger_distance["l_little"] += LEFT_MOD + PRESS_DEPTH
     return finger_distance
 
+
 def dyad_dist_special(char, key, is_end):
     '''
     Calcuating distances for special case which is start and end of
@@ -110,7 +91,7 @@ def dyad_dist_special(char, key, is_end):
 
     # get travel distance
     finger = KEY_2_FINGER[key]
-    finger_distance[finger] += travel_dist(KEY_2_HOME[key], key) + PRESS_DEPTH
+    finger_distance[finger] += key_distance(KEY_2_HOME[key], key) + PRESS_DEPTH
 
     # check if modified
     if(key != char):
@@ -216,6 +197,7 @@ def score(dataset_name):
     # Write the results
     output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
     output.to_csv("./DiscountEvaluation/output/dyad/"+dataset_name+".csv", index=True)
+
 
 ##################
 ##     MAIN     ##

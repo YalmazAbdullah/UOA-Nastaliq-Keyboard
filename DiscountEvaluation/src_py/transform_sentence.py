@@ -2,6 +2,7 @@
 from util import eval
 from util import read_tsv,write_tsv
 
+
 def transform(native,roman):
     '''
     Our inital format of having seperated tokens helps to align the roman and urdu text while
@@ -31,6 +32,8 @@ def transform(native,roman):
             # and sentence is more than one token
             if token_count >1:
                 # form sentece strings
+                n_current_sentence = n_current_sentence.replace(" ", "") 
+                r_current_sentence = r_current_sentence.replace(" ", "") 
                 native_sentences.append(" ".join(n_current_sentence))
                 roman_sentences.append(" ".join(r_current_sentence))
             else:
@@ -49,6 +52,7 @@ def transform(native,roman):
             # increment counter
             token_count+=1
     return native_sentences,roman_sentences,lost_count
+
 
 def sentence_transform(dataset_name):
     '''

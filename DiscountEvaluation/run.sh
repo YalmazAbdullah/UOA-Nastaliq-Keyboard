@@ -65,4 +65,5 @@ if $score; then
     # score
     python ./DiscountEvaluation/src_py/score_monad.py
     python ./DiscountEvaluation/src_py/score_dyad.py
+    python ./DiscountEvaluation/src_py/score_sentence.py
 fi
