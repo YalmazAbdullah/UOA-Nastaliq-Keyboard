@@ -1,19 +1,36 @@
-## Data Descriptions and Absolute Comparisons
-levinstien distance 
-Total Keypresses
-Total finger use
-Total hand use
-Total hand alternation
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 
-bigrams:
-  - Total bigram distance
-  - Total bigram distance per finger
-  - Total same hand count
-    - Total same finger count
-      - Total reach count
-      - Total hurdle count
-  - Total reach count
-  - Total hurdle count
+# Analysis of Keyboard Data
 
-## Inferential Statistics
+## Corpus level
 
+-   total number of key presses
+-   total keyboard distance
+-   total keypress per finger
+-   total keypresss per hand
+-   total distance per finger
+-   total distance per hand
+-   Stroke Table
+
+## Sentence level
+
+-   levinstine comparison
+-   number of key presses
+-   distance traveled
+
+## Bigram level
+
+-   bigram distance comparison
+    -   bigram distance per finger comparison
+-   hand distance diff comparison
+-   Stroke comparison
+    -   hurdle
+    -   Reach
+    -   Same Key
+    -   Same Hand
+
+## Unigram level

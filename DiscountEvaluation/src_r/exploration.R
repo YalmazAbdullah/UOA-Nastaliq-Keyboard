@@ -48,9 +48,20 @@ data <- rbind(crulp, windows, ime)
 #############################
 # KEYYING DISTANCE ANALYSIS #
 #############################
+
 # Calculate TotalDistance (Without Smoothing)
-data$TotalDistance <- data$total_distance*data$Probability
-analysis(data,"TotalDistance")
+data$BigramDistance <- data$KeyyingDistance*data$Probability
+analysis(data,"BigramDistance")
+
+boards <- c("WINDOWS","CRULP","IME")
+for (board in boards){
+  print(board)
+  plot<-ggplot(subset(data, Keyboard == board), aes(x = BigramDistance)) + 
+    geom_histogram(position = "identity", bins=100)
+  print(plot)
+}
+# IME has more values close to 0
+
       
 print("=================================================================")
 
@@ -64,6 +75,15 @@ for (finger in fingers) {
   data[[finger]] <- (data[[paste("l_",finger, sep = "")]]*data$Probability) +
                     (data[[paste("r_",finger, sep = "")]]*data$Probability)
   analysis(data,finger)
+  
+  boards <- c("WINDOWS","CRULP","IME")
+  for (board in boards){
+    print(board)
+    plot<-ggplot(subset(data, Keyboard == board), aes(x = .data[[finger]])) + 
+      geom_histogram(position = "identity", bins=100)
+    print(plot)
+  }
+
   print("=================================================================")
 }
 # could significane be inflated by high number of 0 frequency where other keyboard on same key has high value freq
@@ -87,13 +107,6 @@ print("=================================================================")
 
 stroke_types <- c("SameHand","SameKey","SameFinger","Reach", "Hurdle")
 results_list <- list()
-
-temp <- data
-temp$SameHand <- log(temp$SameHand)
-summary<-temp %>%
-  group_by(Keyboard) %>%
-  get_summary_stats(all_of("SameHand"), type = "common")
-print(summary)
 
 for (stroke_type in stroke_types) {
   data[[stroke_type]] <- ifelse(data[[stroke_type]] == "True", 1, 0)
