@@ -112,7 +112,7 @@ def score(dataset_name):
         "WINDOWS_DISTANCE": windows_dist,
         "IME_DISTANCE": ime_dist
     })
-    output.to_csv("./DiscountEvaluation/output/sentences/"+dataset_name+".csv", index=True)
+    output.to_csv("./DiscountEvaluation/output/sentence/"+dataset_name+".csv", index=True)
     pass
 
 ##################
