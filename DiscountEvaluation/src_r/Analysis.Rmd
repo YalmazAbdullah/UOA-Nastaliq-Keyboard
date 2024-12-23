@@ -1,36 +1,438 @@
 ---
 output:
+  word_document: default
   html_document: default
   pdf_document: default
 ---
 
-# Analysis of Keyboard Data
+```{r}
+library(tidyverse)
+library(rstatix)
+library(ggplot2)
+library(knitr)
+#install.packages("kableExtra")
+library(kableExtra)
+
+knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation")
+```
+
+We will be working with three data sets. Loading these in here
+
+```{r}
+data_unigram <- read.csv("./output/monad/dakshina_dataset.csv")
+data_bigram <- read.csv("./output/dyad/dakshina_dataset.csv")
+data_sentence <- read.csv("./output/sentence/dakshina_dataset.csv")
+```
 
 ## Corpus level
 
--   total number of key presses
--   total keyboard distance
--   total keypress per finger
--   total keypresss per hand
--   total distance per finger
--   total distance per hand
--   Stroke Table
+```{r, echo=FALSE}
+long_data <- data_sentence %>%
+  pivot_longer(
+    cols = c(CRULP_2_IME_DISTANCE, CRULP_2_WINDOWS_DISTANCE, WINDOWS_2_IME_DISTANCE),
+    names_to = "Condition",
+    values_to = "Distance"
+  ) %>%
+  select(X, Condition, Distance)
+
+long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
+ggplot(long_data, aes(x = Condition, y= Distance)) +
+  geom_bar(stat = "identity")
+```
+
+
+**Total Key Press per Keyboard:**
+
+```{r, echo=FALSE}
+total_key_press <- aggregate(data_unigram$Frequency, by=list(Category=data_unigram$Keyboard), FUN=sum)
+total_key_press
+
+total_key_press %>% 
+  ggplot(aes(x = Category, y = x)) %>% + 
+  geom_bar(position = "dodge", stat = "identity")
+```
+**Total Key Press per Finger per Keyboard**
+
+```{r, echo=FALSE}
+temp<-data_unigram
+
+unique(temp$Finger)
+
+mapping <- c("l_little" = "little", "r_little" = "little",
+             "l_ring"   = "ring",   "r_ring"   = "ring",
+             "l_middle" = "middle", "r_middle" = "middle",
+             "l_index"  = "index",  "r_index"  = "index")
+
+temp$FingerCombined <- mapping[match(temp$Finger, names(mapping))]
+
+# sort by finger position for easier interpretation
+temp$FingerCombined = factor(temp$FingerCombined, levels = c("little", "ring", "middle","index"), ordered = TRUE)
+
+temp %>% ggplot(aes(x = FingerCombined, y = Frequency, fill = Keyboard)) %>% +
+geom_bar(position = "dodge", stat = "identity")
+```
+
+**Total Key Press per Finger per Hand**
+
+```{r, echo=FALSE}
+# sort by finger position for easier interpretation
+data_unigram$Finger = factor(data_unigram$Finger, levels = c("l_little", "r_little", "l_ring","r_ring", "l_middle","r_middle","l_index", "r_index"), ordered = TRUE)
+
+data_unigram %>% ggplot(aes(x = Finger, y = Frequency, fill = Keyboard)) %>% +
+geom_bar(position = "dodge", stat = "identity")
+```
+## Keyying Distance ##
+
+```{r, echo=FALSE}
+long_data <- data_sentence %>%
+  pivot_longer(
+    cols = c(CRULP_DISTANCE, WINDOWS_DISTANCE, IME_DISTANCE),
+    names_to = "Condition",
+    values_to = "Distance"
+  ) %>%
+  select(X, Condition, Distance)
+
+long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
+ggplot(long_data, aes(x = Condition, y= Distance)) +
+  geom_bar(stat = "identity")
+```
+
+```{r, echo=FALSE}
+ggplot(long_data, aes(x = Distance, fill=Condition)) + 
+  geom_histogram(position="identity", colour="grey40") + scale_y_log10()+
+  facet_grid(Condition ~ .)
+```
+
+```{r, echo=FALSE}
+friedman_test(long_data, as.formula("Distance ~ Condition | X"))
+friedman_effsize(long_data, as.formula("Distance ~ Condition | X"))
+```
+
+```{r,echo=FALSE}
+wilcox_test(long_data, as.formula("Distance ~ Condition"), paired = TRUE, p.adjust.method = "hommel")
+```
+
+## Stroke Table
+```{r, echo=FALSE}
+boards <- c("CRULP","IME","WINDOWS")
+for (board in boards){
+  sub <- subset(data_bigram, Keyboard == board)
+  #same hand
+  hand<-sub %>% 
+    group_by(SameHand) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(hand)
+  
+  #different hand reach
+  diffHand_reach<-sub %>% 
+    filter(SameHand == "False") %>%
+    group_by(Reach) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(diffHand_reach)
+  
+  #Same hand finger
+  sameHand_finger<-sub %>% 
+    filter(SameHand == "True") %>%
+    group_by(SameFinger) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_finger)
+  
+  #Same hand different finger reach
+  sameHand_differentFinger_reach<-sub %>% 
+    filter(SameHand == "True") %>%
+    filter(SameFinger == "False") %>%
+    group_by(Reach) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_differentFinger_reach)
+  
+  #Same hand different finger reach hurdle
+  sameHand_differentFinger_reachTrue_hurdle<-sub %>% 
+    filter(SameHand == "True") %>%
+    filter(SameFinger == "False") %>%
+    filter(Reach == "True") %>%
+    group_by(Hurdle) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_differentFinger_reachTrue_hurdle)
+  
+  #Same hand same finger reach
+  sameHand_sameFinger_reach<-sub %>% 
+    filter(SameHand == "True") %>%
+    filter(SameFinger == "True") %>%
+    group_by(Reach) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_sameFinger_reach)
+  
+  #Same hand same finger reach key
+  sameHand_sameFinger_reachTrue_key<-sub %>% 
+    filter(SameHand == "True") %>%
+    filter(SameFinger == "True") %>%
+    filter(Reach == "True") %>%
+    group_by(SameKey) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_sameFinger_reachTrue_key)
+  
+  #Same hand same finger reach different key hurdle
+  sameHand_sameFinger_reachTrue_keyDifferent_hurdle<-sub %>% 
+    filter(SameHand == "True") %>%
+    filter(SameFinger == "True") %>%
+    filter(Reach == "True") %>%
+    filter(SameKey == "False") %>%
+    group_by(Hurdle) %>%
+    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
+  print(sameHand_sameFinger_reachTrue_keyDifferent_hurdle)
+}
+```
+
+## Bigram Feature Comparison
+```{r}
+
+crulp <- subset(data_bigram, Keyboard == "CRULP")
+windows <- subset(data_bigram, Keyboard == "WINDOWS")
+ime <- subset(data_bigram, Keyboard == "IME")
+
+crulp$Probability <- (crulp$Frequency+1)/(sum(crulp$Frequency)+9024)
+ime$Probability <- (ime$Frequency+1)/(sum(ime$Frequency)+9024)
+windows$Probability <- (windows$Frequency+1)/(sum(windows$Frequency)+9024)
+data_bigram <- rbind(crulp, windows, ime)
+```
+
+```{r, echo=FALSE}
+stroke_types <- c("SameHand","SameKey","SameFinger","Reach", "Hurdle")
+results_list <- list()
+
+for (stroke_type in stroke_types) {
+  # convert feautre to binary
+  data_bigram[[stroke_type]] <- ifelse(data_bigram[[stroke_type]] == "True", 1, 0)
+  data_bigram[[paste(stroke_type,"_Score",sep="")]] <- (data_bigram[[stroke_type]] * data_bigram$Probability)
+}
+```
+
+```{r, echo=FALSE}
+stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
+
+for (stroke_type in stroke_types) {
+  summary<-data_bigram %>%
+    group_by(Keyboard) %>%
+    get_summary_stats(stroke_type, type = "common")
+  print(summary)
+}
+```
+
+
+```{r, echo=FALSE}
+stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
+
+for (stroke_type in stroke_types) {
+  plot<-ggplot(data_bigram, aes(x = (.data[[stroke_type]]), fill=Keyboard)) + 
+    geom_histogram(position="identity", bins=30, colour="grey40") + scale_y_log10() +
+    facet_grid(Keyboard ~ .)
+  print(plot)
+}
+```
+
+```{r, echo=FALSE}
+stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
+
+for (stroke_type in stroke_types) {
+  print(friedman_test(data_bigram, as.formula(paste(stroke_type," ~ Keyboard | X"))))
+  print(friedman_effsize(data_bigram, as.formula(paste(stroke_type," ~ Keyboard | X"))))
+  print(wilcox_test(data_bigram, as.formula(paste(stroke_type," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel"))
+}
+```
+
+## Finger Scores ##
+
+```{r, echo=FALSE}
+data_bigram$BigramScore<-log(data_bigram$Probability*data_bigram$KeyyingDistance)
+summary<-data_bigram %>%
+    group_by(Keyboard) %>%
+    get_summary_stats(BigramScore, type = "common")
+  print(summary)
+  
+ggplot(data_bigram, aes(x = Probability*KeyyingDistance, fill=Keyboard)) + 
+  geom_histogram(position="identity", colour="grey40") +
+  facet_grid(Keyboard ~ .)
+```
+```{r, echo=FALSE}
+fingers <- c("little","ring","middle","index")
+for (finger in fingers) {
+data_bigram[[finger]] <- (data_bigram[[paste("l_",finger, sep = "")]]*data_bigram$Probability) + 
+                         (data_bigram[[paste("r_",finger, sep = "")]]*data_bigram$Probability)
+                  
+
+summary<-data_bigram %>%
+    group_by(Keyboard) %>%
+    get_summary_stats(finger, type = "common")
+  print(summary)
+}
+```
+
+```{r, echo=FALSE}
+for (finger in fingers) {
+  plot<-ggplot(data_bigram, aes(x = .data[[finger]], fill=Keyboard)) + 
+    geom_histogram(position="identity", bins=30, colour="grey40") + scale_y_log10()+
+    facet_grid(Keyboard ~ .)
+  print(plot)
+}
+```
+
+```{r, echo=FALSE}
+for (finger in fingers) {
+  print(friedman_test(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
+  print(friedman_effsize(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
+}
+```
+
+```{r, echo=FALSE}
+for (finger in fingers) {
+  print(
+    wilcox_test(data_bigram, as.formula(paste(finger," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel")
+  )
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Total Keying Distance per Keyboard:**
+
+```{r, echo=FALSE}
+temp %>% ggplot(aes(x = Keyboard, y = Frequency*KeyyingDistance, fill = FingerCombined)) %>% +
+geom_bar(position = "dodge", stat = "identity")
+```
+
+```{r, echo=FALSE}
+# sort by finger position for easier interpretation
+data_unigram$Finger = factor(data_unigram$Finger, levels = c("l_little", "r_little", "l_ring","r_ring", "l_middle","r_middle","l_index", "r_index"), ordered = TRUE)
+
+data_unigram %>% ggplot(aes(x = Keyboard, y = Frequency*KeyyingDistance, fill = Finger)) %>% +
+geom_bar(position = "dodge", stat = "identity")
+```
+
+**Stroke Table**
 
 ## Sentence level
 
--   levinstine comparison
--   number of key presses
--   distance traveled
+longform data for levi histogram of scores per pair histogram of keypress count histogram of distance
+
+histogram of - levinstine comparison - number of key presses - distance traveled (need to calculate make score sentence file, move levinstein here)
+
+```{r, echo=FALSE}
+long_data <- data_sentence %>%
+  pivot_longer(
+    cols = c(CRULP_2_IME_DISTANCE, CRULP_2_WINDOWS_DISTANCE, WINDOWS_2_IME_DISTANCE),
+    names_to = "Condition",
+    values_to = "Distance"
+  ) %>%
+  select(X, Condition, Distance)
+
+long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
+ggplot(long_data, aes(x = Condition, y= Distance)) +
+  geom_bar(stat = "identity")
+```
+
+```{r, echo=FALSE}
+ggplot(long_data, aes(x = Distance, fill=Condition)) + 
+  geom_histogram(position="identity", colour="grey40") +
+  facet_grid(Condition ~ .)
+```
+
+```{r, echo=FALSE}
+friedman_test(long_data, as.formula("Distance ~ Condition | X"))
+```
+
+```{r,echo=FALSE}
+wilcox_test(long_data, as.formula("Distance ~ Condition"), paired = TRUE, p.adjust.method = "hommel")
+```
+
+
+
+```{r, echo=FALSE}
+# build stroke table
+```
 
 ## Bigram level
 
--   bigram distance comparison
-    -   bigram distance per finger comparison
--   hand distance diff comparison
--   Stroke comparison
-    -   hurdle
-    -   Reach
-    -   Same Key
-    -   Same Hand
+```{r, echo=FALSE}
+data_bigram$BigramScore<-log(data_bigram$Probability*data_bigram$KeyyingDistance)
+summary<-data_bigram %>%
+    group_by(Keyboard) %>%
+    get_summary_stats(BigramScore, type = "common")
+  print(summary)
+  
+ggplot(data_bigram, aes(x = log(Probability*KeyyingDistance), fill=Keyboard)) + 
+  geom_histogram(position="identity", colour="grey40") +
+  facet_grid(Keyboard ~ .)
+```
 
-## Unigram level
+```{r, echo=FALSE}
+friedman_test(data_bigram, as.formula("BigramScore ~ Keyboard | X"))
+```
+
+```{r,echo=FALSE}
+wilcox_test(data_bigram, as.formula("BigramScore ~ Keyboard"), paired = TRUE, p.adjust.method = "hommel")
+```
+
+
+
+
+
+```{r, echo=FALSE}
+fingers <- c("LeftTotal","RightTotal")
+for (finger in fingers) {
+  data_bigram[[finger]] <- (data_bigram[[finger]] * data_bigram$Probability)
+  plot<-ggplot(data_bigram, aes(x = .data[[finger]], fill=Keyboard)) + 
+    geom_histogram(position="identity", bins=30, colour="grey40") +
+    facet_grid(Keyboard ~ .)
+  print(plot)
+}
+```
+
+```{r, echo=FALSE}
+for (finger in fingers) {
+  print(friedman_test(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
+}
+```
+
+```{r, echo=FALSE}
+for (finger in fingers) {
+  print(
+    wilcox_test(data_bigram, as.formula(paste(finger," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel")
+  )
+}
+```
+
+
