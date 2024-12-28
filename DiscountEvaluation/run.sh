@@ -58,12 +58,14 @@ if $transform; then
     python ./DiscountEvaluation/src_py/transform_sentence.py > "$LOG_PATH/3_sentence.log"
     python ./DiscountEvaluation/src_py/transform_keystroke.py
     python ./DiscountEvaluation/src_py/transform_dyad.py
+    python ./DiscountEvaluation/src_py/corpus_stats.py > "$LOG_PATH/4_stats.log"
 fi
 
 if $score; then
     echo "Scoring..."
     # score
+    python ./DiscountEvaluation/src_py/distance_sentence.py
     python ./DiscountEvaluation/src_py/score_monad.py
     python ./DiscountEvaluation/src_py/score_dyad.py
-    # python ./DiscountEvaluation/src_py/score_sentence.py
+    python ./DiscountEvaluation/src_py/score_sentence.py
 fi

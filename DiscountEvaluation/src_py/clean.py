@@ -19,12 +19,6 @@ STANDARD_SUBSTITUTIONS = {
     "‘":"'", "’":"'", "–":"-",
     "٬":"،","…":"...",
 
-    # Numerals
-    "۱":"1", "۲":"2", "۳":"3",
-    "۴":"4", "۵":"5", "۶":"6", 
-    "۷":"7", "۸":"8", "۹":"9", 
-    "۰":"0",
-
     # Same but different
     "ى ":"ی",
     "ي":"ی",
@@ -67,13 +61,13 @@ def standardize(native, roman):
         # standardize punctuation
         native[i] = remove_accents(native[i])
         native[i] = pattern.sub(lambda match: STANDARD_SUBSTITUTIONS[match.group(0)], native[i])
+        # fix whitespace errors
+        native[i] = native[i].replace(" ", "")
 
     # process roman text
     for i in range(len(roman)): 
-        if (roman[i]=="?me"):
+        if (roman[i]=="me"):
             roman[i] = "me"
-            roman[i+1] = "?"
-            native[i+1] = "؟"
 
     return native,roman
 

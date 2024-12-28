@@ -4,6 +4,7 @@ import math
 
 # CUSTOM
 from util import read_tsv
+from util import key_distance
 from util import KEY_SET,KEY_COORD
 from util import KEY_2_FINGER,KEY_2_HAND,KEY_2_HOME,CHAR_2_KEY
 from util import PRESS_DEPTH,SCALE_FACTOR,RIGHT_MOD,LEFT_MOD
@@ -19,9 +20,9 @@ def calculate_freq(data):
         freq (dict): frequency table
     '''
     # build a dictionary of all keys
-    freq = dict.fromkeys(KEY_SET,0)
-    freq["l_shift"] = 0
-    freq["r_shift"] = 0
+    freq = dict.fromkeys(KEY_SET,int(0))
+    freq["l_shift"] = int(0)
+    freq["r_shift"] = int(0)
 
     # for each sentence in data
     for line in data:
@@ -33,13 +34,13 @@ def calculate_freq(data):
 
             # increment frequency of keys
             key = CHAR_2_KEY[char]
-            freq[key] = freq.get(key,0)+1
+            freq[key] = freq.get(key,0) + 1
             
-            # if uppercase key then add mod distance ie: the distance to move finger to shift key
-            if(key!=char and KEY_2_HAND[key] == "left"):
-                freq["r_shift"] = freq.get("r_shift",0)+RIGHT_MOD
-            elif(key!=char and KEY_2_HAND[key] == "right"):
-                freq["l_shift"] = freq.get("l_shift",0)+LEFT_MOD
+            # if modded key then add mod press
+            if(key!=char and KEY_2_HAND[key] == "L"):
+                freq["r_shift"] += 1
+            elif(key!=char and KEY_2_HAND[key] == "R"):
+                freq["l_shift"] += 1
     return freq
 
 def score(dataset_name): 
@@ -64,13 +65,13 @@ def score(dataset_name):
         # find assigned finger
         finger_assign[key] = KEY_2_FINGER[key]
         # find travel distance from home
-        travel_dist[key] = math.dist(KEY_COORD[key],KEY_COORD[KEY_2_HOME[key]]) * SCALE_FACTOR + PRESS_DEPTH
+        travel_dist[key] = key_distance(key,KEY_2_HOME[key]) + PRESS_DEPTH
 
     # consider shift keys
-    finger_assign["l_shift"] = "l_little"
-    finger_assign["r_shift"] = "r_little"
-    travel_dist["l_shift"] = math.dist(KEY_COORD["l_shift"],KEY_COORD[KEY_2_HOME["l_shift"]]) * SCALE_FACTOR + PRESS_DEPTH
-    travel_dist["r_shift"] = math.dist(KEY_COORD["r_shift"],KEY_COORD[KEY_2_HOME["r_shift"]]) * SCALE_FACTOR + PRESS_DEPTH
+    finger_assign["l_shift"] = "L_Little"
+    finger_assign["r_shift"] = "R_Little"
+    travel_dist["l_shift"] = LEFT_MOD + PRESS_DEPTH
+    travel_dist["r_shift"] = RIGHT_MOD + PRESS_DEPTH
 
     # read data
     crulp,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)

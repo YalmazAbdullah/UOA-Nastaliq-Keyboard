@@ -33,7 +33,8 @@ def transform(native,roman):
             if token_count >1:
                 # form sentece strings
                 native_sentences.append(" ".join(n_current_sentence))
-                roman_sentences.append(" ".join(r_current_sentence))
+                roman_sentence = " ".join(r_current_sentence)
+                roman_sentences.append(roman_sentence.lower())
             else:
                 # otherwise drop sentence
                 lost_count+=1
@@ -44,6 +45,9 @@ def transform(native,roman):
             n_current_sentence = []
             r_current_sentence = []
         else:
+            # for native there are sometimes multiple in single token
+            if len(native[i].split())>2:
+                print (str(i), native[i])
             # otherwise add token to sentence holder
             n_current_sentence.append(native[i])
             r_current_sentence.append(roman[i])

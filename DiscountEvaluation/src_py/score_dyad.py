@@ -6,102 +6,8 @@ import pandas as pd
 
 # CUSTOM
 from transform_dyad import transform
-from util import key_distance
-from util import CHAR_SET,KEY_COORD
-from util import KEY_2_FINGER,KEY_2_HAND,KEY_2_HOME,CHAR_2_KEY,KEY_2_ROW
-from util import PRESS_DEPTH,SCALE_FACTOR,RIGHT_MOD,LEFT_MOD
-
-
-def dyad_dist(dyad,keys,is_same_finger,is_same_hand):
-    '''
-    Calculate the travel distance for each finger for a particular dyad.
-
-    Args:
-        dyad (string): the dyad
-        keys (keys): decoded keys
-        is_same_finger (bool): true if the same finger is used to enter dyad
-        is_same_hand (bool): true if the same hand is used to enter dyad
-    Returns:
-        finger_distance (dict): the travel distance split up by finger. Keys are finger and value is distance.
-    '''
-    # get keys used in dyad
-    first_key = keys[0]
-    second_key = keys[1]
-    
-    # get fingers used in dyad
-    first_finger = KEY_2_FINGER[first_key]
-    second_finger = KEY_2_FINGER[second_key]
-    finger_distance = {
-        "l_little" : 0,   "r_little" : 0,
-        "l_ring" : 0,     "r_ring" : 0,
-        "l_middle" : 0,   "r_middle" : 0,
-        "l_index" : 0,    "r_index" : 0,
-    }
-
-    # check if shift is used
-    is_first_modified = first_key != dyad[0]
-    is__second_modified = second_key != dyad[1]
-
-    if(is_same_finger):
-        # add distance from first key to second key
-        finger_distance[first_finger] += key_distance(first_key,second_key) + PRESS_DEPTH
-    else:
-        # add distance from first key back to the home row
-        finger_distance[first_finger] += key_distance(first_key,KEY_2_HOME[first_key])
-        # add distance from home row to second key
-        finger_distance[second_finger] += key_distance(KEY_2_HOME[second_key],second_key) + PRESS_DEPTH
-
-    if (is_first_modified and is__second_modified):
-        # if different hand
-        if(not is_same_hand):
-            finger_distance["l_little"] += LEFT_MOD
-            finger_distance["r_little"] += RIGHT_MOD
-            if(is__second_modified):
-               finger_distance["r_little"] += PRESS_DEPTH
-    elif (is_first_modified or is__second_modified):
-        # check which side key is modified
-        if(is_first_modified):
-            # check which side is modified
-            if (KEY_2_HAND[first_key] == "left"):
-                finger_distance["r_little"] += RIGHT_MOD
-            else:
-                # has to be right
-                finger_distance["l_little"] += LEFT_MOD
-        else:
-            # has to be second
-            if (KEY_2_HAND[second_key] == "left"):
-                finger_distance["r_little"] += RIGHT_MOD + PRESS_DEPTH
-            else:
-                # has to be right
-                finger_distance["l_little"] += LEFT_MOD + PRESS_DEPTH
-    return finger_distance
-
-
-def dyad_dist_special(char, key, is_end):
-    '''
-    Calcuating distances for special case which is start and end of
-    sentence dyads.
-    '''
-    finger_distance = {
-        "l_little" : 0,   "r_little" : 0,
-        "l_ring" : 0,     "r_ring" : 0,
-        "l_middle" : 0,   "r_middle" : 0,
-        "l_index" : 0,    "r_index" : 0,
-    }
-
-    # get travel distance
-    finger = KEY_2_FINGER[key]
-    finger_distance[finger] += key_distance(KEY_2_HOME[key], key) + PRESS_DEPTH
-
-    # check if modified
-    if(key != char):
-        # add home to mod distance
-        if(KEY_2_HAND[key] == "left"):
-            finger_distance["r_little"] += RIGHT_MOD if(is_end) else RIGHT_MOD + PRESS_DEPTH
-        else:
-            finger_distance["l_little"] += LEFT_MOD if(is_end) else LEFT_MOD + PRESS_DEPTH
-    return finger_distance
-    
+from util import CHAR_SET
+from util import evaluate_dyad
 
 def score(dataset_name):
     '''
@@ -114,90 +20,50 @@ def score(dataset_name):
     Returns:
         None
     '''
-    output = {}
+    # generate all possible dyads
+    dyad_data = pd.DataFrame()
     two_char_permutations = list(product(CHAR_SET, repeat=2))
     permutation_strings = [''.join(p) for p in two_char_permutations]
-
-    # Columns
-    dyad_sameHand   = {}
-    dyad_sameKey    = {}
-    dyad_sameFinger = {}
-    dyad_isReach    = {} # if not home
-    dyad_isHurdle   = {} # if not home and both different
     
-    # Distance columns:
-    finger_distance = {}
-
-    # Calculate dyad distances
+    # handle all dyad permutations
     for dyad in permutation_strings:
-        keys = (CHAR_2_KEY[dyad[0]],CHAR_2_KEY[dyad[1]])
-        dyad_sameKey[dyad]      = (keys[0] == keys[1])
-        dyad_sameHand[dyad]     = (KEY_2_HAND[keys[0]] == KEY_2_HAND[keys[1]] )
-        dyad_sameFinger[dyad]   = (KEY_2_FINGER[keys[0]] == KEY_2_FINGER[keys[1]])
-        # if one or more is not home
-        dyad_isReach[dyad]      = (KEY_2_ROW[keys[0]] != 0) or (KEY_2_ROW[keys[1]] != 0)
-        # if both are not home and different rows
-        dyad_isHurdle[dyad]     =  ((KEY_2_ROW[keys[0]] != 0) and (KEY_2_ROW[keys[1]] != 0)) and dyad_sameHand[dyad]
-        # distance required to go from one key in bigram to other
-        finger_distance[dyad]   = dyad_dist(dyad,keys,dyad_sameFinger[dyad],dyad_sameHand[dyad])
+       results = evaluate_dyad(dyad[0],dyad[1])
+       dyad_data = pd.concat([dyad_data, pd.DataFrame([results])], ignore_index=True)
 
-    # handle special start case:
+    # handle special start and end cases:
     for char in CHAR_SET:
         markers = ["<s>","</s>"]
         for i in range(len(markers)):
             mark = markers[i]
-            is_end = False
             if(i==0):
-                dyad = mark+char
+                results = evaluate_dyad(mark,char)
+                dyad_data = pd.concat([dyad_data, pd.DataFrame([results])], ignore_index=True)
             else:
-                dyad = char+mark
-                is_end = True
-            key = CHAR_2_KEY[char]
-            dyad_isReach[dyad]      = (KEY_2_ROW[key] != 0)
-            # The following simply cannot be true because this dyad actually consists of just one key
-            dyad_sameKey[dyad]      = False
-            dyad_sameHand[dyad]     = False
-            dyad_sameFinger[dyad]   = False
-            dyad_isHurdle[dyad]     = False
-            # distance is the same as naive distance
-            finger_distance[dyad]   = dyad_dist_special(char,key, is_end)
+                results = evaluate_dyad(char,mark)
+                dyad_data = pd.concat([dyad_data, pd.DataFrame([results])], ignore_index=True)
+    dyad_data = dyad_data.set_index("dyad")
 
-
-    # Retrive data for each keyboard diad frequency counting
+    # Retrive data for each keyboard dyad frequency counting
     crulp,windows,roman = transform(dataset_name)
     data_sets = {"CRULP":crulp,"WINDOWS":windows,"IME":roman}
 
+    output = pd.DataFrame()
+    
     # tally frequency of dyad
     for keyboard in data_sets.keys():
-        dyad_freq = {key: 0 for key in finger_distance.keys()}
+        dyad_counts = {key: 0 for key in dyad_data.index.tolist()}
         data_set = data_sets[keyboard]
         for sentence in data_set:
             for i in range(len(sentence)):
                 dyad = sentence[i]
-                dyad_freq[dyad] = dyad_freq.get(dyad,0)+ 1
-        
-        # build dataframe
-        df = pd.DataFrame({
-            'SameHand'              : dyad_sameHand,
-            'SameKey'               : dyad_sameKey,
-            'SameFinger'            : dyad_sameFinger,
-            'Reach'                 : dyad_isReach,
-            'Hurdle'                 : dyad_isHurdle,
-            'Frequency'             : dyad_freq,
-        })
-        # add distance col for each finger
-        df = pd.concat([df, pd.DataFrame.from_dict(finger_distance, orient="index")], axis=1)
-        df['LeftTotal'] = df[['l_little', 'l_ring', 'l_middle', 'l_index']].sum(axis=1)
-        df['RightTotal'] = df[['r_little', 'r_ring', 'r_middle', 'r_index']].sum(axis=1)
-        df['KeyyingDistance'] = df[['RightTotal', 'LeftTotal']].sum(axis=1)
-
-        df['Keyboard'] = keyboard
-        output[keyboard] = df
+                dyad_counts[dyad] +=1
+        count_data = pd.DataFrame.from_dict(dyad_counts, orient="index", columns=["Frequency"])
+        combined = pd.concat([dyad_data,count_data], axis= 1)
+        combined["Keyboard"] = keyboard
+        output = pd.concat([output,combined])
     
-    # Write the results
-    output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
+    # write results
     output.to_csv("./DiscountEvaluation/output/dyad/"+dataset_name+".csv", index=True)
-
 
 ##################
 ##     MAIN     ##

@@ -43,18 +43,18 @@
 
     "Key_Finger":
     {
-        "`":"l_little", "1":"l_little","2":"l_ring","3":"l_middle","4":"l_index","5":"l_index",       "6":"r_index","7":"r_index","8":"r_middle","9":"r_ring","0":"r_little","-":"r_little","=":"r_little",
-                        "q":"l_little","w":"l_ring","e":"l_middle","r":"l_index","t":"l_index",       "y":"r_index","u":"r_index","i":"r_middle","o":"r_ring","p":"r_little","[":"r_little","]":"r_little","\\":"r_little",
-                        "a":"l_little","s":"l_ring","d":"l_middle","f":"l_index","g":"l_index",       "h":"r_index","j":"r_index","k":"r_middle","l":"r_ring",";":"r_little","'":"r_little",
-                        "z":"l_little","x":"l_ring","c":"l_middle","v":"l_index","b":"l_index",       "n":"r_index","m":"r_index",",":"r_middle",".":"r_ring","/":"r_little"
+        "`":"L_Little", "1":"L_Little","2":"L_Ring","3":"L_Middle","4":"L_Index","5":"L_Index",       "6":"R_Index","7":"R_Index","8":"R_Middle","9":"R_Ring","0":"R_Little","-":"R_Little","=":"R_Little",
+                        "q":"L_Little","w":"L_Ring","e":"L_Middle","r":"L_Index","t":"L_Index",       "y":"R_Index","u":"R_Index","i":"R_Middle","o":"R_Ring","p":"R_Little","[":"R_Little","]":"R_Little","\\":"R_Little",
+                        "a":"L_Little","s":"L_Ring","d":"L_Middle","f":"L_Index","g":"L_Index",       "h":"R_Index","j":"R_Index","k":"R_Middle","l":"R_Ring",";":"R_Little","'":"R_Little",
+                        "z":"L_Little","x":"L_Ring","c":"L_Middle","v":"L_Index","b":"L_Index",       "n":"R_Index","m":"R_Index",",":"R_Middle",".":"R_Ring","/":"R_Little"
     },
 
     "Key_Hand":
     {
-        "`":"left","1":"left","2":"left","3":"left","4":"left","5":"left",      "6":"right","7":"right","8":"right","9":"right","0":"right","-":"right","=":"right",
-        "q":"left","w":"left","e":"left","r":"left","t":"left",                 "y":"right","u":"right","i":"right","o":"right","p":"right","[":"right","]":"right","\\":"right",
-        "a":"left","s":"left","d":"left","f":"left","g":"left",                 "h":"right","j":"right","k":"right","l":"right",";":"right","'":"right",
-        "z":"left","x":"left","c":"left","v":"left","b":"left",                 "n":"right","m":"right",",":"right",".":"right","/":"right"
+        "`":"L","1":"L","2":"L","3":"L","4":"L","5":"L",      "6":"R","7":"R","8":"R","9":"R","0":"R","-":"R","=":"R",
+        "q":"L","w":"L","e":"L","r":"L","t":"L",              "y":"R","u":"R","i":"R","o":"R","p":"R","[":"R","]":"R","\\":"R",
+        "a":"L","s":"L","d":"L","f":"L","g":"L",              "h":"R","j":"R","k":"R","l":"R",";":"R","'":"R",
+        "z":"L","x":"L","c":"L","v":"L","b":"L",              "n":"R","m":"R",",":"R",".":"R","/":"R"
     },
 
     "Key_Row":
