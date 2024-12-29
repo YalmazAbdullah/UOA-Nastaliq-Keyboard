@@ -169,7 +169,8 @@ DiscountEvaluation/corpus/transformed/sentences/*
 DiscountEvaluation/corpus/transformed/triad_CRULP/*
 DiscountEvaluation/corpus/transformed/triad_Windows/*
 DiscountEvaluation/corpus/transformed/dyads/*
-DiscountEvaluation/data/sentence/*
+DiscountEvaluation/data/sentence/distance/*
+DiscountEvaluation/data/sentence/score/*
 DiscountEvaluation/data/levinsteine/*
 
 # History files
