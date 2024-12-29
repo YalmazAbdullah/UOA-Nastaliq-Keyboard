@@ -63,7 +63,7 @@ def score(dataset_name):
         output = pd.concat([output,combined])
     
     # write results
-    output.to_csv("./DiscountEvaluation/output/dyad/"+dataset_name+".csv", index=True)
+    output.to_csv("./DiscountEvaluation/data/dyad/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##

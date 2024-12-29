@@ -93,7 +93,7 @@ def score(dataset_name):
     
     # output results
     output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
-    output.to_csv("./DiscountEvaluation/output/monad/"+dataset_name+".csv", index=True)
+    output.to_csv("./DiscountEvaluation/data/monad/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##

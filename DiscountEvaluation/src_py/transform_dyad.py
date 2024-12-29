@@ -43,7 +43,7 @@ def write_dyads(native1,native2,roman,path):
     Returns:
         None
     '''
-    with open("./DiscountEvaluation/data/"+path+".json", "w") as file:
+    with open("./DiscountEvaluation/corpus/"+path+".json", "w") as file:
         json.dump([native1,native2,roman], file, indent=4)
 
 def transform(dataset_name,write = False):

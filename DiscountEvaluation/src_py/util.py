@@ -8,7 +8,7 @@ Read .tsv file, seperate into native and roman.
 '''
 def read_tsv(file_name):
     # Read the .tsv file
-    with open('./DiscountEvaluation/data/'+file_name+'.tsv', 'r', encoding='utf-8') as file:
+    with open('./DiscountEvaluation/corpus/'+file_name+'.tsv', 'r', encoding='utf-8') as file:
         native = []
         roman = []
 
@@ -38,7 +38,7 @@ Write the arrays as .tsv file
 '''
 def write_tsv(native, roman, file_name):
     # write to headless .tsv
-    with open('./DiscountEvaluation/data/'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
+    with open('./DiscountEvaluation/corpus/'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
         writer = csv.writer(tsvfile, delimiter='\t')
     
         for val1, val2 in zip(native, roman):

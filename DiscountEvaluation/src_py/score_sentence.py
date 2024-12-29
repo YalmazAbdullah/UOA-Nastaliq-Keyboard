@@ -45,7 +45,7 @@ def score(dataset_name):
         output = pd.concat([output, pd.DataFrame(full_results)], ignore_index=True)
     
     # Write results
-    output.to_csv("./DiscountEvaluation/output/sentence/score/"+dataset_name+".csv", index=True)
+    output.to_csv("./DiscountEvaluation/data/sentence/score/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##

@@ -1,5 +1,6 @@
 from util import read_tsv
 import math
+from statistics import median
 
 '''
 Gets the summary stats for roman-urdu-parl
@@ -9,17 +10,21 @@ def get_stats(data):
     tokens = 0
     min = math.inf
     max = -1
+    counts = []
     for line in data:
         tokenized = line.split()
         tokens += len(tokenized)
+        counts.append(len(tokenized))
         if (min>len(tokenized)):
             min=len(tokenized)
         if(max<len(tokenized)):
             max=len(tokenized)
     mean_tokens = float(tokens)/lines
+    median_tokens = median(counts)
     print ("Number of Lines: ", lines)
     print ("Number of Tokens: ", tokens)
     print ("Mean Tokens per Line: ", mean_tokens)
+    print ("Median Tokens per Line: ", median_tokens)
     print ("Min Tokens per Line: ", min)
     print ("Max Tokens per Line: ", max)
 
@@ -32,6 +37,7 @@ def get_stats2(data):
     tokens_in_line = 0
     min = math.inf
     max = -1
+    counts = []
     for token in data:
         if(token == "</s>"):
             if (min>tokens_in_line):
@@ -39,15 +45,18 @@ def get_stats2(data):
             if(max<tokens_in_line):
                 max=tokens_in_line
             lines +=1
+            counts.append(tokens_in_line)
             tokens_in_line = 0
         else:
             tokens +=1
             tokens_in_line+=1
     mean_tokens = float(tokens)/lines
-
+    median_tokens = median(counts)
+    
     print ("Number of Lines: ", lines)
     print ("Number of Tokens: ", tokens)
     print ("Mean Tokens per Line: ", mean_tokens)
+    print ("Median Tokens per Line: ", median_tokens)
     print ("Min Tokens per Line: ", min)
     print ("Max Tokens per Line: ", max)
 
@@ -60,11 +69,11 @@ def main():
     print("###############################################")
     print("=============Dataset: Roman Urdu Parl=============")
     print("-------------Urdu-------------")
-    file = open('./DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
+    file = open('./DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
     data = file.readlines()
     get_stats(data)
     print("-------------Roman-------------")
-    file = open('./DiscountEvaluation/data/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
+    file = open('./DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
     data = file.readlines()
     get_stats(data)
     print("=============Dataset: Dakshina=============")

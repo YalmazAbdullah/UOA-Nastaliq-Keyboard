@@ -41,7 +41,7 @@ def edit_dist(dataset_name):
         "WINDOWS_2_IME_DISTANCE": windows_roman_levin,
         "CRULP_2_WINDOWS_DISTANCE": crulp_windows_levin
     })
-    output.to_csv("./DiscountEvaluation/output/sentence/distance/"+dataset_name+".csv", index=True)
+    output.to_csv("./DiscountEvaluation/data/sentence/distance/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##
