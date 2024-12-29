@@ -168,7 +168,7 @@ DiscountEvaluation/corpus/transformed/keystroke_Windows/*
 DiscountEvaluation/corpus/transformed/sentences/*
 DiscountEvaluation/corpus/transformed/triad_CRULP/*
 DiscountEvaluation/corpus/transformed/triad_Windows/*
-DiscountEvaluation/data/transformed/dyads/*
+DiscountEvaluation/corpus/transformed/dyads/*
 DiscountEvaluation/data/sentence/*
 DiscountEvaluation/data/levinsteine/*
 
