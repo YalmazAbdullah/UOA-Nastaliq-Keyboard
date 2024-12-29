@@ -47,7 +47,10 @@ def edit_dist(dataset_name):
 ##     MAIN     ##
 ##################
 def main():
+    print("Distance")
+    print("=============Dataset: Dakshina=============")
     edit_dist("dakshina_dataset")
+    print("=============Dataset: Roman Urdu Parl=============")
     edit_dist("roUrParl_dataset")
 
 if __name__ == "__main__":

@@ -34,13 +34,15 @@ def score(dataset_name):
 
     # Score each sentence
     output = pd.DataFrame()
-    for i in tqdm(range(len(roman))):
-        # for each keyboard 
-        for keyboard in inputs:
+    for keyboard in inputs:
+        full_results = []
+        for i in tqdm(range(len(roman))):
+            # for each keyboard 
             result = score_sentence(inputs[keyboard][i])
             result["ID"] = i
             result["Keyboard"] = keyboard
-            output = pd.concat([output, pd.DataFrame([result])], ignore_index=True)
+            full_results.append(result)
+        output = pd.concat([output, pd.DataFrame(full_results)], ignore_index=True)
     
     # Write results
     output.to_csv("./DiscountEvaluation/output/sentence/score/"+dataset_name+".csv", index=True)
@@ -49,7 +51,10 @@ def score(dataset_name):
 ##     MAIN     ##
 ##################
 def main():
+    print("Sentence")
+    print("=============Dataset: Dakshina=============")
     score("dakshina_dataset")
+    print("=============Dataset: Roman Urdu Parl=============")
     score("roUrParl_dataset")
 
 if __name__ == "__main__":

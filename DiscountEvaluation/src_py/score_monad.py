@@ -99,6 +99,7 @@ def score(dataset_name):
 ##     MAIN     ##
 ##################
 def main():
+    print("Monad")
     score("dakshina_dataset")
     score("roUrParl_dataset")
 

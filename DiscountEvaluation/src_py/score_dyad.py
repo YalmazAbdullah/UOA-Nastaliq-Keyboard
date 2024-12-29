@@ -69,6 +69,7 @@ def score(dataset_name):
 ##     MAIN     ##
 ##################
 def main():
+    print("Dyad")
     score("dakshina_dataset")
     score("roUrParl_dataset")
 
