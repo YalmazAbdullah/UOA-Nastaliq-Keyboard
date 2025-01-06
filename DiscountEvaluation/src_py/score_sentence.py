@@ -20,6 +20,7 @@ def score_sentence(sentence):
     # handle end of sentence
     result = evaluate_dyad(sentence[len(sentence)-1],"</s>")
     sentence_total = {key: sentence_total[key]+ result[key] for key in result}
+    sentence_total["StrokeCount"] = len(sentence)
     del sentence_total["dyad"]
     return sentence_total
 

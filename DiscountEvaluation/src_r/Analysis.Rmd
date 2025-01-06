@@ -1,438 +1,384 @@
 ---
-output:
-  word_document: default
-  html_document: default
-  pdf_document: default
+title: "Analysis"
+output: html_document
 ---
 
-```{r}
+```{r, echo=FALSE}
 library(tidyverse)
 library(rstatix)
 library(ggplot2)
+library(ggpubr)
 library(knitr)
-#install.packages("kableExtra")
+library(DescTools)
+# install.packages("kableExtra")
 library(kableExtra)
-
-knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation")
+knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
 ```
-
-We will be working with three data sets. Loading these in here
 
 ```{r}
-data_unigram <- read.csv("./output/monad/dakshina_dataset.csv")
-data_bigram <- read.csv("./output/dyad/dakshina_dataset.csv")
-data_sentence <- read.csv("./output/sentence/dakshina_dataset.csv")
-```
+data1_unigram <- read.csv("../data/monad/dakshina_dataset.csv")
+data1_bigram <- read.csv("../data/dyad/dakshina_dataset.csv")
+data1_sentence <- read.csv("../data/sentence/score/dakshina_dataset.csv")
+data1_levenshtine <- read.csv("../data/sentence/distance/dakshina_dataset.csv")
 
-## Corpus level
-
-```{r, echo=FALSE}
-long_data <- data_sentence %>%
-  pivot_longer(
-    cols = c(CRULP_2_IME_DISTANCE, CRULP_2_WINDOWS_DISTANCE, WINDOWS_2_IME_DISTANCE),
-    names_to = "Condition",
-    values_to = "Distance"
-  ) %>%
-  select(X, Condition, Distance)
-
-long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
-ggplot(long_data, aes(x = Condition, y= Distance)) +
-  geom_bar(stat = "identity")
-```
-
-
-**Total Key Press per Keyboard:**
-
-```{r, echo=FALSE}
-total_key_press <- aggregate(data_unigram$Frequency, by=list(Category=data_unigram$Keyboard), FUN=sum)
-total_key_press
-
-total_key_press %>% 
-  ggplot(aes(x = Category, y = x)) %>% + 
-  geom_bar(position = "dodge", stat = "identity")
-```
-**Total Key Press per Finger per Keyboard**
-
-```{r, echo=FALSE}
-temp<-data_unigram
-
-unique(temp$Finger)
-
-mapping <- c("l_little" = "little", "r_little" = "little",
-             "l_ring"   = "ring",   "r_ring"   = "ring",
-             "l_middle" = "middle", "r_middle" = "middle",
-             "l_index"  = "index",  "r_index"  = "index")
-
-temp$FingerCombined <- mapping[match(temp$Finger, names(mapping))]
-
-# sort by finger position for easier interpretation
-temp$FingerCombined = factor(temp$FingerCombined, levels = c("little", "ring", "middle","index"), ordered = TRUE)
-
-temp %>% ggplot(aes(x = FingerCombined, y = Frequency, fill = Keyboard)) %>% +
-geom_bar(position = "dodge", stat = "identity")
-```
-
-**Total Key Press per Finger per Hand**
-
-```{r, echo=FALSE}
-# sort by finger position for easier interpretation
-data_unigram$Finger = factor(data_unigram$Finger, levels = c("l_little", "r_little", "l_ring","r_ring", "l_middle","r_middle","l_index", "r_index"), ordered = TRUE)
-
-data_unigram %>% ggplot(aes(x = Finger, y = Frequency, fill = Keyboard)) %>% +
-geom_bar(position = "dodge", stat = "identity")
-```
-## Keyying Distance ##
-
-```{r, echo=FALSE}
-long_data <- data_sentence %>%
-  pivot_longer(
-    cols = c(CRULP_DISTANCE, WINDOWS_DISTANCE, IME_DISTANCE),
-    names_to = "Condition",
-    values_to = "Distance"
-  ) %>%
-  select(X, Condition, Distance)
-
-long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
-ggplot(long_data, aes(x = Condition, y= Distance)) +
-  geom_bar(stat = "identity")
+data2_unigram <- read.csv("../data/monad/roUrParl_dataset.csv")
+data2_bigram <- read.csv("../data/dyad/roUrParl_dataset.csv")
+data2_sentence <- read.csv("../data/sentence/score/roUrParl_dataset.csv")
+data2_levenshtine <- read.csv("../data/sentence/distance/roUrParl_dataset.csv")
 ```
 
 ```{r, echo=FALSE}
-ggplot(long_data, aes(x = Distance, fill=Condition)) + 
-  geom_histogram(position="identity", colour="grey40") + scale_y_log10()+
-  facet_grid(Condition ~ .)
-```
-
-```{r, echo=FALSE}
-friedman_test(long_data, as.formula("Distance ~ Condition | X"))
-friedman_effsize(long_data, as.formula("Distance ~ Condition | X"))
-```
-
-```{r,echo=FALSE}
-wilcox_test(long_data, as.formula("Distance ~ Condition"), paired = TRUE, p.adjust.method = "hommel")
-```
-
-## Stroke Table
-```{r, echo=FALSE}
-boards <- c("CRULP","IME","WINDOWS")
-for (board in boards){
-  sub <- subset(data_bigram, Keyboard == board)
-  #same hand
-  hand<-sub %>% 
-    group_by(SameHand) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(hand)
+# Calculating some additional stuff for help in analysis
+combine_fingers <- function(df) {
+  # Combined finger counts
+  df$Press_Little <- df$Press_L_Little + df$Press_R_Little
+  df$Press_Ring   <- df$Press_L_Ring   + df$Press_R_Ring
+  df$Press_Middle <- df$Press_L_Middle + df$Press_R_Middle
+  df$Press_Index  <- df$Press_L_Index  + df$Press_R_Index
   
-  #different hand reach
-  diffHand_reach<-sub %>% 
-    filter(SameHand == "False") %>%
-    group_by(Reach) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(diffHand_reach)
+  # Combined distance counts
+  df$Dist_Little  <- df$Dist_L_Little + df$Dist_R_Little
+  df$Dist_Ring    <- df$Dist_L_Ring   + df$Dist_R_Ring
+  df$Dist_Middle  <- df$Dist_L_Middle + df$Dist_R_Middle
+  df$Dist_Index   <- df$Dist_L_Index  + df$Dist_R_Index
   
-  #Same hand finger
-  sameHand_finger<-sub %>% 
-    filter(SameHand == "True") %>%
-    group_by(SameFinger) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_finger)
+  # Combined hand counts
+  df$Press_L <- df$Press_L_Little + df$Press_L_Ring + df$Press_L_Middle + df$Press_L_Index
+  df$Press_R <- df$Press_R_Little + df$Press_R_Ring + df$Press_R_Middle + df$Press_R_Index
   
-  #Same hand different finger reach
-  sameHand_differentFinger_reach<-sub %>% 
-    filter(SameHand == "True") %>%
-    filter(SameFinger == "False") %>%
-    group_by(Reach) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_differentFinger_reach)
+  # Combined hand distance
+  df$Dist_L <- df$Dist_L_Little + df$Dist_L_Ring + df$Dist_L_Middle + df$Dist_L_Index
+  df$Dist_R <- df$Dist_R_Little + df$Dist_R_Ring + df$Dist_R_Middle + df$Dist_R_Index
+  return(df)
+}
+
+data1_sentence<-combine_fingers(data1_sentence)
+data2_sentence<-combine_fingers(data2_sentence)
+
+
+data1_sentence_long <- data1_sentence %>%
+  gather(key = "Finger", value = "Press", Press_L_Little, Press_L_Ring, Press_L_Middle, Press_L_Index, Press_R_Little, Press_R_Ring, Press_R_Middle, Press_R_Index) %>%
+  convert_as_factor(ID, Finger)
+
+data2_sentence_long <- data2_sentence %>%
+  gather(key = "Finger", value = "Press", Press_L_Little, Press_L_Ring, Press_L_Middle, Press_L_Index, Press_R_Little, Press_R_Ring, Press_R_Middle, Press_R_Index) %>%
+  convert_as_factor(ID, Finger)
+
+data1_sentence_long_dist <- data1_sentence %>%
+  gather(key = "Finger", value = "Dist", Dist_L_Little, Dist_L_Ring, Dist_L_Middle, Dist_L_Index, Dist_R_Little, Dist_R_Ring, Dist_R_Middle, Dist_R_Index) %>%
+  convert_as_factor(ID, Finger)
+
+data2_sentence_long_dist <- data2_sentence %>%
+  gather(key = "Finger", value = "Dist", Dist_L_Little, Dist_L_Ring, Dist_L_Middle, Dist_L_Index, Dist_R_Little, Dist_R_Ring, Dist_R_Middle, Dist_R_Index) %>%
+  convert_as_factor(ID, Finger)
+```
+
+## Key-press:
+```{r, echo=FALSE}
+# bar graphs showing per hand, per finger, per finger hand
+```
+
+```{r, echo=FALSE}
+# Friedman tests
+kruskals <- function(df) {
+  sub <- subset(df, Keyboard == "CRULP")
+  test1 <- kruskal_test(df, Press ~ Finger)
+  effsize1 <- kruskal_effsize(df, Press ~ Finger)
   
-  #Same hand different finger reach hurdle
-  sameHand_differentFinger_reachTrue_hurdle<-sub %>% 
-    filter(SameHand == "True") %>%
-    filter(SameFinger == "False") %>%
-    filter(Reach == "True") %>%
-    group_by(Hurdle) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_differentFinger_reachTrue_hurdle)
+  sub <- subset(df, Keyboard == "IME")
+  test2 <- kruskal_test(df, Press ~ Finger)
+  effsize2 <- kruskal_effsize(df, Press ~ Finger)
   
-  #Same hand same finger reach
-  sameHand_sameFinger_reach<-sub %>% 
-    filter(SameHand == "True") %>%
-    filter(SameFinger == "True") %>%
-    group_by(Reach) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_sameFinger_reach)
+  sub <- subset(df, Keyboard == "WINDOWS")
+  test3 <- kruskal_test(df, Press ~ Finger)
+  effsize3 <- kruskal_effsize(df, Press ~ Finger)
+
+  # Create a summary dataframe
+  return (data.frame(
+    Condition = c("CRULP", "IME", "WINDOWS"),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic),
+    df = c(test1$df, test2$df, test3$df),
+    p = c(test1$p, test2$p, test3$p),
+    W  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize)
+  ))
+}
+
+pairwise_comp <- function(df){
+  sub <- subset(df, Keyboard == "CRULP")
+  test1 <- wilcox_test(df,Press ~ Finger, p.adjust.method = "bonferroni")
+  effsize1<-wilcox_effsize(df,Press ~ Finger, paired = TRUE)
   
-  #Same hand same finger reach key
-  sameHand_sameFinger_reachTrue_key<-sub %>% 
-    filter(SameHand == "True") %>%
-    filter(SameFinger == "True") %>%
-    filter(Reach == "True") %>%
-    group_by(SameKey) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_sameFinger_reachTrue_key)
+  sub <- subset(df, Keyboard == "IME")
+  test2 <- wilcox_test(df,Press ~ Finger, p.adjust.method = "bonferroni")
+  effsize2<-wilcox_effsize(df,Press ~ Finger, paired = TRUE)
   
-  #Same hand same finger reach different key hurdle
-  sameHand_sameFinger_reachTrue_keyDifferent_hurdle<-sub %>% 
-    filter(SameHand == "True") %>%
-    filter(SameFinger == "True") %>%
-    filter(Reach == "True") %>%
-    filter(SameKey == "False") %>%
-    group_by(Hurdle) %>%
-    summarise(sum_frequency = sum(Frequency, na.rm = TRUE))
-  print(sameHand_sameFinger_reachTrue_keyDifferent_hurdle)
+  sub <- subset(df, Keyboard == "WINDOWS")
+  test3 <- wilcox_test(df,Press ~ Finger, p.adjust.method = "bonferroni")
+  effsize3<-wilcox_effsize(df,Press ~ Finger, paired = TRUE)
+
+  return (data.frame(
+    Condition = c("CRULP", "IME", "WINDOWS"),
+    group1 = c(test1$group1, test2$group1, test3$group1),
+    group2 = c(test1$group2, test2$group2, test3$group2),
+    n1 = c(test1$n1, test2$n1, test3$n1),
+    n2 = c(test1$n2, test2$n2, test3$n2),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic),
+    p = c(test1$p.adj, test2$p.adj, test3$p.adj),
+    Z  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize)
+  ))
 }
+
+kruskals(data1_sentence_long)
+pairwise_comp(data1_sentence_long)
+
+#kruskals(data2_sentence_long)
+#pairwise_comp(data2_sentence_long)
 ```
 
-## Bigram Feature Comparison
-```{r}
-
-crulp <- subset(data_bigram, Keyboard == "CRULP")
-windows <- subset(data_bigram, Keyboard == "WINDOWS")
-ime <- subset(data_bigram, Keyboard == "IME")
-
-crulp$Probability <- (crulp$Frequency+1)/(sum(crulp$Frequency)+9024)
-ime$Probability <- (ime$Frequency+1)/(sum(ime$Frequency)+9024)
-windows$Probability <- (windows$Frequency+1)/(sum(windows$Frequency)+9024)
-data_bigram <- rbind(crulp, windows, ime)
-```
-
-```{r, echo=FALSE}
-stroke_types <- c("SameHand","SameKey","SameFinger","Reach", "Hurdle")
-results_list <- list()
-
-for (stroke_type in stroke_types) {
-  # convert feautre to binary
-  data_bigram[[stroke_type]] <- ifelse(data_bigram[[stroke_type]] == "True", 1, 0)
-  data_bigram[[paste(stroke_type,"_Score",sep="")]] <- (data_bigram[[stroke_type]] * data_bigram$Probability)
-}
-```
-
-```{r, echo=FALSE}
-stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
-
-for (stroke_type in stroke_types) {
-  summary<-data_bigram %>%
-    group_by(Keyboard) %>%
-    get_summary_stats(stroke_type, type = "common")
-  print(summary)
-}
-```
-
-
-```{r, echo=FALSE}
-stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
-
-for (stroke_type in stroke_types) {
-  plot<-ggplot(data_bigram, aes(x = (.data[[stroke_type]]), fill=Keyboard)) + 
-    geom_histogram(position="identity", bins=30, colour="grey40") + scale_y_log10() +
-    facet_grid(Keyboard ~ .)
-  print(plot)
-}
-```
-
-```{r, echo=FALSE}
-stroke_types <- c("SameHand_Score","SameKey_Score","SameFinger_Score","Reach_Score", "Hurdle_Score")
-
-for (stroke_type in stroke_types) {
-  print(friedman_test(data_bigram, as.formula(paste(stroke_type," ~ Keyboard | X"))))
-  print(friedman_effsize(data_bigram, as.formula(paste(stroke_type," ~ Keyboard | X"))))
-  print(wilcox_test(data_bigram, as.formula(paste(stroke_type," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel"))
-}
-```
-
-## Finger Scores ##
-
-```{r, echo=FALSE}
-data_bigram$BigramScore<-log(data_bigram$Probability*data_bigram$KeyyingDistance)
-summary<-data_bigram %>%
-    group_by(Keyboard) %>%
-    get_summary_stats(BigramScore, type = "common")
-  print(summary)
+```{r, echo=TRUE}
+# Friedman tests
+friedmans <- function(df) {
+  test1 <- friedman_test(df, Press_L_Little ~ Keyboard | ID)
+  effsize1 <- friedman_effsize(df, Press_L_Little ~ Keyboard | ID)
   
-ggplot(data_bigram, aes(x = Probability*KeyyingDistance, fill=Keyboard)) + 
-  geom_histogram(position="identity", colour="grey40") +
-  facet_grid(Keyboard ~ .)
-```
-```{r, echo=FALSE}
-fingers <- c("little","ring","middle","index")
-for (finger in fingers) {
-data_bigram[[finger]] <- (data_bigram[[paste("l_",finger, sep = "")]]*data_bigram$Probability) + 
-                         (data_bigram[[paste("r_",finger, sep = "")]]*data_bigram$Probability)
-                  
-
-summary<-data_bigram %>%
-    group_by(Keyboard) %>%
-    get_summary_stats(finger, type = "common")
-  print(summary)
-}
-```
-
-```{r, echo=FALSE}
-for (finger in fingers) {
-  plot<-ggplot(data_bigram, aes(x = .data[[finger]], fill=Keyboard)) + 
-    geom_histogram(position="identity", bins=30, colour="grey40") + scale_y_log10()+
-    facet_grid(Keyboard ~ .)
-  print(plot)
-}
-```
-
-```{r, echo=FALSE}
-for (finger in fingers) {
-  print(friedman_test(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
-  print(friedman_effsize(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
-}
-```
-
-```{r, echo=FALSE}
-for (finger in fingers) {
-  print(
-    wilcox_test(data_bigram, as.formula(paste(finger," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel")
-  )
-}
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Total Keying Distance per Keyboard:**
-
-```{r, echo=FALSE}
-temp %>% ggplot(aes(x = Keyboard, y = Frequency*KeyyingDistance, fill = FingerCombined)) %>% +
-geom_bar(position = "dodge", stat = "identity")
-```
-
-```{r, echo=FALSE}
-# sort by finger position for easier interpretation
-data_unigram$Finger = factor(data_unigram$Finger, levels = c("l_little", "r_little", "l_ring","r_ring", "l_middle","r_middle","l_index", "r_index"), ordered = TRUE)
-
-data_unigram %>% ggplot(aes(x = Keyboard, y = Frequency*KeyyingDistance, fill = Finger)) %>% +
-geom_bar(position = "dodge", stat = "identity")
-```
-
-**Stroke Table**
-
-## Sentence level
-
-longform data for levi histogram of scores per pair histogram of keypress count histogram of distance
-
-histogram of - levinstine comparison - number of key presses - distance traveled (need to calculate make score sentence file, move levinstein here)
-
-```{r, echo=FALSE}
-long_data <- data_sentence %>%
-  pivot_longer(
-    cols = c(CRULP_2_IME_DISTANCE, CRULP_2_WINDOWS_DISTANCE, WINDOWS_2_IME_DISTANCE),
-    names_to = "Condition",
-    values_to = "Distance"
-  ) %>%
-  select(X, Condition, Distance)
-
-long_data %>% group_by(Condition) %>%  get_summary_stats(Distance, type = "common")
-ggplot(long_data, aes(x = Condition, y= Distance)) +
-  geom_bar(stat = "identity")
-```
-
-```{r, echo=FALSE}
-ggplot(long_data, aes(x = Distance, fill=Condition)) + 
-  geom_histogram(position="identity", colour="grey40") +
-  facet_grid(Condition ~ .)
-```
-
-```{r, echo=FALSE}
-friedman_test(long_data, as.formula("Distance ~ Condition | X"))
-```
-
-```{r,echo=FALSE}
-wilcox_test(long_data, as.formula("Distance ~ Condition"), paired = TRUE, p.adjust.method = "hommel")
-```
-
-
-
-```{r, echo=FALSE}
-# build stroke table
-```
-
-## Bigram level
-
-```{r, echo=FALSE}
-data_bigram$BigramScore<-log(data_bigram$Probability*data_bigram$KeyyingDistance)
-summary<-data_bigram %>%
-    group_by(Keyboard) %>%
-    get_summary_stats(BigramScore, type = "common")
-  print(summary)
+  test2 <- friedman_test(df, Press_R_Little ~ Keyboard | ID)
+  effsize2 <- friedman_effsize(df, Press_R_Little ~ Keyboard | ID)
   
-ggplot(data_bigram, aes(x = log(Probability*KeyyingDistance), fill=Keyboard)) + 
-  geom_histogram(position="identity", colour="grey40") +
-  facet_grid(Keyboard ~ .)
-```
-
-```{r, echo=FALSE}
-friedman_test(data_bigram, as.formula("BigramScore ~ Keyboard | X"))
-```
-
-```{r,echo=FALSE}
-wilcox_test(data_bigram, as.formula("BigramScore ~ Keyboard"), paired = TRUE, p.adjust.method = "hommel")
-```
-
-
-
-
-
-```{r, echo=FALSE}
-fingers <- c("LeftTotal","RightTotal")
-for (finger in fingers) {
-  data_bigram[[finger]] <- (data_bigram[[finger]] * data_bigram$Probability)
-  plot<-ggplot(data_bigram, aes(x = .data[[finger]], fill=Keyboard)) + 
-    geom_histogram(position="identity", bins=30, colour="grey40") +
-    facet_grid(Keyboard ~ .)
-  print(plot)
+  test3 <- friedman_test(df, Press_L_Ring ~ Keyboard | ID)
+  effsize3 <- friedman_effsize(df, Press_L_Ring ~ Keyboard | ID)
+  
+  test4 <- friedman_test(df, Press_R_Ring ~ Keyboard | ID)
+  effsize4 <- friedman_effsize(df, Press_R_Ring ~ Keyboard | ID)
+  
+  test5 <- friedman_test(df, Press_L_Middle ~ Keyboard | ID)
+  effsize5 <- friedman_effsize(df, Press_L_Middle ~ Keyboard | ID)
+  
+  test6 <- friedman_test(df, Press_R_Middle ~ Keyboard | ID)
+  effsize6 <- friedman_effsize(df, Press_R_Middle ~ Keyboard | ID)
+  
+  test7 <- friedman_test(df, Press_L_Index ~ Keyboard | ID)
+  effsize7 <- friedman_effsize(df, Press_L_Index ~ Keyboard | ID)
+  
+  test8 <- friedman_test(df, Press_R_Index ~ Keyboard | ID)
+  effsize8 <- friedman_effsize(df, Press_R_Index ~ Keyboard | ID)
+  
+  test9 <- friedman_test(df, Press_L ~ Keyboard | ID)
+  effsize9 <- friedman_effsize(df, Press_L ~ Keyboard | ID)
+  
+  test10 <- friedman_test(df, Press_R ~ Keyboard | ID)
+  effsize10 <- friedman_effsize(df, Press_R ~ Keyboard | ID)
+  
+  # Create a summary dataframe
+  return (data.frame(
+    Condition = c("Press_L_Little", "Press_R_Little","Press_L_Ring", "Press_R_Ring","Press_L_Middle", "Press_R_Middle", "Press_L_Index","Press_R_Index", "Press_L", "Press_R"),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic, test4$statistic, test5$statistic, test6$statistic, test7$statistic, test8$statistic, test9$statistic, test10$statistic),
+    df = c(test1$df, test2$df, test3$df, test4$df, test5$df, test6$df, test7$df, test8$df, test9$df, test10$df),
+    p = c(test1$p, test2$p, test3$p, test4$p, test5$p, test6$p, test7$p, test8$p, test9$p ,test10$p),
+    W  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize, effsize4$effsize, effsize5$effsize, effsize6$effsize, effsize7$effsize, effsize8$effsize, effsize9$effsize, effsize10$effsize)
+  ))
 }
+
+pairwise_comp <- function(df){
+  test1 <- wilcox_test(df,Press_L_Little ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize1<-wilcox_effsize(df,Press_L_Little ~ Keyboard, paired = TRUE)
+  
+  test2 <- wilcox_test(df,Press_R_Little ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize2<-wilcox_effsize(df,Press_R_Little ~ Keyboard, paired = TRUE)
+  
+  test3 <- wilcox_test(df,Press_L_Ring ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize3<-wilcox_effsize(df,Press_L_Ring ~ Keyboard, paired = TRUE)
+  
+  test4 <- wilcox_test(df,Press_R_Ring ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize4<-wilcox_effsize(df,Press_R_Ring ~ Keyboard, paired = TRUE)
+  
+  test5 <- wilcox_test(df,Press_L_Middle ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize5<-wilcox_effsize(df,Press_L_Middle ~ Keyboard, paired = TRUE)
+  
+  test6 <- wilcox_test(df,Press_R_Middle ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize6<-wilcox_effsize(df,Press_R_Middle ~ Keyboard, paired = TRUE)
+  
+  test7 <- wilcox_test(df,Press_L_Index ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize7<-wilcox_effsize(df,Press_L_Index ~ Keyboard, paired = TRUE)
+  
+  test8 <- wilcox_test(df,Press_R_Index ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize8<-wilcox_effsize(df,Press_R_Index ~ Keyboard, paired = TRUE)
+  
+  test9 <- wilcox_test(df,Press_L ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize9<-wilcox_effsize(df,Press_L ~ Keyboard, paired = TRUE)
+  
+  test10 <- wilcox_test(df,Press_R ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize10<-wilcox_effsize(df,Press_R ~ Keyboard, paired = TRUE)
+  
+  
+  return (data.frame(
+    Measuer = c("Press_L_Little", "Press_R_Little","Press_L_Ring", "Press_R_Ring","Press_L_Middle", "Press_R_Middle", "Press_L_Index","Press_R_Index", "Press_L", "Press_R"),
+    group1 = c(test1$group1, test2$group1, test3$group1, test4$group1, test5$group1, test6$group1, test7$group1, test8$group1, test9$group1, test10$group1),
+    group2 = c(test1$group2, test2$group2, test3$group2, test4$group2, test5$group2, test6$group2, test7$group2, test8$group2, test9$group2, test10$group2),
+    n1 = c(test1$n1, test2$n1, test3$n1, test4$n1, test5$n1, test6$n1, test7$n1, test8$n1, test9$n1, test10$n1),
+    n2 = c(test1$n2, test2$n2, test3$n2, test4$n2, test5$n2, test6$n2, test7$n2, test8$n2, test9$n2, test10$n2),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic, test4$statistic, test5$statistic, test6$statistic, test7$statistic, test8$statistic, test9$statistic, test10$statistic),
+    p = c(test1$p.adj, test2$p.adj, test3$p.adj, test4$p.adj, test5$p.adj, test6$p.adj, test7$p.adj, test8$p.adj, test9$p.adj ,test10$p.adj),
+    Z  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize, effsize4$effsize, effsize5$effsize, effsize6$effsize, effsize7$effsize, effsize8$effsize, effsize9$effsize, effsize10$effsize)
+  ))
+}
+  
+friedmans(data1_sentence)
+pairwise_comp(data1_sentence)
+
+#friedmans(data2_sentence)
+#pairwise_comp(data2_sentence)
 ```
+
+## Typing Distance:
 
 ```{r, echo=FALSE}
-for (finger in fingers) {
-  print(friedman_test(data_bigram, as.formula(paste(finger," ~ Keyboard | X"))))
+# Friedman tests
+kruskals <- function(df) {
+  sub <- subset(df, Keyboard == "CRULP")
+  test1 <- kruskal_test(df, Dist ~ Finger)
+  effsize1 <- kruskal_effsize(df, Dist ~ Finger)
+  
+  sub <- subset(df, Keyboard == "IME")
+  test2 <- kruskal_test(df, Dist ~ Finger)
+  effsize2 <- kruskal_effsize(df, Dist ~ Finger)
+  
+  sub <- subset(df, Keyboard == "WINDOWS")
+  test3 <- kruskal_test(df, Dist ~ Finger)
+  effsize3 <- kruskal_effsize(df, Dist ~ Finger)
+
+  # Create a summary dataframe
+  return (data.frame(
+    Condition = c("CRULP", "IME", "WINDOWS"),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic),
+    df = c(test1$df, test2$df, test3$df),
+    p = c(test1$p, test2$p, test3$p),
+    W  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize)
+  ))
 }
+
+pairwise_comp <- function(df){
+  sub <- subset(df, Keyboard == "CRULP")
+  test1 <- wilcox_test(df,Dist ~ Finger, p.adjust.method = "bonferroni")
+  effsize1<-wilcox_effsize(df,Dist ~ Finger, paired = TRUE)
+  
+  sub <- subset(df, Keyboard == "IME")
+  test2 <- wilcox_test(df,Dist ~ Finger, p.adjust.method = "bonferroni")
+  effsize2<-wilcox_effsize(df,Dist ~ Finger, paired = TRUE)
+  
+  sub <- subset(df, Keyboard == "WINDOWS")
+  test3 <- wilcox_test(df,Dist ~ Finger, p.adjust.method = "bonferroni")
+  effsize3<-wilcox_effsize(df,Dist ~ Finger, paired = TRUE)
+
+  return (data.frame(
+    Condition = c("CRULP", "IME", "WINDOWS"),
+    group1 = c(test1$group1, test2$group1, test3$group1),
+    group2 = c(test1$group2, test2$group2, test3$group2),
+    n1 = c(test1$n1, test2$n1, test3$n1),
+    n2 = c(test1$n2, test2$n2, test3$n2),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic),
+    p = c(test1$p.adj, test2$p.adj, test3$p.adj),
+    Z  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize)
+  ))
+}
+
+kruskals(data1_sentence_long_dist)
+pairwise_comp(data1_sentence_long_dist)
+
+#kruskals(data2_sentence_long)
+#pairwise_comp(data2_sentence_long)
 ```
 
-```{r, echo=FALSE}
-for (finger in fingers) {
-  print(
-    wilcox_test(data_bigram, as.formula(paste(finger," ~ Keyboard")), paired = TRUE, p.adjust.method = "hommel")
-  )
+```{r, echo=TRUE}
+# Friedman tests
+friedmans <- function(df) {
+  test1 <- friedman_test(df, Dist_L_Little ~ Keyboard | ID)
+  effsize1 <- friedman_effsize(df, Dist_L_Little ~ Keyboard | ID)
+  
+  test2 <- friedman_test(df, Dist_R_Little ~ Keyboard | ID)
+  effsize2 <- friedman_effsize(df, Dist_R_Little ~ Keyboard | ID)
+  
+  test3 <- friedman_test(df, Dist_L_Ring ~ Keyboard | ID)
+  effsize3 <- friedman_effsize(df, Dist_L_Ring ~ Keyboard | ID)
+  
+  test4 <- friedman_test(df, Dist_R_Ring ~ Keyboard | ID)
+  effsize4 <- friedman_effsize(df, Dist_R_Ring ~ Keyboard | ID)
+  
+  test5 <- friedman_test(df, Dist_L_Middle ~ Keyboard | ID)
+  effsize5 <- friedman_effsize(df, Dist_L_Middle ~ Keyboard | ID)
+  
+  test6 <- friedman_test(df, Dist_R_Middle ~ Keyboard | ID)
+  effsize6 <- friedman_effsize(df, Dist_R_Middle ~ Keyboard | ID)
+  
+  test7 <- friedman_test(df, Dist_L_Index ~ Keyboard | ID)
+  effsize7 <- friedman_effsize(df, Dist_L_Index ~ Keyboard | ID)
+  
+  test8 <- friedman_test(df, Dist_R_Index ~ Keyboard | ID)
+  effsize8 <- friedman_effsize(df, Dist_R_Index ~ Keyboard | ID)
+  
+  test9 <- friedman_test(df, Dist_L ~ Keyboard | ID)
+  effsize9 <- friedman_effsize(df, Dist_L ~ Keyboard | ID)
+  
+  test10 <- friedman_test(df, Dist_R ~ Keyboard | ID)
+  effsize10 <- friedman_effsize(df, Dist_R ~ Keyboard | ID)
+  
+  # Create a summary dataframe
+  return (data.frame(
+    Condition = c("Dist_L_Little", "Dist_R_Little","Dist_L_Ring", "Dist_R_Ring","Dist_L_Middle", "Dist_R_Middle", "Dist_L_Index","Dist_R_Index", "Dist_L", "Dist_R"),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic, test4$statistic, test5$statistic, test6$statistic, test7$statistic, test8$statistic, test9$statistic, test10$statistic),
+    df = c(test1$df, test2$df, test3$df, test4$df, test5$df, test6$df, test7$df, test8$df, test9$df, test10$df),
+    p = c(test1$p, test2$p, test3$p, test4$p, test5$p, test6$p, test7$p, test8$p, test9$p ,test10$p),
+    W  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize, effsize4$effsize, effsize5$effsize, effsize6$effsize, effsize7$effsize, effsize8$effsize, effsize9$effsize, effsize10$effsize)
+  ))
 }
+
+pairwise_comp <- function(df){
+  test1 <- wilcox_test(df,Dist_L_Little ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize1<-wilcox_effsize(df,Dist_L_Little ~ Keyboard, paired = TRUE)
+  
+  test2 <- wilcox_test(df,Dist_R_Little ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize2<-wilcox_effsize(df,Dist_R_Little ~ Keyboard, paired = TRUE)
+  
+  test3 <- wilcox_test(df,Dist_L_Ring ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize3<-wilcox_effsize(df,Dist_L_Ring ~ Keyboard, paired = TRUE)
+  
+  test4 <- wilcox_test(df,Dist_R_Ring ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize4<-wilcox_effsize(df,Dist_R_Ring ~ Keyboard, paired = TRUE)
+  
+  test5 <- wilcox_test(df,Dist_L_Middle ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize5<-wilcox_effsize(df,Dist_L_Middle ~ Keyboard, paired = TRUE)
+  
+  test6 <- wilcox_test(df,Dist_R_Middle ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize6<-wilcox_effsize(df,Dist_R_Middle ~ Keyboard, paired = TRUE)
+  
+  test7 <- wilcox_test(df,Dist_L_Index ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize7<-wilcox_effsize(df,Dist_L_Index ~ Keyboard, paired = TRUE)
+  
+  test8 <- wilcox_test(df,Dist_R_Index ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize8<-wilcox_effsize(df,Dist_R_Index ~ Keyboard, paired = TRUE)
+  
+  test9 <- wilcox_test(df,Dist_L ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize9<-wilcox_effsize(df,Dist_L ~ Keyboard, paired = TRUE)
+  
+  test10 <- wilcox_test(df,Dist_R ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+  effsize10<-wilcox_effsize(df,Dist_R ~ Keyboard, paired = TRUE)
+  
+  
+  return (data.frame(
+    Measuer = c("Dist_L_Little", "Dist_R_Little","Dist_L_Ring", "Dist_R_Ring","Dist_L_Middle", "Dist_R_Middle", "Dist_L_Index","Dist_R_Index", "Dist_L", "Dist_R"),
+    group1 = c(test1$group1, test2$group1, test3$group1, test4$group1, test5$group1, test6$group1, test7$group1, test8$group1, test9$group1, test10$group1),
+    group2 = c(test1$group2, test2$group2, test3$group2, test4$group2, test5$group2, test6$group2, test7$group2, test8$group2, test9$group2, test10$group2),
+    n1 = c(test1$n1, test2$n1, test3$n1, test4$n1, test5$n1, test6$n1, test7$n1, test8$n1, test9$n1, test10$n1),
+    n2 = c(test1$n2, test2$n2, test3$n2, test4$n2, test5$n2, test6$n2, test7$n2, test8$n2, test9$n2, test10$n2),
+    statistic = c(test1$statistic, test2$statistic, test3$statistic, test4$statistic, test5$statistic, test6$statistic, test7$statistic, test8$statistic, test9$statistic, test10$statistic),
+    p = c(test1$p.adj, test2$p.adj, test3$p.adj, test4$p.adj, test5$p.adj, test6$p.adj, test7$p.adj, test8$p.adj, test9$p.adj ,test10$p.adj),
+    Z  = c(effsize1$effsize, effsize2$effsize, effsize3$effsize, effsize4$effsize, effsize5$effsize, effsize6$effsize, effsize7$effsize, effsize8$effsize, effsize9$effsize, effsize10$effsize)
+  ))
+}
+  
+friedmans(data1_sentence)
+pairwise_comp(data1_sentence)
+
+#friedmans(data2_sentence)
+#pairwise_comp(data2_sentence)
 ```
-
-
+## Stroke Evaluation:
