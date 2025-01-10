@@ -14,20 +14,26 @@ library(ggplot2)
 library(ggpubr)
 library(knitr)
 # install.packages("kableExtra")
+# install.packages("languageR")
 library(kableExtra)
 knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
 ```
 
 ```{r}
-data1_unigram <- read.csv("../data/monad/dakshina_dataset.csv")
-data1_bigram <- read.csv("../data/dyad/dakshina_dataset.csv")
-data1_sentence <- read.csv("../data/sentence/score/dakshina_dataset.csv")
-data1_levenshtine <- read.csv("../data/sentence/distance/dakshina_dataset.csv")
+#data1_unigram <- read.csv("../data/monad/dakshina_dataset.csv")
+#data1_bigram <- read.csv("../data/dyad/dakshina_dataset.csv")
+#data1_sentence <- read.csv("../data/sentence/score/dakshina_dataset.csv")
+#data1_levenshtine <- read.csv("../data/sentence/distance/dakshina_dataset.csv")
 
-data2_unigram <- read.csv("../data/monad/roUrParl_dataset.csv")
-data2_bigram <- read.csv("../data/dyad/roUrParl_dataset.csv")
-data2_sentence <- read.csv("../data/sentence/score/roUrParl_dataset.csv")
-data2_levenshtine <- read.csv("../data/sentence/distance/roUrParl_dataset.csv")
+#data2_unigram <- read.csv("../data/monad/roUrParl_dataset.csv")
+#data2_bigram <- read.csv("../data/dyad/roUrParl_dataset.csv")
+#data2_sentence <- read.csv("../data/sentence/score/roUrParl_dataset.csv")
+#data2_levenshtine <- read.csv("../data/sentence/distance/roUrParl_dataset.csv")
+
+data3_unigram <- read.csv("../data/monad/combined_dataset.csv")
+data3_bigram <- read.csv("../data/dyad/combined_dataset.csv")
+data3_sentence <- read.csv("../data/sentence/score/combined_dataset.csv")
+data3_levenshtine <- read.csv("../data/sentence/distance/combined_dataset.csv")
 ```
 
 ```{r, echo=FALSE}
@@ -61,48 +67,45 @@ combine_fingers <- function(df) {
   return(df)
 }
 
-data1_bigram<-combine_fingers(data1_bigram)
-data2_bigram<-combine_fingers(data2_bigram)
+#data1_bigram<-combine_fingers(data1_bigram)
+#data2_bigram<-combine_fingers(data2_bigram)
+data3_bigram<-combine_fingers(data3_bigram)
 
-data1_sentence<-combine_fingers(data1_sentence)
-data2_sentence<-combine_fingers(data2_sentence)
-
-#data1_sentence_long_dist <- data1_sentence %>%
-#  gather(key = "Finger", value = "Dist", Dist_L_Little, Dist_L_Ring, Dist_L_Middle, Dist_L_Index, Dist_R_Little, Dist_R_Ring, Dist_R_Middle, Dist_R_Index) %>%
-#  convert_as_factor(ID, Finger)
-
-#data2_sentence_long_dist <- data2_sentence %>%
-#  gather(key = "Finger", value = "Dist", Dist_L_Little, Dist_L_Ring, Dist_L_Middle, Dist_L_Index, Dist_R_Little, Dist_R_Ring, Dist_R_Middle, Dist_R_Index) %>%
-#  convert_as_factor(ID, Finger)
+#data1_sentence<-combine_fingers(data1_sentence)
+#data2_sentence<-combine_fingers(data2_sentence)
+data3_sentence<-combine_fingers(data3_sentence)
 ```
-
-## Key Press Counts
 
 ------------------------------------------------------------------------
 
-We can our analysis of key press counts with bar plots of the total key press counts for each keyboard. This will give us a general idea of how different they are.
+## Key Press Counts
+
+### Keyboard Level:
+
+We begin our analysis of key press counts with bar plots of the total key press counts for each keyboard. This will give us a general idea of how different they are.
 
 ```{r echo =" FALSE"}
-ggplot(data1_sentence, aes(x=Keyboard, y=Press , fill=Keyboard )) + geom_bar(stat = "summary", fun = "sum")
+ggplot(data3_sentence, aes(x=Keyboard, y=Press , fill=Keyboard )) + geom_bar(stat = "summary", fun = "sum")
 ```
 
 Looking at the results we see that IME followed by CRULP then WINDOWS. This makes sense because the IME keyboard requires multiple keys to input characters that represent complicated sounds. For example خ has to be entered as "kh" on IME but requires only a single key on both WINDOWS and CRULP.
 
 ```{r, echo = FALSE}
-data1_sentence %>%
+data3_sentence %>%
   group_by(Keyboard) %>%
-  get_summary_stats(Press, type = "common")
+  get_summary_stats(Press, type = "common")%>%
+  select(-variable)
 ```
 
 ```{r, echo = FALSE}
-ggviolin(data1_sentence, x = "Keyboard", y = "Press", fill = "Keyboard", add = "boxplot", add.params = list(fill = "white") ) + scale_y_log10() + labs (x= "Keyboard", y = "log10 scaled Key Press Count")
+ggviolin(data3_sentence, x = "Keyboard", y = "Press", fill = "Keyboard", add = "boxplot", add.params = list(fill = "white") ) + scale_y_log10() + labs (x= "Keyboard", y = "log10 scaled Key Press Count")
 ```
 
-Looking at the descriptive violine we can see the data is quite skewed towards the left. There are also a number of outliers that contribute to the high variability observed. This is because the length of each sentence is not controlled so certain sentences have a really high key press count.The medians for key press counts is as expected with IME at the highest ( $median$ = 79, $IQR$ = 79), followed by CRULP ( $median$ = 71, $IQR$ = 70), then Windows ( $median$ = 70, $IQR$ = 70).
+Looking at the descriptive statistics we can see the data is quite skewed towards the left. There are also a number of outliers that contribute to the high variability observed. This is because the length of each sentence is not controlled so certain sentences have a really high key press count.The medians for key press counts is as expected with IME at the highest ( $median$ = 79, $IQR$ = 79), followed by CRULP ( $median$ = 71, $IQR$ = 70), then Windows ( $median$ = 70, $IQR$ = 70).
 
 ```{r, echo = FALSE}
-test<-friedman_test(data1_sentence , Press ~ Keyboard | ID)
-effsize<-friedman_effsize(data1_sentence , Press ~ Keyboard | ID)
+test<-friedman_test(data3_sentence , Press ~ Keyboard | ID)
+effsize<-friedman_effsize(data3_sentence , Press ~ Keyboard | ID)
 result <- data.frame(
   statistic = c(test$statistic),
   df = c(test$df),
@@ -114,8 +117,8 @@ result
 ```
 
 ```{r, echo = FALSE}
-test<-wilcox_test(data1_sentence, Press ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
-effsize<-wilcox_effsize(data1_sentence,Press ~ Keyboard, paired = TRUE)
+test<-wilcox_test(data3_sentence, Press ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+effsize<-wilcox_effsize(data3_sentence,Press ~ Keyboard, paired = TRUE)
 result <- data.frame(
   group1 = test$group1,
   group2 = test$group2,
@@ -131,14 +134,17 @@ Friedman’s test with `Press ~ Keyboard | Sentence` detected large difference (
 
 ### Key Press Distribution By Hand
 
+Next we examin the differences in key press count on the per hand level
+
 ```{r echo =" FALSE"}
-data1_sentence_long <- data1_sentence %>%
+# Some set up.
+data3_sentence_long <- data3_sentence %>%
   gather(key = "Hand", value = "Press", Press_L, Press_R) %>%
   convert_as_factor(ID, Hand)
 ```
 
 ```{r echo =" FALSE"}
-ggplot(data1_sentence_long, aes(x=Keyboard, y=Press, fill=Hand)) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
+ggplot(data3_sentence_long, aes(x=Keyboard, y=Press, fill=Hand)) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
 ```
 
 ```{r, echo = FALSE}
@@ -148,7 +154,6 @@ get_summary<-function(df,group,factor,value){
     group_by_at(factor) %>%
     get_summary_stats("Press", type = "common")
 }
-
 hand_summary<-function(df){
   summary1 <- get_summary(df,"CRULP", "Hand", "Press")
   summary2 <- get_summary(df,"IME", "Hand", "Press")
@@ -158,27 +163,29 @@ hand_summary<-function(df){
     summary1 %>% mutate(Keyboard = "CRULP"),
     summary2 %>% mutate(Keyboard = "IME"),
     summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
-    select(Keyboard, everything()))
+    select(Keyboard, everything())%>%
+      select(-variable,-n)
+    )
 }
-
-hand_summary(data1_sentence_long)
+hand_summary(data3_sentence_long)
 ```
 
 ```{r, echo = FALSE}
 ggviolin(
-  data1_sentence_long, x = "Keyboard", y = "Press", fill = "Hand", position = position_dodge(1)) +
+  data3_sentence_long, x = "Keyboard", y = "Press", fill = "Hand", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Hand)),fill = "white", width = 0.1, position = position_dodge(1)) +
   scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
   labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
 ```
 
+Examining the distribution of Key Press Counts at the Per Hand level, we see a bias towards the right hand. This is in line with historical approaches to keyboard layout design that prioritized the right hand. The IME appears to have a slightly more equal median for both suggesting a more equitable layout regardless of an individual’s handedness. The distribution are all once again quite heavily left skewed with a large number of outliers.
+
 ```{r, echo=FALSE}
 kruskals <- function(df, group, eq) {
   sub <- subset(df, Keyboard == group)
   test <- kruskal_test(sub, eq)
   effsize <- kruskal_effsize(sub,eq)
-  
   return (data.frame(
     statistic = c(test$statistic),
     df = test$df,
@@ -188,10 +195,25 @@ kruskals <- function(df, group, eq) {
   ))
 }
 
+wilcoxs <- function(df, group, eq) {
+  sub <- subset(df, Keyboard == group)
+  test <- wilcox_test(sub,eq)
+  effsize <- wilcox_effsize(sub, eq, paired = TRUE)
+  return (data.frame(
+    group1 = test$group1,
+    group2 = test$group2,
+    statistic = test$statistic,
+    p = test$p,
+    R = effsize$effsize,
+    magnitude = effsize$magnitude
+  ))
+}
+
+# Now used
 hand_within<-function(df){
-  test1 <- kruskals(data1_sentence_long, "CRULP", Press ~ Hand)
-  test2 <- kruskals(data1_sentence_long, "IME",Press ~ Hand)
-  test3 <- kruskals(data1_sentence_long, "WINDOWS",Press ~ Hand)
+  test1 <- wilcoxs(df, "CRULP", Press ~ Hand)
+  test2 <- wilcoxs(df, "IME",Press ~ Hand)
+  test3 <- wilcoxs(df, "WINDOWS",Press ~ Hand)
   return (
     bind_rows(
     test1 %>% mutate(Keyboard = "CRULP"),
@@ -200,7 +222,7 @@ hand_within<-function(df){
     select(Keyboard, everything()))
 }
 
-hand_within(data1_sentence_long)
+hand_within(data3_sentence_long)
 ```
 
 ```{r, echo=FALSE}
@@ -208,12 +230,11 @@ k_pairwise_comp <- function(df, group, eq) {
   sub <- subset(df, Keyboard == group)
   test <- wilcox_test(sub,eq, p.adjust.method = "bonferroni")
   effsize <- wilcox_effsize(sub, eq, paired = TRUE)
-  
   return (data.frame(
     group1 = test$group1,
     group2 = test$group2,
     statistic = test$statistic,
-    p = test$p,
+    p = test$p.adj,
     R = effsize$effsize,
     magnitude = effsize$magnitude
   ))
@@ -231,22 +252,25 @@ hand_within_pwc<-function(df){
     select(Keyboard, everything()))
 }
 
-hand_within_pwc(data1_sentence_long)
+hand_within_pwc(data3_sentence_long)
 #Note: Approx 2 min with effect size
 ```
+
+Wilcoxon test detected large significant differences (Table5) between both hands for all keyboards confirming that the bias seen in the distribution is statistically significant. I made a mistake and initally used kurskal here. The code has been left here because the function definitions are needed later but the actual test code has been edited to use the proper method.
 
 ```{r, echo = FALSE}
 friedmans <- function(df, eq) {
   test <- friedman_test(df, eq)
   effsize <- friedman_effsize(df,eq)
-  
   return (data.frame(
     statistic = c(test$statistic),
     df = test$df,
     p = test$p,
     W = effsize$effsize,
     magnitude = effsize$magnitude
+
   ))
+
 }
 
 hand_btween<-function(df){
@@ -258,20 +282,18 @@ hand_btween<-function(df){
     test2 %>% mutate(Hand = "R"))%>%
     select(Hand, everything()))
 }
-
-hand_btween(data1_sentence)
+hand_btween(data3_sentence)
 ```
 
 ```{r, echo = FALSE}
 f_pairwise_comp <- function(df, eq) {
   test <- wilcox_test(df,eq, p.adjust.method = "bonferroni")
   effsize <- wilcox_effsize(df,eq, paired = TRUE)
-  
   return (data.frame(
     group1 = test$group1,
     group2 = test$group2,
     statistic = test$statistic,
-    p = test$p,
+    p = test$p.adj,
     R = effsize$effsize,
     magnitude = effsize$magnitude
   ))
@@ -287,34 +309,34 @@ hand_between_pwc<-function(df){
     select(Hand, everything()))
 }
 
-hand_between_pwc(data1_sentence)
+hand_between_pwc(data3_sentence)
 #Note: Approx 1 min with effect size
 ```
 
-### Key Press Distribution By Finger
+Friedman detected a moderated difference between keyboards for the left hand and small difference for the right. Pairwise comparison shows that for the left hand difference between all keyboards is statistically significant with a large difference between IME and the other keyboards. It is a similar story for the right hand side with all pairs being significantly different however the effect sizes are smaller.
+
+### Per Finger Level
 
 ```{r echo =" FALSE"}
+# Some set up.
 mapping <- c("L_Little" = "Little", "R_Little" = "Little",
              "L_Ring"   = "Ring",   "R_Ring"   = "Ring",
              "L_Middle" = "Middle", "R_Middle" = "Middle",
              "L_Index"  = "Index",  "R_Index"  = "Index")
-
-data1_unigram$FingerCombined <- mapping[match(data1_unigram$Finger, names(mapping))]
-data1_unigram$FingerCombined = factor(data1_unigram$FingerCombined, levels = c("Little", "Ring", "Middle","Index"), ordered = TRUE)
-
-data2_unigram$FingerCombined <- mapping[match(data2_unigram$Finger, names(mapping))]
-data2_unigram$FingerCombined = factor(data2_unigram$FingerCombined, levels = c("Little", "Ring", "Middle","Index"), ordered = TRUE)
-
-
-data1_sentence_long <- data1_sentence %>%
-  gather(key = "Finger", value = "Press", Press_Little, Press_Ring, Press_Middle, Press_Index) %>%
-  convert_as_factor(ID, Finger)
-
-data1_sentence_long$Finger <- factor(data1_sentence_long$Finger, levels = c("Press_Little", "Press_Ring", "Press_Middle", "Press_Index"))
+data3_unigram$FingerCombined <- mapping[match(data3_unigram$Finger, names(mapping))]
+data3_unigram$FingerCombined = factor(data3_unigram$FingerCombined, levels = c("Little", "Ring", "Middle","Index"), ordered = TRUE)
 ```
 
 ```{r echo =" FALSE"}
-ggplot(data1_sentence_long, aes(x=Keyboard, y=Press , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
+# More set up.
+data3_sentence_long <- data3_sentence %>%
+  gather(key = "Finger", value = "Press", Press_Little, Press_Ring, Press_Middle, Press_Index) %>%
+  convert_as_factor(X, Finger)
+data3_sentence_long$Finger <- factor(data3_sentence_long$Finger, levels = c("Press_Little", "Press_Ring", "Press_Middle", "Press_Index"))
+```
+
+```{r echo =" FALSE"}
+ggplot(data3_sentence_long, aes(x=Keyboard, y=Press , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")+labs(x = "Ket Press Count", y = "Keyboard")
 ```
 
 ```{r, echo = FALSE}
@@ -334,26 +356,31 @@ finger_summary<-function(df){
     summary1 %>% mutate(Keyboard = "CRULP"),
     summary2 %>% mutate(Keyboard = "IME"),
     summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
-    select(Keyboard, everything()))
+    select(Keyboard, everything())%>%
+      select(-variable,-n)
+    )
 }
 
-finger_summary(data1_sentence_long)
+finger_summary(data3_sentence_long)
 ```
 
 ```{r, echo = FALSE}
+
 ggviolin(
-  data1_sentence_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
+  data3_sentence_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
   scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
   labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
 ```
 
+Looking at the distribution of key presses per finger for each keyboard we see that WINDOWS has a lowest median for the little finger, followed by IME, then CRULP. For the ring finger IME has the lowest median followed by WINDOWS then CRULP. This suggests a better load distribution for both IME and WINDOWS as compared to CRULP because they place a greater emphasis on stronger fingers.
+
 ```{r, echo=FALSE}
 finger_within<-function(df){
-  test1 <- kruskals(data1_sentence_long, "CRULP", Press ~ Finger)
-  test2 <- kruskals(data1_sentence_long, "IME",Press ~ Finger)
-  test3 <- kruskals(data1_sentence_long, "WINDOWS",Press ~ Finger)
+  test1 <- kruskals(df, "CRULP", Press ~ Finger)
+  test2 <- kruskals(df, "IME",Press ~ Finger)
+  test3 <- kruskals(df, "WINDOWS",Press ~ Finger)
   return (
     bind_rows(
     test1 %>% mutate(Keyboard = "CRULP"),
@@ -362,7 +389,7 @@ finger_within<-function(df){
     select(Keyboard, everything()))
 }
 
-finger_within(data1_sentence_long)
+finger_within(data3_sentence_long)
 ```
 
 ```{r, echo=FALSE}
@@ -378,9 +405,11 @@ finger_within_pwc<-function(df){
     select(Keyboard, everything()))
 }
 
-finger_within_pwc(data1_sentence_long)
+finger_within_pwc(data3_sentence_long)
 #Note: Approx 4 min with effect size
 ```
+
+Large differences were detected by Kruskal-Wallace between fingers within each keyboard. Pairwise comparison with Wilcoxon confirms that for all keyboards there is a statistically significant difference between key press counts for each finger; with the exception of the ring and middle finger on WINDOWS where no significant difference was detected.
 
 ```{r, echo = FALSE}
 finger_btween<-function(df){
@@ -390,14 +419,13 @@ finger_btween<-function(df){
   test4 <- friedmans(df, Press_Index ~ Keyboard|ID)
   return (
     bind_rows(
-    test1 %>% mutate(Hand = "Little"),
-    test2 %>% mutate(Hand = "Ring"),
-    test3 %>% mutate(Hand = "Middle"),
-    test4 %>% mutate(Hand = "Index"))%>%
-    select(Hand, everything()))
+    test1 %>% mutate(Finger = "Little"),
+    test2 %>% mutate(Finger = "Ring"),
+    test3 %>% mutate(Finger = "Middle"),
+    test4 %>% mutate(Finger = "Index"))%>%
+    select(Finger, everything()))
 }
-
-finger_btween(data1_sentence)
+finger_btween(data3_sentence)
 ```
 
 ```{r, echo = FALSE}
@@ -414,32 +442,38 @@ finger_between_pwc<-function(df){
     test4 %>% mutate(Finger = "Index"))%>%
     select(Finger, everything()))
 }
-
-finger_between_pwc(data1_sentence)
+finger_between_pwc(data3_sentence)
 #Note: Approx 3 min with effect size
 ```
 
-## Typing Distance
+Freidman test detected significant differences between keyboards for all fingers. Pairwise comparison similarly detected significant differences between all pairs. This confirms our earlier impression that IME and WINDOWS have a better per finger key press distribution, as they emphasize stronger fingers like the middle and index.
+
+## Keyying Distance
 
 ------------------------------------------------------------------------
 
+### Keyboard Level
+
 ```{r echo =" FALSE"}
-ggplot(data1_sentence, aes(x=Keyboard, y=Dist , fill=Keyboard )) + geom_bar(stat = "summary", fun = "sum")
+ggplot(data3_sentence, aes(x=Keyboard, y=Dist , fill=Keyboard )) + geom_bar(stat = "summary", fun = "sum") + labs(x="Keyboard", y="Total Keyying Distance")
 ```
+Examining the total distance travelled by fingers for each keyboard in Figure 5, we see that CRULP scores highest followed by IME then WINDOWS. This suggests that even though IME has more total key presses than CRULP, they likely require less keyying distance. 
 
 ```{r, echo = FALSE}
-data1_sentence %>%
+data3_sentence %>%
   group_by(Keyboard) %>%
-  get_summary_stats(Dist, type = "common")
+  get_summary_stats(Dist, type = "common")%>%
+  select(-variable)
 ```
 
 ```{r, echo = FALSE}
-ggviolin(data1_sentence, x = "Keyboard", y = "Dist", fill = "Keyboard", add = "boxplot", add.params = list(fill = "white") ) + scale_y_log10() + labs (x= "Keyboard", y = "log10 scaled Key Press Count")
+ggviolin(data3_sentence, x = "Keyboard", y = "Dist", fill = "Keyboard", add = "boxplot", add.params = list(fill = "white") ) + scale_y_log10() + labs (x= "Keyboard", y = "log10 scaled Keyying Dist")
 ```
+Once again the distribution for all the keyboards is greatly skewed towards the left. There are also a large number of outliers that contribute to the high variability observed. The median for CRULP is the highest, followed by IME, then WINDOWS.
 
 ```{r, echo = FALSE}
-test<-friedman_test(data1_sentence , Dist ~ Keyboard | ID)
-effsize<-friedman_effsize(data1_sentence , Dist ~ Keyboard | ID)
+test<-friedman_test(data3_sentence , Dist ~ Keyboard | ID)
+effsize<-friedman_effsize(data3_sentence , Dist ~ Keyboard | ID)
 result <- data.frame(
   statistic = c(test$statistic),
   df = c(test$df),
@@ -451,8 +485,8 @@ result
 ```
 
 ```{r, echo = FALSE}
-test<-wilcox_test(data1_sentence, Dist ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
-effsize<-wilcox_effsize(data1_sentence,Dist ~ Keyboard, paired = TRUE)
+test<-wilcox_test(data3_sentence, Dist ~ Keyboard, paired = TRUE, p.adjust.method = "bonferroni")
+effsize<-wilcox_effsize(data3_sentence,Dist ~ Keyboard, paired = TRUE)
 result <- data.frame(
   group1 = test$group1,
   group2 = test$group2,
@@ -464,16 +498,19 @@ result <- data.frame(
 result
 ```
 
-### Key Press Distribution By Hand
+Friedman’s test detected large differences ( p <0.001, W = 0.6469) and pairwise comparison using Wilcox signed rank test with Bonferroni correction detected significant differences across all pairs. Given this we can say that CRULP indeed has the highest mean keyying distance followed by IME then WINDOWS, confirming our impression that despite having a higher number of key presses, IME potentially allows for less fatiguing operation by reducing the distance travelled.
+
+### Per Hand Level
 
 ```{r echo =" FALSE"}
-data1_sentence_long <- data1_sentence %>%
+# Some setup
+data3_sentence_long <- data3_sentence %>%
   gather(key = "Hand", value = "Dist", Dist_L, Dist_R) %>%
   convert_as_factor(ID, Hand)
 ```
 
 ```{r echo =" FALSE"}
-ggplot(data1_sentence_long, aes(x=Keyboard, y=Dist, fill=Hand)) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
+ggplot(data3_sentence_long, aes(x=Keyboard, y=Dist, fill=Hand)) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
 ```
 
 ```{r, echo = FALSE}
@@ -481,7 +518,7 @@ get_summary<-function(df,group,factor,value){
   sub_set <- subset(df, Keyboard == group)
   sub_set %>%
     group_by_at(factor) %>%
-    get_summary_stats("Press", type = "common")
+    get_summary_stats("Dist", type = "common")
 }
 
 hand_summary<-function(df){
@@ -493,26 +530,30 @@ hand_summary<-function(df){
     summary1 %>% mutate(Keyboard = "CRULP"),
     summary2 %>% mutate(Keyboard = "IME"),
     summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
-    select(Keyboard, everything()))
+    select(Keyboard, everything())%>%
+      select(-n)
+    )
 }
 
-hand_summary(data1_sentence_long)
+select(hand_summary(data3_sentence_long),-variable)
 ```
 
 ```{r, echo = FALSE}
 ggviolin(
-  data1_sentence_long, x = "Keyboard", y = "Dist", fill = "Hand", position = position_dodge(1)) +
+  data3_sentence_long, x = "Keyboard", y = "Dist", fill = "Hand", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Dist, group = interaction(Keyboard, Hand)),fill = "white", width = 0.1, position = position_dodge(1)) +
   scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
   labs(x = "Keyboard", y = "Log10 Scaled Key Dist Count")
 ```
+Looking at the distribution of keyying distance at the Per Hand level, we once again see a bias towards the right hand. Interestingly in terms of keyying distance WINDOWS appears to have the smallest difference in median between left and right hand, followed by CRULP then IME. This indicates that even though IME had a potentially more balanced split in terms of key press counts, that is not the case for keyying distance. Another thing of note is that the median for left hand on IME and Windows is very close (44.37, and 44.539 respectively). Similar case for median of right hand on IME and CRULP (159.54, and 159.451 respectively).
+
 
 ```{r, echo=FALSE}
 hand_within<-function(df){
-  test1 <- kruskals(data1_sentence_long, "CRULP", Dist ~ Hand)
-  test2 <- kruskals(data1_sentence_long, "IME",Dist ~ Hand)
-  test3 <- kruskals(data1_sentence_long, "WINDOWS",Dist ~ Hand)
+  test1 <- wilcoxs(df, "CRULP", Dist ~ Hand)
+  test2 <- wilcoxs(df, "IME",Dist ~ Hand)
+  test3 <- wilcoxs(df, "WINDOWS",Dist ~ Hand)
   return (
     bind_rows(
     test1 %>% mutate(Keyboard = "CRULP"),
@@ -520,26 +561,26 @@ hand_within<-function(df){
     test3 %>% mutate(Keyboard = "WINDOWS"))%>%
     select(Keyboard, everything()))
 }
-
-hand_within(data1_sentence_long)
+hand_within(data3_sentence_long)
 ```
+Wilcoxon test detected large significant differences (Table15) between both hands for all keyboards confirming that the bias seen in the distribution is statistically significant.
 
-```{r, echo=FALSE}
-hand_within_pwc<-function(df){
-  test1 <- k_pairwise_comp(df, "CRULP", Dist ~ Hand)
-  test2 <- k_pairwise_comp(df, "IME",Dist ~ Hand)
-  test3 <- k_pairwise_comp(df, "WINDOWS",Dist ~ Hand)
-  return (
-    bind_rows(
-    test1 %>% mutate(Keyboard = "CRULP"),
-    test2 %>% mutate(Keyboard = "IME"),
-    test3 %>% mutate(Keyboard = "WINDOWS"))%>%
-    select(Keyboard, everything()))
-}
-
-hand_within_pwc(data1_sentence_long)
-#Note: Approx 2 min with effect size
-```
+# ```{r, echo=FALSE}
+# hand_within_pwc<-function(df){
+#   test1 <- k_pairwise_comp(df, "CRULP", Dist ~ Hand)
+#   test2 <- k_pairwise_comp(df, "IME",Dist ~ Hand)
+#   test3 <- k_pairwise_comp(df, "WINDOWS",Dist ~ Hand)
+#   return (
+#     bind_rows(
+#     test1 %>% mutate(Keyboard = "CRULP"),
+#     test2 %>% mutate(Keyboard = "IME"),
+#     test3 %>% mutate(Keyboard = "WINDOWS"))%>%
+#     select(Keyboard, everything()))
+# }
+# hand_within_pwc(data1_sentence_long)
+# #Note: Approx 2 min with effect size
+# # NO NEED FOR KRUSKAL ONLY TWO GROUPS
+# ```
 
 ```{r, echo = FALSE}
 hand_btween<-function(df){
@@ -551,8 +592,7 @@ hand_btween<-function(df){
     test2 %>% mutate(Hand = "R"))%>%
     select(Hand, everything()))
 }
-
-hand_btween(data1_sentence)
+hand_btween(data3_sentence)
 ```
 
 ```{r, echo = FALSE}
@@ -565,51 +605,56 @@ hand_between_pwc<-function(df){
     test2 %>% mutate(Hand = "R"))%>%
     select(Hand, everything()))
 }
-
-hand_between_pwc(data1_sentence)
+hand_between_pwc(data3_sentence)
 #Note: Approx 1 min with effect size
 ```
 
-### Key Press Distribution By Finger
+Friedman detected a small difference between keyboards for the left hand. Pairwise comparisons show significant difference with large effect size between CRULP and the other keyboards. No significant difference was detected between IME and WINDOWS which agrees with our inspection of the distribution. 
+
+On the right hand, Friedman detected a large difference between keyboards. Pairwise comparison detected differences between WINDOWS and the other keyboards with large effect sizes. No significant difference was detected between IME and CRULP on this side, once again this agrees with our inspection of the distributions
+
+
+### Per Finger Level
 
 ```{r echo =" FALSE"}
-data1_sentence_long <- data1_sentence %>%
+# Some set up
+data3_sentence_long <- data3_sentence %>%
   gather(key = "Finger", value = "Dist", Dist_Little, Dist_Ring, Dist_Middle, Dist_Index) %>%
   convert_as_factor(ID, Finger)
-
-data1_sentence_long$Finger <- factor(data1_sentence_long$Finger, levels = c("Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index"))
+data3_sentence_long$Finger <- factor(data3_sentence_long$Finger, levels = c("Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index"))
 ```
 
 ```{r echo =" FALSE"}
-ggplot(data1_sentence_long, aes(x=Keyboard, y=Dist , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
+ggplot(data3_sentence_long, aes(x=Keyboard, y=Dist , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")
 ```
-
 ```{r, echo = FALSE}
 get_summary<-function(df,group,factor,value){
   sub_set <- subset(df, Keyboard == group)
   sub_set %>%
     group_by_at(factor) %>%
-    get_summary_stats("Dist", type = "common")
+    get_summary_stats(value, type = "common")
 }
 
 finger_summary<-function(df){
-  summary1 <- get_summary(df,"CRULP", "Finger", "Press")
-  summary2 <- get_summary(df,"IME", "Finger", "Press")
-  summary3 <- get_summary(df,"WINDOWS", "Finger", "Press")
+  summary1 <- get_summary(df,"CRULP", "Finger", "Dist")
+  summary2 <- get_summary(df,"IME", "Finger", "Dist")
+  summary3 <- get_summary(df,"WINDOWS", "Finger", "Dist")
   return (
     bind_rows(
     summary1 %>% mutate(Keyboard = "CRULP"),
     summary2 %>% mutate(Keyboard = "IME"),
     summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
-    select(Keyboard, everything()))
+    select(Keyboard, everything())%>%
+      select(-variable))
 }
 
-finger_summary(data1_sentence_long)
+finger_summary(data3_sentence_long)
 ```
+Looking at the distribution of keyying distance per finger for each keyboard we see that IME has a lowest median for the little finger, followed by WINDOWS, then CRULP. For the ring finger WINDOWS has the lowest median followed by IME then CRULP. This is interesting because it continues to support the argument the IME despite having higher stroke count, is potentially less fatiguing to type on because of better distribution of load as well as lower keyying distances on weaker fingers as compared to CRULP. Another interesting thing is the reversal on ring and little finger for both IME and WINDOWS. IME had higher key press counts for little finger but lower distance, lower key press counts for ring but higher distance. Which of these would have a greater impact on comfort? I'm leaning towards distance because again it captures more information about the stroke.
 
 ```{r, echo = FALSE}
 ggviolin(
-  data1_sentence_long, x = "Keyboard", y = "Dist", fill = "Finger", position = position_dodge(1)) +
+  data3_sentence_long, x = "Keyboard", y = "Dist", fill = "Finger", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Dist, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
   scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
@@ -618,9 +663,9 @@ ggviolin(
 
 ```{r, echo=FALSE}
 finger_within<-function(df){
-  test1 <- kruskals(data1_sentence_long, "CRULP", Dist ~ Finger)
-  test2 <- kruskals(data1_sentence_long, "IME",Dist ~ Finger)
-  test3 <- kruskals(data1_sentence_long, "WINDOWS",Dist ~ Finger)
+  test1 <- kruskals(df, "CRULP", Dist ~ Finger)
+  test2 <- kruskals(df, "IME",Dist ~ Finger)
+  test3 <- kruskals(df, "WINDOWS",Dist ~ Finger)
   return (
     bind_rows(
     test1 %>% mutate(Keyboard = "CRULP"),
@@ -628,8 +673,7 @@ finger_within<-function(df){
     test3 %>% mutate(Keyboard = "WINDOWS"))%>%
     select(Keyboard, everything()))
 }
-
-finger_within(data1_sentence_long)
+finger_within(data3_sentence_long)
 ```
 
 ```{r, echo=FALSE}
@@ -644,10 +688,10 @@ finger_within_pwc<-function(df){
     test3 %>% mutate(Keyboard = "WINDOWS"))%>%
     select(Keyboard, everything()))
 }
-
-finger_within_pwc(data1_sentence_long)
+finger_within_pwc(data3_sentence_long)
 #Note: Approx 4 min with effect size
 ```
+Large differences were detected by Kruskal-Wallace between fingers within each keyboard. Pairwise comparison with Wilcoxon confirms that for all keyboards there is a statistically significant difference between key press counts for each finger.
 
 ```{r, echo = FALSE}
 finger_btween<-function(df){
@@ -663,8 +707,7 @@ finger_btween<-function(df){
     test4 %>% mutate(Hand = "Index"))%>%
     select(Hand, everything()))
 }
-
-finger_btween(data1_sentence)
+finger_btween(data3_sentence)
 ```
 
 ```{r, echo = FALSE}
@@ -681,21 +724,486 @@ finger_between_pwc<-function(df){
     test4 %>% mutate(Finger = "Index"))%>%
     select(Finger, everything()))
 }
-
-finger_between_pwc(data1_sentence)
+finger_between_pwc(data3_sentence)
 #Note: Approx 3 min with effect size
 ```
 
-## Stroke Analysis
+Freidman test detected significant differences between keyboards for all fingers. Pairwise comparison similarly detected significant differences between all pairs except the ring finger for IME and WINDOWS. This confirms our impression that IME places a significantly smaller burden on the little finger. For the ring finger IME places a lower burden than the CRULP and the same burden as WINDOWS. Taken together with our Key press analysis this makes a strong argument for the usability of the IME keyboard.
 
-------------------------------------------------------------------------
+<!-- ## Stroke Analysis -->
 
-### Same Hand
+<!-- ------------------------------------------------------------------------ -->
 
-### Same Finger
+<!-- ### Same Hand -->
 
-### Same Key
+<!-- ```{r echo =" FALSE"} -->
 
-### Reach
+<!-- data1_sentence_long <- data1_sentence %>% -->
 
-### Hurdle
+<!--   gather(key = "Stroke", value = "Press", SameHand, SameFinger, SameKey, Reach, Hurdle) %>% -->
+
+<!--   convert_as_factor(ID, Stroke) -->
+
+<!-- data1_sentence_long$Stroke <- factor(data1_sentence_long$Stroke, levels = c("SameHand", "SameFinger", "SameKey", "Reach", "Hurdle")) -->
+
+<!-- ``` -->
+
+<!-- ```{r echo =" FALSE"} -->
+
+<!-- ggplot(data1_sentence_long, aes(x=Keyboard, y=Press , fill=Stroke )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2") -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo = FALSE} -->
+
+<!-- get_summary<-function(df,group,factor,value){ -->
+
+<!--   sub_set <- subset(df, Keyboard == group) -->
+
+<!--   sub_set %>% -->
+
+<!--     group_by_at(factor) %>% -->
+
+<!--     get_summary_stats(value, type = "common") -->
+
+<!-- } -->
+
+<!-- finger_summary<-function(df){ -->
+
+<!--   summary1 <- get_summary(df,"CRULP", "Stroke", "Press") -->
+
+<!--   summary2 <- get_summary(df,"IME", "Stroke", "Press") -->
+
+<!--   summary3 <- get_summary(df,"WINDOWS", "Stroke", "Press") -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     summary1 %>% mutate(Keyboard = "CRULP"), -->
+
+<!--     summary2 %>% mutate(Keyboard = "IME"), -->
+
+<!--     summary3 %>% mutate(Keyboard = "WINDOWS"))%>% -->
+
+<!--     select(Keyboard, everything())%>% -->
+
+<!--       select(-variable)) -->
+
+<!-- } -->
+
+<!-- finger_summary(data1_sentence_long) -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo = FALSE} -->
+
+<!-- ggviolin( -->
+
+<!--   data1_sentence_long, x = "Keyboard", y = "Press", fill = "Stroke", position = position_dodge(1)) + -->
+
+<!--   geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Stroke)),fill = "white", width = 0.1, position = position_dodge(1)) + -->
+
+<!--   scale_y_log10() + -->
+
+<!--   scale_fill_brewer(palette = "Set2") + -->
+
+<!--   labs(x = "Keyboard", y = "Log10 Scaled Key Dist Count") -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo = FALSE} -->
+
+<!-- repition_btween<-function(df){ -->
+
+<!--   test1 <- friedmans(df, SameHand ~ Keyboard|ID) -->
+
+<!--   test2 <- friedmans(df, SameFinger ~ Keyboard|ID) -->
+
+<!--   test3 <- friedmans(df, SameKey ~ Keyboard|ID) -->
+
+<!--   test4 <- friedmans(df, Reach ~ Keyboard|ID) -->
+
+<!--   test5 <- friedmans(df, Hurdle ~ Keyboard|ID) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(StrokeRepition = "SameHand"), -->
+
+<!--     test2 %>% mutate(StrokeRepition = "SameFinger"), -->
+
+<!--     test3 %>% mutate(StrokeRepition = "SameKey"), -->
+
+<!--     test4 %>% mutate(StrokeRepition = "Reach"), -->
+
+<!--     test5 %>% mutate(StrokeRepition = "Hurdle"))%>% -->
+
+<!--     select(StrokeRepition, everything())) -->
+
+<!-- } -->
+
+<!-- repition_btween(data1_sentence) -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo = FALSE} -->
+
+<!-- repition_between_pwc<-function(df){ -->
+
+<!--   test1 <- f_pairwise_comp(df, SameHand ~ Keyboard) -->
+
+<!--   test2 <- f_pairwise_comp(df, SameFinger ~ Keyboard) -->
+
+<!--   test3 <- f_pairwise_comp(df, SameKey ~ Keyboard) -->
+
+<!--   test4 <- f_pairwise_comp(df, Reach ~ Keyboard) -->
+
+<!--   test5 <- f_pairwise_comp(df, Hurdle ~ Keyboard) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(StrokeRepition = "SameHand"), -->
+
+<!--     test2 %>% mutate(StrokeRepition = "SameFinger"), -->
+
+<!--     test3 %>% mutate(StrokeRepition = "SameKey"), -->
+
+<!--     test4 %>% mutate(StrokeRepition = "Reach"), -->
+
+<!--     test5 %>% mutate(StrokeRepition = "Hurdle"))%>% -->
+
+<!--     select(StrokeRepition, everything())) -->
+
+<!-- } -->
+
+<!-- repition_between_pwc(data1_sentence) -->
+
+<!-- #Note: Approx 3 min with effect size -->
+
+<!-- ``` -->
+
+<!-- ## Some Failed Explorations -->
+
+<!-- ```{r, echo=FALSE} -->
+
+<!-- # might be good but no idea about residuals or model fit -->
+
+<!-- library("WRS2") -->
+
+<!-- bwtrim(Press ~ Keyboard*Stroke, id = ID, data = data1_sentence_long) -->
+
+<!-- # also i cant figure out how post hocs work -->
+
+<!-- # Ref: -->
+
+<!-- # https://www.researchgate.net/profile/Jos-Feys/post/Whats_an_alternative_to_the_Two-Way_ANOVA_for_non-parametric_data/attachment/61ecf5a8d248c650edc223f2/AS%3A1115298686078976%401642919336087/download/feys.pdf -->
+
+<!-- # https://cran.r-project.org/web/packages/WRS2/vignettes/WRS2.pdf -->
+
+<!-- # https://www.researchgate.net/publication/333525893_Robust_statistical_methods_in_R_using_the_WRS2_package -->
+
+<!-- # https://eds-p-ebscohost-com.login.ezproxy.library.ualberta.ca/eds/detail/detail?vid=0&sid=9deb805d-6099-4267-9607-8f6cfef9d079%40redis&bdata=JnNpdGU9ZWRzLWxpdmUmc2NvcGU9c2l0ZQ%3d%3d#db=e000xna&AN=453842 (Chapter 8.6.2) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+
+<!-- # also based on koji yatani's guide -->
+
+<!-- #subset_data <- data1_sentence[, c("ID", "Keyboard", "Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index", "Dist")] -->
+
+<!-- #fa <- factanal(data, factor=1) -->
+
+<!-- new_df <- data1_sentence %>% -->
+
+<!--   group_by(Keyboard) %>% -->
+
+<!--   summarise(across(c(SameFinger, SameHand, SameKey, Hurdle, Reach), sum)) -->
+
+<!-- new_df<- as.data.frame(t(new_df)) -->
+
+<!-- colnames(new_df) <- as.character(new_df[1, ]) -->
+
+<!-- new_df <- new_df[-1, ] -->
+
+<!-- new_df[] <- lapply(new_df, as.integer) -->
+
+<!-- new_df -->
+
+<!-- #install.packages("FactoMineR") -->
+
+<!-- library("FactoMineR") -->
+
+<!-- CA(new_df) -->
+
+<!-- chisq.test(new_df) -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo=FALSE} -->
+
+<!-- # based on koji yatani's guide -->
+
+<!-- # https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13434 -->
+
+<!-- library(lme4) -->
+
+<!-- library(lmerTest) -->
+
+<!-- model <- lmer(StrokeCount ~ Keyboard + SameHand + SameFinger + SameKey + Reach + Hurdle+ (1|ID), data=data1_sentence, REML=T) -->
+
+<!-- summary(model) -->
+
+<!-- source("http://www.math.mcmaster.ca/~bolker/classes/s756/labs/coefplot_new.R") -->
+
+<!-- coefplot(model) -->
+
+<!-- vif.mer <- function (fit) { -->
+
+<!--     ## adapted from rms::vif -->
+
+<!--     v <- vcov(fit) -->
+
+<!--     nam <- names(fixef(fit)) -->
+
+<!--     ## exclude intercepts -->
+
+<!--     ns <- sum(1 * (nam == "Intercept" | nam == "(Intercept)")) -->
+
+<!--     if (ns > 0) { -->
+
+<!--         v <- v[-(1:ns), -(1:ns), drop = FALSE] -->
+
+<!--         nam <- nam[-(1:ns)] -->
+
+<!--     } -->
+
+<!--     d <- diag(v)^0.5 -->
+
+<!--     v <- diag(solve(v/(d %o% d))) -->
+
+<!--     names(v) <- nam -->
+
+<!--     v -->
+
+<!-- } -->
+
+<!-- vif.mer(model) -->
+
+<!-- panel.cor <- function(x, y, digits=3, prefix="", cex.cor, ...) -->
+
+<!-- { -->
+
+<!--    usr <- par("usr"); on.exit(par(usr)) -->
+
+<!--    par(usr = c(0, 1, 0, 1)) -->
+
+<!--    r <- cor(x, y,use="complete.obs") -->
+
+<!--    txt <- format(c(r, 0.123456789), digits=digits)[1] -->
+
+<!--    prefix <- "r = " -->
+
+<!--    prefix2 <- "\nCI lower = " -->
+
+<!--    prefix3 <- "\nCI upper = " -->
+
+<!--    prefix4 <- "\np = " -->
+
+<!--    rc <- cor.test(x,y) -->
+
+<!--    rci <- rc$conf.int -->
+
+<!--    rcp <- rc$p.value -->
+
+<!--    star <- symnum(rcp, corr = FALSE, na = FALSE,  -->
+
+<!--                  cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), -->
+
+<!--                  symbols = c("***", "**", "*", ".", " "))  -->
+
+<!--    txt2 <- format(c(rci, 0.123456789), digits=digits)[1] -->
+
+<!--    txt3 <- format(c(rci, 0.123456789), digits=digits)[2] -->
+
+<!--    txt4 <- format(c(rcp, 0.123456789), digits=digits)[1] -->
+
+<!--    txt <- paste(prefix, txt, prefix2, txt2, prefix3, txt3, prefix4, txt4, " ", star, sep="") -->
+
+<!--    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt) -->
+
+<!--    text(0.5, 0.5, txt, cex = 1) -->
+
+<!-- } -->
+
+<!-- pairs(data1_sentence[,2:7], lower.panel=panel.smooth, upper.panel=panel.cor) -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo=FALSE} -->
+
+<!-- #install.packages("MASS") -->
+
+<!-- library(MASS) -->
+
+<!-- data1_sentence_test <- data1_sentence_long -->
+
+<!-- data1_sentence_test$Press <- data1_sentence_test$Press+1 -->
+
+<!-- b<-boxcox(lm(data1_sentence_test$Press ~ 1)) -->
+
+<!-- lambda <- b$x[which.max(b$y)] -->
+
+<!-- data1_sentence_test$Press_box<- (data1_sentence_test$Press ^ lambda - 1) / lambda -->
+
+<!-- data1_sentence_test$Press_log<- log(data1_sentence_test$Press) -->
+
+<!-- data1_sentence_test %>% -->
+
+<!--   group_by(Keyboard, Finger) %>% -->
+
+<!--   get_summary_stats(Press_log, type = "mean_sd") -->
+
+<!-- #data1_sentence_test$Press <- Winsorize(data1_sentence_test$Press,val = quantile(data1_sentence_test$Press,  probs = c(0.005,0.995))) -->
+
+<!-- bxp <- ggboxplot( -->
+
+<!--   data1_sentence_test, x = "Keyboard", y = "Press_box", -->
+
+<!--   color = "Finger", palette = "jco" -->
+
+<!--   ) -->
+
+<!-- bxp -->
+
+<!-- ggplot(data1_sentence_test, aes(x = Press_box, fill=Keyboard)) +  -->
+
+<!--   geom_histogram(position="identity", colour="grey40")+ -->
+
+<!--   facet_grid(Finger ~ .) -->
+
+<!-- ggviolin( -->
+
+<!--   data1_sentence_test, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) + -->
+
+<!--   geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) + -->
+
+<!--   scale_y_log10() + -->
+
+<!--   scale_fill_brewer(palette = "Set2") + -->
+
+<!--   labs(x = "Keyboard", y = "Log10 Scaled Key Press Count") -->
+
+<!-- res.aov <- anova_test( -->
+
+<!--   data = data1_sentence_test, dv = Press_log, wid = ID, -->
+
+<!--   within = c(Keyboard, Finger) -->
+
+<!--   ) -->
+
+<!-- get_anova_table(res.aov) -->
+
+<!-- one.way <- data1_sentence_test %>% -->
+
+<!--   group_by(Finger) %>% -->
+
+<!--   anova_test(dv = Press_log, wid = ID, within = Keyboard) %>% -->
+
+<!--   get_anova_table() %>% -->
+
+<!--   adjust_pvalue(method = "bonferroni") -->
+
+<!-- one.way -->
+
+<!-- pwc <- data1_sentence_test %>% -->
+
+<!--   group_by(Finger) %>% -->
+
+<!--   pairwise_t_test( -->
+
+<!--     Press_log ~ Keyboard, paired = TRUE, -->
+
+<!--     p.adjust.method = "bonferroni" -->
+
+<!--     ) -->
+
+<!-- pwc -->
+
+<!-- res.aov$residuals -->
+
+<!-- ``` -->
+
+<!-- ```{r echo =" FALSE"} -->
+
+<!-- data1_bigram_long <- data1_bigram %>% -->
+
+<!--   gather(key = "Finger", value = "Press", Press_Little, Press_Ring, Press_Middle, Press_Index) %>% -->
+
+<!--   convert_as_factor(X, Finger) -->
+
+<!-- data1_bigram_long$Finger <- factor(data1_bigram_long$Finger, levels = c("Press_Little", "Press_Ring", "Press_Middle", "Press_Index")) -->
+
+<!-- data1_bigram_long$Press<-data1_bigram_long$Press* data1_bigram_long$Frequency -->
+
+<!-- finger_btween<-function(df){ -->
+
+<!--   test1 <- friedmans(df, (Press_Little*Frequency) ~ Keyboard|X) -->
+
+<!--   test2 <- friedmans(df, (Press_Ring*Frequency) ~ Keyboard|X) -->
+
+<!--   test3 <- friedmans(df, (Press_Middle*Frequency) ~ Keyboard|X) -->
+
+<!--   test4 <- friedmans(df, (Press_Index*Frequency) ~ Keyboard|X) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(Hand = "Little"), -->
+
+<!--     test2 %>% mutate(Hand = "Ring"), -->
+
+<!--     test3 %>% mutate(Hand = "Middle"), -->
+
+<!--     test4 %>% mutate(Hand = "Index"))%>% -->
+
+<!--     select(Hand, everything())) -->
+
+<!-- } -->
+
+<!-- finger_btween(data1_bigram) -->
+
+<!-- finger_between_pwc<-function(df){ -->
+
+<!--   test1 <- f_pairwise_comp(df, (Press_Little*Frequency) ~ Keyboard) -->
+
+<!--   test2 <- f_pairwise_comp(df, (Press_Ring*Frequency) ~ Keyboard) -->
+
+<!--   test3 <- f_pairwise_comp(df, (Press_Middle*Frequency) ~ Keyboard) -->
+
+<!--   test4 <- f_pairwise_comp(df, (Press_Index*Frequency) ~ Keyboard) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(Finger = "Little"), -->
+
+<!--     test2 %>% mutate(Finger = "Ring"), -->
+
+<!--     test3 %>% mutate(Finger = "Middle"), -->
+
+<!--     test4 %>% mutate(Finger = "Index"))%>% -->
+
+<!--     select(Finger, everything())) -->
+
+<!-- } -->
+
+<!-- finger_between_pwc(data1_sentence) -->
+
+<!-- ``` -->

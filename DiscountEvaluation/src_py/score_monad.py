@@ -102,6 +102,7 @@ def main():
     print("Monad")
     score("dakshina_dataset")
     score("roUrParl_dataset")
+    score("combined_dataset")
 
 if __name__ == "__main__":
     main()

@@ -56,9 +56,10 @@ if $transform; then
     echo "Transforming..."
     # transform
     python ./DiscountEvaluation/src_py/transform_sentence.py > "$LOG_PATH/3_sentence.log"
+    python ./DiscountEvaluation/src_py/generate_subset.py
     python ./DiscountEvaluation/src_py/transform_keystroke.py
     python ./DiscountEvaluation/src_py/transform_dyad.py
-    python ./DiscountEvaluation/src_py/corpus_stats.py > "$LOG_PATH/4_stats.log"
+    python ./DiscountEvaluation/src_py/stats_corpus.py > "$LOG_PATH/4_stats.log"
 fi
 
 if $score; then

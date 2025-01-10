@@ -72,6 +72,7 @@ def main():
     print("Dyad")
     score("dakshina_dataset")
     score("roUrParl_dataset")
+    score("combined_dataset")
 
 if __name__ == "__main__":
     main()

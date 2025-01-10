@@ -62,6 +62,9 @@ def main():
     # Dataset: Roman Urdu Parl
     print("Keystroke Transformation: roUrParl")
     transform_keystrokes("roUrParl_dataset")
+    # Dataset: Combined
+    print("Keystroke Transformation: roUrParl")
+    transform_keystrokes("combined_dataset")
 
 if __name__ == "__main__":
     main()

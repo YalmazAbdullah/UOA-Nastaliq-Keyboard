@@ -76,6 +76,8 @@ def main():
     transform("dakshina_dataset",True)
     print("Dyad Transformation: roUrParl")
     transform("roUrParl_dataset",True)
+    print("Dyad Transformation: combined")
+    transform("combined_dataset",True)
     
 
 if __name__ == "__main__":

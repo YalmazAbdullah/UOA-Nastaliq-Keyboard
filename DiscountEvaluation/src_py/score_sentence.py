@@ -57,6 +57,8 @@ def main():
     score("dakshina_dataset")
     print("=============Dataset: Roman Urdu Parl=============")
     score("roUrParl_dataset")
+    print("=============Dataset: Combined=============")
+    score("combined_dataset")
 
 if __name__ == "__main__":
     main()

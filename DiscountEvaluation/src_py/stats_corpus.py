@@ -100,6 +100,12 @@ def main():
     get_stats(native)
     print("-------------Roman-------------")
     get_stats(roman)
+    print("=============Dataset: Combined=============")
+    native, roman = read_tsv("transformed/sentences/combined_dataset")
+    print("-------------Urdu-------------")
+    get_stats(native)
+    print("-------------Roman-------------")
+    get_stats(roman)
     
 if __name__ == "__main__":
     main()

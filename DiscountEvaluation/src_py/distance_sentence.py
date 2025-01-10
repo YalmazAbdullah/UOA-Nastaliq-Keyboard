@@ -52,6 +52,8 @@ def main():
     edit_dist("dakshina_dataset")
     print("=============Dataset: Roman Urdu Parl=============")
     edit_dist("roUrParl_dataset")
+    print("=============Dataset: Combined=============")
+    edit_dist("combined_dataset")
 
 if __name__ == "__main__":
     main()
