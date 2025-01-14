@@ -1,0 +1,448 @@
+---
+title: "Experiments"
+output: html_document
+---
+
+# Experiments
+
+```{r, echo=FALSE}
+# install.packages("kableExtra")
+# install.packages("languageR")
+# install.packages("MASS")
+library(tidyverse)
+library(rstatix)
+library(ggplot2)
+library(ggpubr)
+library(knitr)
+library(MASS)
+library(kableExtra)
+knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
+```
+
+```{r}
+#data1_unigram <- read.csv("../data/monad/dakshina_dataset.csv")
+#data1_bigram <- read.csv("../data/dyad/dakshina_dataset.csv")
+#data1_sentence <- read.csv("../data/sentence/score/dakshina_dataset.csv")
+#data1_levenshtine <- read.csv("../data/sentence/distance/dakshina_dataset.csv")
+
+#data2_unigram <- read.csv("../data/monad/roUrParl_dataset.csv")
+#data2_bigram <- read.csv("../data/dyad/roUrParl_dataset.csv")
+#data2_sentence <- read.csv("../data/sentence/score/roUrParl_dataset.csv")
+#data2_levenshtine <- read.csv("../data/sentence/distance/roUrParl_dataset.csv")
+
+data3_unigram <- read.csv("../data/monad/combined_dataset.csv")
+data3_bigram <- read.csv("../data/dyad/combined_dataset.csv")
+data3_sentence <- read.csv("../data/sentence/score/combined_dataset.csv")
+data3_levenshtine <- read.csv("../data/sentence/distance/combined_dataset.csv")
+```
+
+```{r, echo=FALSE}
+# Calculating some additional stuff for help in analysis
+combine_fingers <- function(df) {
+  # Combined finger press
+  df$Press_Little <- df$Press_L_Little + df$Press_R_Little
+  df$Press_Ring   <- df$Press_L_Ring   + df$Press_R_Ring
+  df$Press_Middle <- df$Press_L_Middle + df$Press_R_Middle
+  df$Press_Index  <- df$Press_L_Index  + df$Press_R_Index
+  
+  # Combined finger distance
+  df$Dist_Little  <- df$Dist_L_Little + df$Dist_R_Little
+  df$Dist_Ring    <- df$Dist_L_Ring   + df$Dist_R_Ring
+  df$Dist_Middle  <- df$Dist_L_Middle + df$Dist_R_Middle
+  df$Dist_Index   <- df$Dist_L_Index  + df$Dist_R_Index
+  
+  # Combined hand press
+  df$Press_L <- df$Press_L_Little + df$Press_L_Ring + df$Press_L_Middle + df$Press_L_Index
+  df$Press_R <- df$Press_R_Little + df$Press_R_Ring + df$Press_R_Middle + df$Press_R_Index
+  
+  # Combined hand distance
+  df$Dist_L <- df$Dist_L_Little + df$Dist_L_Ring + df$Dist_L_Middle + df$Dist_L_Index
+  df$Dist_R <- df$Dist_R_Little + df$Dist_R_Ring + df$Dist_R_Middle + df$Dist_R_Index
+  
+  # Total press
+  df$Press <- df$Press_L + df$Press_R
+  
+  # Total distance
+  df$Dist <- df$Dist_L + df$Dist_R
+  return(df)
+}
+
+#data1_bigram<-combine_fingers(data1_bigram)
+#data2_bigram<-combine_fingers(data2_bigram)
+data3_bigram<-combine_fingers(data3_bigram)
+
+#data1_sentence<-combine_fingers(data1_sentence)
+#data2_sentence<-combine_fingers(data2_sentence)
+data3_sentence<-combine_fingers(data3_sentence)
+```
+
+```{r, echo=FALSE}
+# Some set up.
+mapping <- c("L_Little" = "Little", "R_Little" = "Little",
+             "L_Ring"   = "Ring",   "R_Ring"   = "Ring",
+             "L_Middle" = "Middle", "R_Middle" = "Middle",
+             "L_Index"  = "Index",  "R_Index"  = "Index")
+data3_unigram$FingerCombined <- mapping[match(data3_unigram$Finger, names(mapping))]
+data3_unigram$FingerCombined = factor(data3_unigram$FingerCombined, levels = c("Little", "Ring", "Middle","Index"), ordered = TRUE)
+
+data3_sentence_long <- data3_sentence %>%
+  gather(key = "Finger", value = "Dist", Dist_Little, Dist_Ring, Dist_Middle, Dist_Index) %>%
+  convert_as_factor(X, Finger)
+data3_sentence_long$Finger <- factor(data3_sentence_long$Finger, levels = c("Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index"))
+```
+
+## Examining Correction Options
+
+```{r,echo=FALSE}
+data1_transform <- data1_sentence_long
+
+data1_sentence_test$Press <- data1_sentence_test$Press+1
+
+b<-boxcox(lm(data1_sentence_test$Press ~ 1))
+
+lambda <- b$x[which.max(b$y)]
+
+data1_sentence_test$Press_box<- (data1_sentence_test$Press ^ lambda - 1) / lambda
+
+data1_sentence_test$Press_log<- log(data1_sentence_test$Press)
+
+data1_sentence_test %>%
+
+  group_by(Keyboard, Finger) %>%
+
+  get_summary_stats(Press_log, type = "mean_sd")
+```
+
+## Robust Two Way Repeated Measures ANOVA.
+
+Setting up the data
+
+Examining the log(x+1) transformed data we can see that
+
+```{r, echo = FALSE}
+ggviolin(
+  data3_sentence_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
+  geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
+```
+
+```{r, echo=FALSE}
+
+# might be good but no idea about residuals or model fit
+
+library("WRS2")
+
+bwtrim(Press ~ Keyboard*Stroke, id = ID, data = data1_sentence_long)
+
+# also i cant figure out how post hocs work
+
+# Ref:
+
+# https://www.researchgate.net/profile/Jos-Feys/post/Whats_an_alternative_to_the_Two-Way_ANOVA_for_non-parametric_data/attachment/61ecf5a8d248c650edc223f2/AS%3A1115298686078976%401642919336087/download/feys.pdf
+
+# https://cran.r-project.org/web/packages/WRS2/vignettes/WRS2.pdf
+
+# https://www.researchgate.net/publication/333525893_Robust_statistical_methods_in_R_using_the_WRS2_package
+
+# https://eds-p-ebscohost-com.login.ezproxy.library.ualberta.ca/eds/detail/detail?vid=0&sid=9deb805d-6099-4267-9607-8f6cfef9d079%40redis&bdata=JnNpdGU9ZWRzLWxpdmUmc2NvcGU9c2l0ZQ%3d%3d#db=e000xna&AN=453842 (Chapter 8.6.2)
+
+```
+
+<!-- ```{r} -->
+
+<!-- # also based on koji yatani's guide -->
+
+<!-- #subset_data <- data1_sentence[, c("ID", "Keyboard", "Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index", "Dist")] -->
+
+<!-- #fa <- factanal(data, factor=1) -->
+
+<!-- new_df <- data1_sentence %>% -->
+
+<!--   group_by(Keyboard) %>% -->
+
+<!--   summarise(across(c(SameFinger, SameHand, SameKey, Hurdle, Reach), sum)) -->
+
+<!-- new_df<- as.data.frame(t(new_df)) -->
+
+<!-- colnames(new_df) <- as.character(new_df[1, ]) -->
+
+<!-- new_df <- new_df[-1, ] -->
+
+<!-- new_df[] <- lapply(new_df, as.integer) -->
+
+<!-- new_df -->
+
+<!-- #install.packages("FactoMineR") -->
+
+<!-- library("FactoMineR") -->
+
+<!-- CA(new_df) -->
+
+<!-- chisq.test(new_df) -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo=FALSE} -->
+
+<!-- # based on koji yatani's guide -->
+
+<!-- # https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13434 -->
+
+<!-- library(lme4) -->
+
+<!-- library(lmerTest) -->
+
+<!-- model <- lmer(StrokeCount ~ Keyboard + SameHand + SameFinger + SameKey + Reach + Hurdle+ (1|ID), data=data1_sentence, REML=T) -->
+
+<!-- summary(model) -->
+
+<!-- source("http://www.math.mcmaster.ca/~bolker/classes/s756/labs/coefplot_new.R") -->
+
+<!-- coefplot(model) -->
+
+<!-- vif.mer <- function (fit) { -->
+
+<!--     ## adapted from rms::vif -->
+
+<!--     v <- vcov(fit) -->
+
+<!--     nam <- names(fixef(fit)) -->
+
+<!--     ## exclude intercepts -->
+
+<!--     ns <- sum(1 * (nam == "Intercept" | nam == "(Intercept)")) -->
+
+<!--     if (ns > 0) { -->
+
+<!--         v <- v[-(1:ns), -(1:ns), drop = FALSE] -->
+
+<!--         nam <- nam[-(1:ns)] -->
+
+<!--     } -->
+
+<!--     d <- diag(v)^0.5 -->
+
+<!--     v <- diag(solve(v/(d %o% d))) -->
+
+<!--     names(v) <- nam -->
+
+<!--     v -->
+
+<!-- } -->
+
+<!-- vif.mer(model) -->
+
+<!-- panel.cor <- function(x, y, digits=3, prefix="", cex.cor, ...) -->
+
+<!-- { -->
+
+<!--    usr <- par("usr"); on.exit(par(usr)) -->
+
+<!--    par(usr = c(0, 1, 0, 1)) -->
+
+<!--    r <- cor(x, y,use="complete.obs") -->
+
+<!--    txt <- format(c(r, 0.123456789), digits=digits)[1] -->
+
+<!--    prefix <- "r = " -->
+
+<!--    prefix2 <- "\nCI lower = " -->
+
+<!--    prefix3 <- "\nCI upper = " -->
+
+<!--    prefix4 <- "\np = " -->
+
+<!--    rc <- cor.test(x,y) -->
+
+<!--    rci <- rc$conf.int -->
+
+<!--    rcp <- rc$p.value -->
+
+<!--    star <- symnum(rcp, corr = FALSE, na = FALSE,  -->
+
+<!--                  cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), -->
+
+<!--                  symbols = c("***", "**", "*", ".", " "))  -->
+
+<!--    txt2 <- format(c(rci, 0.123456789), digits=digits)[1] -->
+
+<!--    txt3 <- format(c(rci, 0.123456789), digits=digits)[2] -->
+
+<!--    txt4 <- format(c(rcp, 0.123456789), digits=digits)[1] -->
+
+<!--    txt <- paste(prefix, txt, prefix2, txt2, prefix3, txt3, prefix4, txt4, " ", star, sep="") -->
+
+<!--    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt) -->
+
+<!--    text(0.5, 0.5, txt, cex = 1) -->
+
+<!-- } -->
+
+<!-- pairs(data1_sentence[,2:7], lower.panel=panel.smooth, upper.panel=panel.cor) -->
+
+<!-- ``` -->
+
+```{r, echo=FALSE}
+
+#install.packages("MASS")
+
+library(MASS)
+
+data1_sentence_test <- data1_sentence_long
+
+data1_sentence_test$Press <- data1_sentence_test$Press+1
+
+b<-boxcox(lm(data1_sentence_test$Press ~ 1))
+
+lambda <- b$x[which.max(b$y)]
+
+data1_sentence_test$Press_box<- (data1_sentence_test$Press ^ lambda - 1) / lambda
+
+data1_sentence_test$Press_log<- log(data1_sentence_test$Press)
+
+data1_sentence_test %>%
+
+  group_by(Keyboard, Finger) %>%
+
+  get_summary_stats(Press_log, type = "mean_sd")
+
+#data1_sentence_test$Press <- Winsorize(data1_sentence_test$Press,val = quantile(data1_sentence_test$Press,  probs = c(0.005,0.995)))
+
+bxp <- ggboxplot(
+
+  data1_sentence_test, x = "Keyboard", y = "Press_box",
+
+  color = "Finger", palette = "jco"
+
+  )
+
+bxp
+
+ggplot(data1_sentence_test, aes(x = Press_box, fill=Keyboard)) +
+
+  geom_histogram(position="identity", colour="grey40")+
+
+  facet_grid(Finger ~ .)
+
+ggviolin(
+
+  data1_sentence_test, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
+
+  geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+
+  scale_y_log10() +
+
+  scale_fill_brewer(palette = "Set2") +
+
+  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
+
+res.aov <- anova_test(
+
+  data = data1_sentence_test, dv = Press_log, wid = ID,
+
+  within = c(Keyboard, Finger)
+
+  )
+
+get_anova_table(res.aov)
+
+one.way <- data1_sentence_test %>%
+
+  group_by(Finger) %>%
+
+  anova_test(dv = Press_log, wid = ID, within = Keyboard) %>%
+
+  get_anova_table() %>%
+
+  adjust_pvalue(method = "bonferroni")
+
+one.way
+
+pwc <- data1_sentence_test %>%
+
+  group_by(Finger) %>%
+
+  pairwise_t_test(
+
+    Press_log ~ Keyboard, paired = TRUE,
+
+    p.adjust.method = "bonferroni"
+
+    )
+
+pwc
+
+res.aov$residuals
+
+```
+
+<!-- ```{r echo =" FALSE"} -->
+
+<!-- data1_bigram_long <- data1_bigram %>% -->
+
+<!--   gather(key = "Finger", value = "Press", Press_Little, Press_Ring, Press_Middle, Press_Index) %>% -->
+
+<!--   convert_as_factor(X, Finger) -->
+
+<!-- data1_bigram_long$Finger <- factor(data1_bigram_long$Finger, levels = c("Press_Little", "Press_Ring", "Press_Middle", "Press_Index")) -->
+
+<!-- data1_bigram_long$Press<-data1_bigram_long$Press* data1_bigram_long$Frequency -->
+
+<!-- finger_btween<-function(df){ -->
+
+<!--   test1 <- friedmans(df, (Press_Little*Frequency) ~ Keyboard|X) -->
+
+<!--   test2 <- friedmans(df, (Press_Ring*Frequency) ~ Keyboard|X) -->
+
+<!--   test3 <- friedmans(df, (Press_Middle*Frequency) ~ Keyboard|X) -->
+
+<!--   test4 <- friedmans(df, (Press_Index*Frequency) ~ Keyboard|X) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(Hand = "Little"), -->
+
+<!--     test2 %>% mutate(Hand = "Ring"), -->
+
+<!--     test3 %>% mutate(Hand = "Middle"), -->
+
+<!--     test4 %>% mutate(Hand = "Index"))%>% -->
+
+<!--     select(Hand, everything())) -->
+
+<!-- } -->
+
+<!-- finger_btween(data1_bigram) -->
+
+<!-- finger_between_pwc<-function(df){ -->
+
+<!--   test1 <- f_pairwise_comp(df, (Press_Little*Frequency) ~ Keyboard) -->
+
+<!--   test2 <- f_pairwise_comp(df, (Press_Ring*Frequency) ~ Keyboard) -->
+
+<!--   test3 <- f_pairwise_comp(df, (Press_Middle*Frequency) ~ Keyboard) -->
+
+<!--   test4 <- f_pairwise_comp(df, (Press_Index*Frequency) ~ Keyboard) -->
+
+<!--   return ( -->
+
+<!--     bind_rows( -->
+
+<!--     test1 %>% mutate(Finger = "Little"), -->
+
+<!--     test2 %>% mutate(Finger = "Ring"), -->
+
+<!--     test3 %>% mutate(Finger = "Middle"), -->
+
+<!--     test4 %>% mutate(Finger = "Index"))%>% -->
+
+<!--     select(Finger, everything())) -->
+
+<!-- } -->
+
+<!-- finger_between_pwc(data1_sentence) -->
+
+<!-- ``` -->
