@@ -23,6 +23,8 @@ library(WRS)
 # install.packages("languageR")
 # install.packages("reshape2")
 library(kableExtra)
+library(xtable)
+library(readr)
 ```
 
 ```{r, echo=FALSE}
@@ -39,40 +41,37 @@ data_levenshtine <- read.csv("../data/sentence/distance/combined_dataset.csv")
 ```
 
 ```{r, echo=FALSE}
-# Calculating some additional stuff for help in analysis
-combine_fingers <- function(df) {
-  # Combined finger press
-  df$Press_Little <- df$Press_L_Little + df$Press_R_Little
-  df$Press_Ring   <- df$Press_L_Ring   + df$Press_R_Ring
-  df$Press_Middle <- df$Press_L_Middle + df$Press_R_Middle
-  df$Press_Index  <- df$Press_L_Index  + df$Press_R_Index
-  # Combined finger distance
-  df$Dist_Little  <- df$Dist_L_Little + df$Dist_R_Little
-  df$Dist_Ring    <- df$Dist_L_Ring   + df$Dist_R_Ring
-  df$Dist_Middle  <- df$Dist_L_Middle + df$Dist_R_Middle
-  df$Dist_Index   <- df$Dist_L_Index  + df$Dist_R_Index
-  # Combined hand press
-  df$Press_L <- df$Press_L_Little + df$Press_L_Ring + df$Press_L_Middle + df$Press_L_Index
-  df$Press_R <- df$Press_R_Little + df$Press_R_Ring + df$Press_R_Middle + df$Press_R_Index
-  # Combined hand distance
-  df$Dist_L <- df$Dist_L_Little + df$Dist_L_Ring + df$Dist_L_Middle + df$Dist_L_Index
-  df$Dist_R <- df$Dist_R_Little + df$Dist_R_Ring + df$Dist_R_Middle + df$Dist_R_Index
-  # Total press
-  df$Press <- df$Press_L + df$Press_R
-  # Total distance
-  df$Dist <- df$Dist_L + df$Dist_R
-  return(df)
-}
-
-data_bigram<-combine_fingers(data_bigram)
-data_sentence<-combine_fingers(data_sentence)
+# Log Transforming Data
+log_data <- data.frame(
+  ID = data_sentence$ID,
+  Keyboard = data_sentence$Keyboard,
+  Press_L_Little = log(data_sentence$Press_L_Little+1),
+  Press_L_Ring = log(data_sentence$Press_L_Ring+1),
+  Press_L_Middle = log(data_sentence$Press_L_Middle+1),
+  Press_L_Index = log(data_sentence$Press_L_Index+1),
+  
+  Press_R_Little = log(data_sentence$Press_R_Little+1),
+  Press_R_Ring = log(data_sentence$Press_R_Ring+1),
+  Press_R_Middle = log(data_sentence$Press_R_Middle+1),
+  Press_R_Index = log(data_sentence$Press_R_Index+1),
+  
+  Dist_L_Little = log(data_sentence$Dist_L_Little+1),
+  Dist_L_Ring = log(data_sentence$Dist_L_Ring+1),
+  Dist_L_Middle = log(data_sentence$Dist_L_Middle+1),
+  Dist_L_Index = log(data_sentence$Dist_L_Index+1),
+  
+  Dist_R_Little = log(data_sentence$Dist_R_Little+1),
+  Dist_R_Ring = log(data_sentence$Dist_R_Ring+1),
+  Dist_R_Middle = log(data_sentence$Dist_R_Middle+1),
+  Dist_R_Index = log(data_sentence$Dist_R_Index+1)
+)
 ```
 ------------------------------------------------------------------------
 # Key Press
 
 Setting up the long form data
 ```{r, echo=FALSE}
-data <- data_sentence[, c(24, 7:14, 25)]
+data <- log_data[, c(1, 3:10, 2)]
 data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
                 value.name = "Press")
 data_long$Keyboard<-as.factor(data_long$Keyboard)
@@ -80,10 +79,6 @@ print(data_long)
 ```
 
 Some descriptive stats for verification
-```{r echo =" FALSE"}
-ggplot(data_long, aes(x=Keyboard, y=Press , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")+labs(x = "Ket Press Count", y = "Keyboard")
-```
-
 ```{r, echo = FALSE}
 get_summary<-function(df,group,factor,value){
   sub_set <- subset(df, Keyboard == group)
@@ -113,9 +108,8 @@ finger_summary(data_long)
 ggviolin(
   data_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
-  scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
-  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
+  labs(x = "Keyboard", y = "Log(Scaled Key Press Count+1)")
 ```
 
 ## Inferential Stats
@@ -131,7 +125,17 @@ WRS::bwtrim(3, 8, data_list)
 ```
 post hoc for factor A and B
 ```{r, echo=FALSE}
-bwamcp(3, 8, data_list)
+res <- bwamcp(3, 8, data_list)
+clean_out <- data.frame(
+  contrasts = data.frame(res$test)$con.num,
+  t = data.frame(res$test)$t,
+  df = data.frame(res$test)$df,
+  psi = data.frame(res$psihat)$psihat,
+  p = data.frame(res$psihat)$p.value
+)
+
+# Write to CSV file
+write_csv(clean_out, "../output/press_A.csv")
 ```
 ```{r, echo=FALSE}
 bwbmcp(3, 8, data_list)
@@ -141,19 +145,20 @@ post hoc for interaction
 ```{r, echo=FALSE}
 bwimcp(3, 8, data_list)
 ```
+
 ------------------------------------------------------------------------
+# Keyying Distance
+
+Setup again but this time for distance variable
 ```{r, echo=FALSE}
-data <- data_sentence[, c(24, 15:22, 25)]
+data <- log_data[, c(1, 11:18, 2)]
 data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
                 value.name = "Dist")
 data_long$Keyboard<-as.factor(data_long$Keyboard)
 print(data_long)
 ```
 
-```{r echo =" FALSE"}
-ggplot(data_long, aes(x=Keyboard, y=Dist , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")+labs(x = "Keyying Dist", y = "Keyboard")
-```
-
+Some descriptive stats for verification
 ```{r, echo = FALSE}
 get_summary<-function(df,group,factor,value){
   sub_set <- subset(df, Keyboard == group)
@@ -175,7 +180,6 @@ finger_summary<-function(df){
       dplyr::select(-variable,-n)
     )
 }
-
 finger_summary(data_long)
 ```
 
@@ -183,20 +187,31 @@ finger_summary(data_long)
 ggviolin(
   data_long, x = "Keyboard", y = "Dist", fill = "Finger", position = position_dodge(1)) +
   geom_boxplot(aes(x = Keyboard, y = Dist, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
-  scale_y_log10() +
   scale_fill_brewer(palette = "Set2") +
-  labs(x = "Keyboard", y = "Log10 Scaled Key Dist Count")
+  labs(x = "Keyboard", y = "Log(Scaled Key Dist Count+1)")
 ```
 
 ```{r, echo=FALSE}
 data_list<-WRS::bw2list(data, 10, c(2:9))
 ```
+
 ```{r, echo=FALSE}
 WRS::bwtrim(3, 8, data_list)
 ```
 
 ```{r, echo=FALSE}
-bwamcp(3, 8, data_list)
+res<-bwamcp(3, 8, data_list)
+
+clean_out <- data.frame(
+  contrasts = data.frame(res$test)$con.num,
+  t = data.frame(res$test)$t,
+  df = data.frame(res$test)$df,
+  psi = data.frame(res$psihat)$psihat,
+  p = data.frame(res$psihat)$p.value
+)
+
+# Write to CSV file
+write_csv(clean_out, "../output/dist_A.csv")
 ```
 
 ```{r, echo=FALSE}
