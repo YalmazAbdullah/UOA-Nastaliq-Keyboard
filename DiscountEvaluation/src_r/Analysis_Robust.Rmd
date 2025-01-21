@@ -131,8 +131,10 @@ WRS::bwtrim(3, 8, data_list)
 ```
 post hoc for factor A and B
 ```{r, echo=FALSE}
-post_a <- bwamcp(3, 8, data_list)
-post_b <- bwbmcp(3, 8, data_list)
+bwamcp(3, 8, data_list)
+```
+```{r, echo=FALSE}
+bwbmcp(3, 8, data_list)
 ```
 
 post hoc for interaction
@@ -194,8 +196,11 @@ WRS::bwtrim(3, 8, data_list)
 ```
 
 ```{r, echo=FALSE}
-post_a <- bwamcp(3, 8, data_list)
-post_b <- bwbmcp(3, 8, data_list)
+bwamcp(3, 8, data_list)
+```
+
+```{r, echo=FALSE}
+bwbmcp(3, 8, data_list)
 ```
 
 ```{r, echo=FALSE}
