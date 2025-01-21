@@ -1,0 +1,203 @@
+---
+title: "Analysis_Robust"
+output: html_document
+---
+
+# Robust Analysis
+
+This analysis uses robust methods from the "WRS" library. The first few code chunks are setup such as library importing, data reading and generation of a few additional features.
+
+```{r, echo=FALSE}
+# LOAD LUBRARIES
+library(tidyverse)
+library(rstatix)
+library(ggplot2)
+library(ggpubr)
+library(knitr)
+library(reshape2)
+#install.packages("akima")
+#install.packages("Rtools")
+#install.packages("WRS", repos="http://R-Forge.R-project.org")
+library(WRS)
+# install.packages("kableExtra")
+# install.packages("languageR")
+# install.packages("reshape2")
+library(kableExtra)
+```
+
+```{r, echo=FALSE}
+# SET WORKING DIR
+knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
+```
+
+```{r}
+# LOAD DATA
+data_unigram <- read.csv("../data/monad/combined_dataset.csv")
+data_bigram <- read.csv("../data/dyad/combined_dataset.csv")
+data_sentence <- read.csv("../data/sentence/score/combined_dataset.csv")
+data_levenshtine <- read.csv("../data/sentence/distance/combined_dataset.csv")
+```
+
+```{r, echo=FALSE}
+# Calculating some additional stuff for help in analysis
+combine_fingers <- function(df) {
+  # Combined finger press
+  df$Press_Little <- df$Press_L_Little + df$Press_R_Little
+  df$Press_Ring   <- df$Press_L_Ring   + df$Press_R_Ring
+  df$Press_Middle <- df$Press_L_Middle + df$Press_R_Middle
+  df$Press_Index  <- df$Press_L_Index  + df$Press_R_Index
+  # Combined finger distance
+  df$Dist_Little  <- df$Dist_L_Little + df$Dist_R_Little
+  df$Dist_Ring    <- df$Dist_L_Ring   + df$Dist_R_Ring
+  df$Dist_Middle  <- df$Dist_L_Middle + df$Dist_R_Middle
+  df$Dist_Index   <- df$Dist_L_Index  + df$Dist_R_Index
+  # Combined hand press
+  df$Press_L <- df$Press_L_Little + df$Press_L_Ring + df$Press_L_Middle + df$Press_L_Index
+  df$Press_R <- df$Press_R_Little + df$Press_R_Ring + df$Press_R_Middle + df$Press_R_Index
+  # Combined hand distance
+  df$Dist_L <- df$Dist_L_Little + df$Dist_L_Ring + df$Dist_L_Middle + df$Dist_L_Index
+  df$Dist_R <- df$Dist_R_Little + df$Dist_R_Ring + df$Dist_R_Middle + df$Dist_R_Index
+  # Total press
+  df$Press <- df$Press_L + df$Press_R
+  # Total distance
+  df$Dist <- df$Dist_L + df$Dist_R
+  return(df)
+}
+
+data_bigram<-combine_fingers(data_bigram)
+data_sentence<-combine_fingers(data_sentence)
+```
+------------------------------------------------------------------------
+# Key Press
+
+Setting up the long form data
+```{r, echo=FALSE}
+data <- data_sentence[, c(24, 7:14, 25)]
+data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
+                value.name = "Press")
+data_long$Keyboard<-as.factor(data_long$Keyboard)
+print(data_long)
+```
+
+Some descriptive stats for verification
+```{r echo =" FALSE"}
+ggplot(data_long, aes(x=Keyboard, y=Press , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")+labs(x = "Ket Press Count", y = "Keyboard")
+```
+
+```{r, echo = FALSE}
+get_summary<-function(df,group,factor,value){
+  sub_set <- subset(df, Keyboard == group)
+  sub_set %>%
+    group_by_at(factor) %>%
+    get_summary_stats("Press", type = "common")
+}
+
+finger_summary<-function(df){
+  summary1 <- get_summary(df,"CRULP", "Finger", "Press")
+  summary2 <- get_summary(df,"IME", "Finger", "Press")
+  summary3 <- get_summary(df,"WINDOWS", "Finger", "Press")
+  return (
+    bind_rows(
+    summary1 %>% mutate(Keyboard = "CRULP"),
+    summary2 %>% mutate(Keyboard = "IME"),
+    summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
+    dplyr::select(Keyboard, everything())%>%
+      dplyr::select(-variable,-n)
+    )
+}
+
+finger_summary(data_long)
+```
+
+```{r, echo = FALSE}
+ggviolin(
+  data_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
+  geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+  scale_y_log10() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
+```
+
+## Inferential Stats
+
+using the provided bw2list function to put data in appropriate format
+```{r, echo=FALSE}
+data_list<-WRS::bw2list(data, 10, c(2:9))
+```
+
+two-way repeated measures anova robust. j=keyboard=3levels, k=fingers=8levels.
+```{r, echo=FALSE}
+WRS::bwtrim(3, 8, data_list)
+```
+post hoc for factor A and B
+```{r, echo=FALSE}
+post_a <- bwamcp(3, 8, data_list)
+post_b <- bwbmcp(3, 8, data_list)
+```
+
+post hoc for interaction
+```{r, echo=FALSE}
+bwimcp(3, 8, data_list)
+```
+------------------------------------------------------------------------
+```{r, echo=FALSE}
+data <- data_sentence[, c(24, 15:22, 25)]
+data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
+                value.name = "Dist")
+data_long$Keyboard<-as.factor(data_long$Keyboard)
+print(data_long)
+```
+
+```{r echo =" FALSE"}
+ggplot(data_long, aes(x=Keyboard, y=Dist , fill=Finger )) + geom_bar(position = "dodge", stat = "summary", fun = "sum")+scale_fill_brewer(palette = "Set2")+labs(x = "Keyying Dist", y = "Keyboard")
+```
+
+```{r, echo = FALSE}
+get_summary<-function(df,group,factor,value){
+  sub_set <- subset(df, Keyboard == group)
+  sub_set %>%
+    group_by_at(factor) %>%
+    get_summary_stats("Dist", type = "common")
+}
+
+finger_summary<-function(df){
+  summary1 <- get_summary(df,"CRULP", "Finger", "Dist")
+  summary2 <- get_summary(df,"IME", "Finger", "Dist")
+  summary3 <- get_summary(df,"WINDOWS", "Finger", "Dist")
+  return (
+    bind_rows(
+    summary1 %>% mutate(Keyboard = "CRULP"),
+    summary2 %>% mutate(Keyboard = "IME"),
+    summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
+    dplyr::select(Keyboard, everything())%>%
+      dplyr::select(-variable,-n)
+    )
+}
+
+finger_summary(data_long)
+```
+
+```{r, echo = FALSE}
+ggviolin(
+  data_long, x = "Keyboard", y = "Dist", fill = "Finger", position = position_dodge(1)) +
+  geom_boxplot(aes(x = Keyboard, y = Dist, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+  scale_y_log10() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Keyboard", y = "Log10 Scaled Key Dist Count")
+```
+
+```{r, echo=FALSE}
+data_list<-WRS::bw2list(data, 10, c(2:9))
+```
+```{r, echo=FALSE}
+WRS::bwtrim(3, 8, data_list)
+```
+
+```{r, echo=FALSE}
+post_a <- bwamcp(3, 8, data_list)
+post_b <- bwbmcp(3, 8, data_list)
+```
+
+```{r, echo=FALSE}
+bwimcp(3, 8, data_list)
+```

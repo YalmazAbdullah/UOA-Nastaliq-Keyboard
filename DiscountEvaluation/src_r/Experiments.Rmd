@@ -9,12 +9,14 @@ output: html_document
 # install.packages("kableExtra")
 # install.packages("languageR")
 # install.packages("MASS")
+# install.packages("WRS2")
 library(tidyverse)
 library(rstatix)
 library(ggplot2)
 library(ggpubr)
 library(knitr)
 library(MASS)
+library("WRS2")
 library(kableExtra)
 knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
 ```
@@ -93,49 +95,50 @@ data3_sentence_long$Finger <- factor(data3_sentence_long$Finger, levels = c("Dis
 
 ## Examining Correction Options
 
+We can use Box Cox to identify what transformation would appropriate.
+
 ```{r,echo=FALSE}
-data1_transform <- data1_sentence_long
+data_transform <- data3_sentence_long
 
-data1_sentence_test$Press <- data1_sentence_test$Press+1
+# Cant work with 0 values, so we use +1
+data_transform$Dist <- data_transform$Dist+1
 
-b<-boxcox(lm(data1_sentence_test$Press ~ 1))
+b<-boxcox(lm(data_transform$Dist ~ 1))
 
 lambda <- b$x[which.max(b$y)]
+lambda
 
-data1_sentence_test$Press_box<- (data1_sentence_test$Press ^ lambda - 1) / lambda
+data_transform$Dist_box<- (data_transform$Press ^ lambda - 1) / lambda
+data_transform$Dist_log<- log(data_transform$Press)
 
-data1_sentence_test$Press_log<- log(data1_sentence_test$Press)
+ggviolin(
+  data_transform, x = "Keyboard", y = "Dist_box", fill = "Finger", position = position_dodge(1)) +
+  geom_boxplot(aes(x = Keyboard, y = Dist_box, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Keyboard", y = "Dist_box")
 
-data1_sentence_test %>%
+ggviolin(
+  data_transform, x = "Keyboard", y = "Dist_log", fill = "Finger", position = position_dodge(1)) +
+  geom_boxplot(aes(x = Keyboard, y = Dist_log, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Keyboard", y = "Dist_log")
+```
 
-  group_by(Keyboard, Finger) %>%
+The Radar Plot for box cox suggests log transformation would be most appropriate. We try both transformations (lambda calculated by box cox, and log). Plotting them shows a somewhat similar effect with log looking a little bit better? However transformations still dont seem to look promising. I tried running a two way repeated measures anova, anyway  to see if I can plot out the residuals however no matter where I looked I could not find any information on how to get residuals out of the `anova_test` function for a two way repeated measures anova.
 
-  get_summary_stats(Press_log, type = "mean_sd")
+For now
+
+```{r,echo=FALSE, fig.width=20,fig.height=20}
+ggqqplot(data_transform, "Dist_log", ggtheme = theme_bw()) +
+  facet_grid(Finger ~ Keyboard, labeller = "label_both")
 ```
 
 ## Robust Two Way Repeated Measures ANOVA.
 
-Setting up the data
-
-Examining the log(x+1) transformed data we can see that
-
-```{r, echo = FALSE}
-ggviolin(
-  data3_sentence_long, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
-  geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
-```
+One problem as seen in the plots is outliers, contributing to the deviation from Gaussian. An approach taken for this kind of data in the life sciences is a Robust ANOVA. The `bwtrim` function is a mean trimming based, two way repeated measures anova that is supposed to be robust. There are two problems to this though: (1) Just like two-way repeated measures anova. I cant get the residuals from this or in any other way tell how well this method worked. (2) There seem to be multiple options for post-hoc. I tried going through them but was not able to figure out which one would be most appropriate. Details in 3rd link, pg479.
 
 ```{r, echo=FALSE}
-
-# might be good but no idea about residuals or model fit
-
-library("WRS2")
-
-bwtrim(Press ~ Keyboard*Stroke, id = ID, data = data1_sentence_long)
-
-# also i cant figure out how post hocs work
+bwtrim(Dist_log ~ Keyboard * Finger, id = ID, data = data_transform)
 
 # Ref:
 
@@ -149,300 +152,8 @@ bwtrim(Press ~ Keyboard*Stroke, id = ID, data = data1_sentence_long)
 
 ```
 
-<!-- ```{r} -->
+## Stroke Analysis Experiments
 
-<!-- # also based on koji yatani's guide -->
+For stroke analysis I tought factor analysis might make sense. It would allow us to reduce the amount of factors, factor loadings give us an idea of the importance for each latent factor, and we can potentially identify relationships between keyboards and stroke types if we include keyboard as a factor
 
-<!-- #subset_data <- data1_sentence[, c("ID", "Keyboard", "Dist_Little", "Dist_Ring", "Dist_Middle", "Dist_Index", "Dist")] -->
-
-<!-- #fa <- factanal(data, factor=1) -->
-
-<!-- new_df <- data1_sentence %>% -->
-
-<!--   group_by(Keyboard) %>% -->
-
-<!--   summarise(across(c(SameFinger, SameHand, SameKey, Hurdle, Reach), sum)) -->
-
-<!-- new_df<- as.data.frame(t(new_df)) -->
-
-<!-- colnames(new_df) <- as.character(new_df[1, ]) -->
-
-<!-- new_df <- new_df[-1, ] -->
-
-<!-- new_df[] <- lapply(new_df, as.integer) -->
-
-<!-- new_df -->
-
-<!-- #install.packages("FactoMineR") -->
-
-<!-- library("FactoMineR") -->
-
-<!-- CA(new_df) -->
-
-<!-- chisq.test(new_df) -->
-
-<!-- ``` -->
-
-<!-- ```{r, echo=FALSE} -->
-
-<!-- # based on koji yatani's guide -->
-
-<!-- # https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13434 -->
-
-<!-- library(lme4) -->
-
-<!-- library(lmerTest) -->
-
-<!-- model <- lmer(StrokeCount ~ Keyboard + SameHand + SameFinger + SameKey + Reach + Hurdle+ (1|ID), data=data1_sentence, REML=T) -->
-
-<!-- summary(model) -->
-
-<!-- source("http://www.math.mcmaster.ca/~bolker/classes/s756/labs/coefplot_new.R") -->
-
-<!-- coefplot(model) -->
-
-<!-- vif.mer <- function (fit) { -->
-
-<!--     ## adapted from rms::vif -->
-
-<!--     v <- vcov(fit) -->
-
-<!--     nam <- names(fixef(fit)) -->
-
-<!--     ## exclude intercepts -->
-
-<!--     ns <- sum(1 * (nam == "Intercept" | nam == "(Intercept)")) -->
-
-<!--     if (ns > 0) { -->
-
-<!--         v <- v[-(1:ns), -(1:ns), drop = FALSE] -->
-
-<!--         nam <- nam[-(1:ns)] -->
-
-<!--     } -->
-
-<!--     d <- diag(v)^0.5 -->
-
-<!--     v <- diag(solve(v/(d %o% d))) -->
-
-<!--     names(v) <- nam -->
-
-<!--     v -->
-
-<!-- } -->
-
-<!-- vif.mer(model) -->
-
-<!-- panel.cor <- function(x, y, digits=3, prefix="", cex.cor, ...) -->
-
-<!-- { -->
-
-<!--    usr <- par("usr"); on.exit(par(usr)) -->
-
-<!--    par(usr = c(0, 1, 0, 1)) -->
-
-<!--    r <- cor(x, y,use="complete.obs") -->
-
-<!--    txt <- format(c(r, 0.123456789), digits=digits)[1] -->
-
-<!--    prefix <- "r = " -->
-
-<!--    prefix2 <- "\nCI lower = " -->
-
-<!--    prefix3 <- "\nCI upper = " -->
-
-<!--    prefix4 <- "\np = " -->
-
-<!--    rc <- cor.test(x,y) -->
-
-<!--    rci <- rc$conf.int -->
-
-<!--    rcp <- rc$p.value -->
-
-<!--    star <- symnum(rcp, corr = FALSE, na = FALSE,  -->
-
-<!--                  cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), -->
-
-<!--                  symbols = c("***", "**", "*", ".", " "))  -->
-
-<!--    txt2 <- format(c(rci, 0.123456789), digits=digits)[1] -->
-
-<!--    txt3 <- format(c(rci, 0.123456789), digits=digits)[2] -->
-
-<!--    txt4 <- format(c(rcp, 0.123456789), digits=digits)[1] -->
-
-<!--    txt <- paste(prefix, txt, prefix2, txt2, prefix3, txt3, prefix4, txt4, " ", star, sep="") -->
-
-<!--    if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt) -->
-
-<!--    text(0.5, 0.5, txt, cex = 1) -->
-
-<!-- } -->
-
-<!-- pairs(data1_sentence[,2:7], lower.panel=panel.smooth, upper.panel=panel.cor) -->
-
-<!-- ``` -->
-
-```{r, echo=FALSE}
-
-#install.packages("MASS")
-
-library(MASS)
-
-data1_sentence_test <- data1_sentence_long
-
-data1_sentence_test$Press <- data1_sentence_test$Press+1
-
-b<-boxcox(lm(data1_sentence_test$Press ~ 1))
-
-lambda <- b$x[which.max(b$y)]
-
-data1_sentence_test$Press_box<- (data1_sentence_test$Press ^ lambda - 1) / lambda
-
-data1_sentence_test$Press_log<- log(data1_sentence_test$Press)
-
-data1_sentence_test %>%
-
-  group_by(Keyboard, Finger) %>%
-
-  get_summary_stats(Press_log, type = "mean_sd")
-
-#data1_sentence_test$Press <- Winsorize(data1_sentence_test$Press,val = quantile(data1_sentence_test$Press,  probs = c(0.005,0.995)))
-
-bxp <- ggboxplot(
-
-  data1_sentence_test, x = "Keyboard", y = "Press_box",
-
-  color = "Finger", palette = "jco"
-
-  )
-
-bxp
-
-ggplot(data1_sentence_test, aes(x = Press_box, fill=Keyboard)) +
-
-  geom_histogram(position="identity", colour="grey40")+
-
-  facet_grid(Finger ~ .)
-
-ggviolin(
-
-  data1_sentence_test, x = "Keyboard", y = "Press", fill = "Finger", position = position_dodge(1)) +
-
-  geom_boxplot(aes(x = Keyboard, y = Press, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
-
-  scale_y_log10() +
-
-  scale_fill_brewer(palette = "Set2") +
-
-  labs(x = "Keyboard", y = "Log10 Scaled Key Press Count")
-
-res.aov <- anova_test(
-
-  data = data1_sentence_test, dv = Press_log, wid = ID,
-
-  within = c(Keyboard, Finger)
-
-  )
-
-get_anova_table(res.aov)
-
-one.way <- data1_sentence_test %>%
-
-  group_by(Finger) %>%
-
-  anova_test(dv = Press_log, wid = ID, within = Keyboard) %>%
-
-  get_anova_table() %>%
-
-  adjust_pvalue(method = "bonferroni")
-
-one.way
-
-pwc <- data1_sentence_test %>%
-
-  group_by(Finger) %>%
-
-  pairwise_t_test(
-
-    Press_log ~ Keyboard, paired = TRUE,
-
-    p.adjust.method = "bonferroni"
-
-    )
-
-pwc
-
-res.aov$residuals
-
-```
-
-<!-- ```{r echo =" FALSE"} -->
-
-<!-- data1_bigram_long <- data1_bigram %>% -->
-
-<!--   gather(key = "Finger", value = "Press", Press_Little, Press_Ring, Press_Middle, Press_Index) %>% -->
-
-<!--   convert_as_factor(X, Finger) -->
-
-<!-- data1_bigram_long$Finger <- factor(data1_bigram_long$Finger, levels = c("Press_Little", "Press_Ring", "Press_Middle", "Press_Index")) -->
-
-<!-- data1_bigram_long$Press<-data1_bigram_long$Press* data1_bigram_long$Frequency -->
-
-<!-- finger_btween<-function(df){ -->
-
-<!--   test1 <- friedmans(df, (Press_Little*Frequency) ~ Keyboard|X) -->
-
-<!--   test2 <- friedmans(df, (Press_Ring*Frequency) ~ Keyboard|X) -->
-
-<!--   test3 <- friedmans(df, (Press_Middle*Frequency) ~ Keyboard|X) -->
-
-<!--   test4 <- friedmans(df, (Press_Index*Frequency) ~ Keyboard|X) -->
-
-<!--   return ( -->
-
-<!--     bind_rows( -->
-
-<!--     test1 %>% mutate(Hand = "Little"), -->
-
-<!--     test2 %>% mutate(Hand = "Ring"), -->
-
-<!--     test3 %>% mutate(Hand = "Middle"), -->
-
-<!--     test4 %>% mutate(Hand = "Index"))%>% -->
-
-<!--     select(Hand, everything())) -->
-
-<!-- } -->
-
-<!-- finger_btween(data1_bigram) -->
-
-<!-- finger_between_pwc<-function(df){ -->
-
-<!--   test1 <- f_pairwise_comp(df, (Press_Little*Frequency) ~ Keyboard) -->
-
-<!--   test2 <- f_pairwise_comp(df, (Press_Ring*Frequency) ~ Keyboard) -->
-
-<!--   test3 <- f_pairwise_comp(df, (Press_Middle*Frequency) ~ Keyboard) -->
-
-<!--   test4 <- f_pairwise_comp(df, (Press_Index*Frequency) ~ Keyboard) -->
-
-<!--   return ( -->
-
-<!--     bind_rows( -->
-
-<!--     test1 %>% mutate(Finger = "Little"), -->
-
-<!--     test2 %>% mutate(Finger = "Ring"), -->
-
-<!--     test3 %>% mutate(Finger = "Middle"), -->
-
-<!--     test4 %>% mutate(Finger = "Index"))%>% -->
-
-<!--     select(Finger, everything())) -->
-
-<!-- } -->
-
-<!-- finger_between_pwc(data1_sentence) -->
-
-<!-- ``` -->
+The problem however is repeated measures. From what I looked at this seems to be a pretty complex problem with not much consensus around an approach.
