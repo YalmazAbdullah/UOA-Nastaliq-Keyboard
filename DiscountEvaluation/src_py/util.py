@@ -109,7 +109,7 @@ def evaluate_dyad(a,b):
     is_reach = 1 if s_row!=1 else 0
     is_hurdle = 1 if (same_hand == 1 and
                       f_row!=1 and 
-                      s_row!=1) else 0
+                      s_row!=1 and f_row!=s_row) else 0
 
     # Prepare output structure
     output = {

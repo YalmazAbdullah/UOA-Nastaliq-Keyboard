@@ -125,7 +125,7 @@ WRS::bwtrim(3, 8, data_list)
 ```
 post hoc for factor A and B
 ```{r, echo=FALSE}
-res <- bwamcp(3, 8, data_list)
+res <- bwamcp(3, 8, data_list,alpha = 0.01)
 clean_out <- data.frame(
   contrasts = data.frame(res$test)$con.num,
   t = data.frame(res$test)$t,
@@ -212,6 +212,10 @@ clean_out <- data.frame(
 
 # Write to CSV file
 write_csv(clean_out, "../output/dist_A.csv")
+```
+
+```{r}
+clean_out
 ```
 
 ```{r, echo=FALSE}

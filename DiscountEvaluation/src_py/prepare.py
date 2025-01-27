@@ -53,9 +53,14 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
             roman_out.append("</s>")
             valid_count += len(native_tokens)           # storing count of valid tokens where both roman and 
                                                         # native match for loss calculation.
+        else:
+            print(i)
+            print(native_data[i])
+            print(roman_data[i])
+            print()
     
     # write to headless .tsv
-    write_tsv(native_out, roman_out, 'prepared/roUrParl_dataset')
+    # write_tsv(native_out, roman_out, 'prepared/roUrParl_dataset')
     # print loss evaluation
     print("=============Dataset: Roman Urdu Parl=============")
     eval(raw_count,valid_count)

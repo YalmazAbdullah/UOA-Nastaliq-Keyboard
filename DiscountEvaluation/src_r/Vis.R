@@ -33,40 +33,63 @@ log_data <- data.frame(
 
 # Read Pairwise Results for Press
 press_A <- read_csv("../output/press_A.csv")
-View(press_A)
 
 
 # Read Pairwise Results for Press
 dist_A <- read_csv("../output/dist_A.csv")
-View(dist_A)
 #########################################################
 # Long form Press data
 data <- log_data[, c(1, 3:10, 2)]
 data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
                   value.name = "Press")
 data_long$Keyboard<-as.factor(data_long$Keyboard)
+data_long <- data_long %>%
+  mutate(Finger = recode(Finger,
+                         Press_L_Little = "Left Little",
+                         Press_L_Ring = "Left Ring",
+                         Press_L_Middle = "Left Middle",
+                         Press_L_Index = "Left Index",
+                         Press_R_Little = "Right Little",
+                         Press_R_Ring = "Right Ring",
+                         Press_R_Middle = "Right Middle",
+                         Press_R_Index = "Right Index"))
 
-# Plot Press data
-plot<-ggviolin(
-  data_long, x = "Finger", y = "Press", fill = "Keyboard", position = position_dodge(1)) +
-  geom_boxplot(aes(x = Finger, y = Press, group = interaction(Keyboard, Finger)),
-               fill = "white", width = 0.1, position = position_dodge(1)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(x = "Finger", y = "Log(Scaled Key Press Count+1)")
+p <- ggplot(data_long, aes(x = Keyboard, y=Press, fill=Keyboard))+ geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.2) +
+  scale_fill_brewer()+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+ scale_fill_brewer(palette="Set3")+
+  ylab("Log of Number of Key Press")+ theme(legend.position = "bottom") +stat_summary(fun = "mean",
+                                                                                      geom = "point",
+                                                                                      color = "red")
 
-print(plot)
+p+facet_wrap(.~Finger,  ncol=4, nrow=2, scales = "free_x")
 #########################################################
 # Long form Dist data
 data <- log_data[, c(1, 11:18, 2)]
 data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
                   value.name = "Dist")
 data_long$Keyboard<-as.factor(data_long$Keyboard)
+data_long <- data_long %>%
+  mutate(Finger = recode(Finger,
+                         Press_L_Little = "Left Little",
+                         Press_L_Ring = "Left Ring",
+                         Press_L_Middle = "Left Middle",
+                         Press_L_Index = "Left Index",
+                         Press_R_Little = "Right Little",
+                         Press_R_Ring = "Right Ring",
+                         Press_R_Middle = "Right Middle",
+                         Press_R_Index = "Right Index"))
 
-# Plot Dist data
-ggviolin(
-  data_long, x = "Keyboard", y = "Dist", fill = "Finger", position = position_dodge(1)) +
-  geom_boxplot(aes(x = Keyboard, y = Dist, group = interaction(Keyboard, Finger)),fill = "white", width = 0.1, position = position_dodge(1)) +
-  scale_fill_brewer(palette = "Set2") +
-  labs(x = "Keyboard", y = "Log(Key Dist Count+1)")
+p <- ggplot(data_long, aes(x = Keyboard, y=Dist, fill=Keyboard))+ geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.2) +
+  scale_fill_brewer()+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+ scale_fill_brewer(palette="Set3")+
+  ylab("Log Keyying Distance")+ theme(legend.position = "bottom") +stat_summary(fun = "mean",
+                                                                                      geom = "point",
+                                                                                      color = "red")
 
-print(plot)
+p+facet_wrap(.~Finger,  ncol=4, nrow=2)
