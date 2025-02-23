@@ -55,23 +55,13 @@ export default function KeyboardCrulp(){
         for (let i = 0; i < input.length; i++){
             if (input[i] === targetText[i]) {
                 result.push(
-                    <span key={i} className="text-green-500">
+                    <span key={i} className="text-white bg-green-500">
                         {input[i]}
                     </span>
                 );
-            }
-
-            else if (i<targetText.length && targetText[i]!==" "){
+            }else{
                 result.push(
-                    <span key={i} className="text-red-600">
-                        {input[i]}
-                    </span>
-                );
-            }
-
-            else{
-                result.push(
-                    <span key={i} className="text-red-900">
+                    <span key={i} className="text-white bg-red-600">
                         {input[i]}
                     </span>
                 );

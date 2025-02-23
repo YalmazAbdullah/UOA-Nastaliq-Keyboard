@@ -52,31 +52,21 @@ export default function KeyboardWindows(){
    const renderText = () => {
        let result = [];
        
-       for (let i = 0; i < input.length; i++){
-           if (input[i] === targetText[i]) {
-               result.push(
-                   <span key={i} className="text-green-500">
-                       {input[i]}
-                   </span>
-               );
-           }
-
-           else if (i<targetText.length && targetText[i]!==" "){
-               result.push(
-                   <span key={i} className="text-red-600">
-                       {input[i]}
-                   </span>
-               );
-           }
-
-           else{
-               result.push(
-                   <span key={i} className="text-red-900">
-                       {input[i]}
-                   </span>
-               );
-           }
-       }
+        for (let i = 0; i < input.length; i++){
+            if (input[i] === targetText[i]) {
+                result.push(
+                    <span key={i} className="text-white bg-green-500">
+                        {input[i]}
+                    </span>
+                );
+            }else{
+                result.push(
+                    <span key={i} className="text-white bg-red-600">
+                        {input[i]}
+                    </span>
+                );
+            }
+        }
 
        // add the remaining text
        if(input.length<targetText.length){
