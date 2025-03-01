@@ -1,1 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap');
 @import "tailwindcss";
+
+@theme {
+    --font-sans: Inter, sans-serif;
+    --font-ur-sans: "Noto Sans Arabic", sans-serif;
+    --color-orange: #DA702C;
+    --color-white: #CECDC3;
+    --color-gray: #878580;
+    --color-black: #100F0F;
+    --text-black: #878580;
+    --color-deactive: #55524E;
+
+    --color-correct: #879A39;
+    --color-error: #D14D41;
+}

@@ -12,6 +12,7 @@ async function getTransliterations(text, langCode = "ur") {
         } else {
             throw new Error("Failed to fetch transliterations");
         }
+
     } catch (error) {
         console.error("Error:", error);
         return null;
@@ -26,7 +27,7 @@ function compare_safe(text,target){
     }
 }
 
-export default function KeyboardIme(){
+export default function InputIme({ setCounter }){
     const targetText = "یہ کہانی دس بار سو لی";
    
     const [keyLog, setKeyLog] = useState([]);
@@ -77,11 +78,16 @@ export default function KeyboardIme(){
 
         if(new_input.length<1){setIsEmpty(true)}
         else{setIsEmpty(false)}
+
+        if(new_input.trim()==targetText){
+            console.log(new_input)
+            // TODO: change this to also account for number of stimuli
+            setCounter(21)
+        }
     };
 
     const handleInputChange = (e) => {
         const raw_input = e.target.value
-        console.log(raw_input)
         const word = raw_input.trim();
         setCurrentWord(word)
         if(word.length>0){

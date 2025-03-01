@@ -1,0 +1,4 @@
+- tutorial text
+- consent text
+- fix input
+- create input page

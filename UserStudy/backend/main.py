@@ -27,6 +27,7 @@ async def root():
 @app.post("/user/", status_code=201)
 async def create_user(user:schemas.User):
     # TODO: check if name and email already in database. If yes apologize. If no continue.
+    
     # add this info to database
     cursor.execute("INSERT INTO user (name, email) VALUES (?, ?)", 
                    (user.name, user.email))

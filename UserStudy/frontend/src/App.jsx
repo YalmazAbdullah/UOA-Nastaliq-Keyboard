@@ -1,22 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import KeyboardImeNaive from './components/KeyboardImeNaive'
-import KeyboardCrulp from './components/KeyboardCrulp'
-import KeyboardWindows from './components/KeyboardWindows'
-import KeyboardTest from './components/KeyboardTest'
-import KeyboardIme from './components/KeyboardIme'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Consent from "./pages/Consent";
+import Baseline from "./pages/Baseline";
+import Ime from "./pages/Ime";
+import Crulp from "./pages/Crulp";
+
+function Test() {
+  return (
+    <div>
+      hi
+    </div>
+  );
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    <div>
-      <KeyboardIme />
-    </div>
-    </>
-  )
+    <Router>
+        <Routes>
+            <Route path="/" element={<Consent />} />
+            <Route path="/baseline" element={<Baseline />} />
+            <Route path="/crulp" element={<Crulp />} />
+            <Route path="/ime" element={<Ime />} />
+            <Route path="/windows" element={<Test />} />
+        </Routes>
+    </Router>
+  );
 }
 
 export default App
