@@ -1,6 +1,6 @@
 ###
 //test root
-GET http://localhost:8000/
+POST http://localhost:8000/start_session
 
 ###
 //test user creation

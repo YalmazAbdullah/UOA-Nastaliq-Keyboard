@@ -5,11 +5,8 @@ import KeyboardVis from "../components/KeyboardVis";
 import InputIme from "../components/InputIme";
 import {QWERTY_LAYOUT} from "../assets/layouts"
 const stimuli = [
-    "this is a test input for the baseline 1",
-    "this is a test input for the baseline 2",
-    "this is a test input for the baseline 3",
-    "this is a test input for the baseline 4",
-    "this is a test input for the baseline 5",
+    "یہ کہانی دس بار سو لی 1",
+    "یہ کہانی دس بار سو لی 2",
 ]
 
 export default function Ime() {
@@ -18,7 +15,7 @@ export default function Ime() {
 
     // Redirect when current > 20
     useEffect(() => {
-        if (counter > 20) {
+        if (counter >= stimuli.length-1) {
             navigate("/crulp");
         }
     }, [counter, navigate]);
@@ -26,16 +23,22 @@ export default function Ime() {
     useEffect(()=>{},[])
 
     return (
-        <div className="flex-col justify-center space-y-3 p-6">
+        <div className=" p-6 px-[10vw] flex-col space-y-3 justify-center">
             <div>
-                <h1 className="text-7xl font-bold">Evaluation of Urdu Text Input Options.</h1>
-                <h3 className="text-2xl">Measuring Baseline</h3>
+                <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
+                <h3 className="text-2xl font-bold">Measuring Baseline</h3>
             </div>
-            <div className="bg-gray-700 border-2 p-6 mt-10">
+            <h3 className="mt-10 px-3 bg-black text-white text-2xl">
+                We will begin by taking a baseline of your typing speed.
+            </h3>
+            <p>
+                To get an idea of how fast you type, we would like you to please enter the text below. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up on the lower text highlighted in <span className="bg-error border-1">red</span>. 
+            </p>
+            <div className="bg-gray border-4 p-6">
                 <div className="flex justify-center">
-                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{counter}/20</div>
+                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{counter}/{stimuli.length}</div>
                 </div>
-                <InputIme layout={QWERTY_LAYOUT} setCounter={setCounter}/>
+                <InputIme targetText={stimuli[counter]} setCounter={setCounter}/>
                 <KeyboardVis layout={QWERTY_LAYOUT}/>
             </div>
         </div>

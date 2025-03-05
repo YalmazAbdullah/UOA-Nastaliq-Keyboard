@@ -5,23 +5,50 @@ import { useNavigate } from "react-router-dom";
 import KeyboardVis from "../components/KeyboardVis";
 import InputBaseline from "../components/InputBaseline";
 import {QWERTY_LAYOUT} from "../assets/layouts"
+
+// Hard Coded Stimuli
 const stimuli = [
     "this is a test input for the baseline 1",
     "this is a test input for the baseline 2",
+    "this is a test input for the baseline 3",
+    "this is a test input for the baseline 4",
+    "this is a test input for the baseline 5",
 ]
 
 export default function Baseline() {
+    const [uid, setUid] = useState(null);
     const [counter, setCounter] = useState(0);
     const navigate = useNavigate();
 
-    // Redirect when current > 20
+    // Retrives id and @TODO: first condition from local storage.
+    useEffect(()=>{
+        const id = localStorage.getItem("uid");
+        if (id) {
+            setUid(id);
+        }
+        else{
+            console.log("no id")
+        }
+        
+        const cached_counter = localStorage.getItem("counter");
+        if(cached_counter){
+            console.log("should be first")
+            console.log(cached_counter)
+            setCounter(Number(cached_counter))
+        }
+    },[])
+ 
+    // Redirect when current surpasses stimuli count.
     useEffect(() => {
-        if (counter >= stimuli.length-1) {
+        if (counter >= stimuli.length) {
+            // reset counter from local storage
+            localStorage.setItem("counter", 0)
             navigate("/crulp");
+        }else if(counter> 0){
+            // update to local storage
+            localStorage.setItem("counter", counter)
         }
     }, [counter, navigate]);
-
-    useEffect(()=>{},[])
 
     return (
         <div className=" p-6 px-[10vw] flex-col space-y-3 justify-center">
@@ -39,7 +66,7 @@ export default function Baseline() {
                 <div className="flex justify-center">
                     <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{counter}/{stimuli.length}</div>
                 </div>
-                <InputBaseline targetText={stimuli[counter]} setCounter={setCounter}/>
+                <InputBaseline id={uid} targetText={stimuli[counter]} setCounter={setCounter}/>
                 <KeyboardVis layout={QWERTY_LAYOUT}/>
             </div>
         </div>

@@ -2,10 +2,18 @@ import React from "react";
 import { useState, useRef } from "react";
 import {ADJACENCY} from "../assets/error_data"
 
-export default function InputLayout({ qwerty_ur, ur_qwerty, targetText, setCounter }){
+// take in id
+// 
+// timestamp on input handle
+// filter inputs and properly log in input handle
+// get start and end times
+// get wpm
+// counters for error types
+// input complete send to server 
+// reset for next stimulus
+export default function InputLayout({ qwerty_ur, ur_qwerty, targetText = "", setCounter }){
    
     const [input, setInput] = useState("");
-    const [roman_input, setRoman] = useState("")
     const [keyLog, setKeyLog] = useState([]);
     const [errorLog, setErrorLog] = useState([]);
     const inputRef = useRef(null);

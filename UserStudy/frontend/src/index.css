@@ -2,6 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap');
 @import "tailwindcss";
 
+@plugin 'tailwind-scrollbar' {
+    preferredStrategy: 'pseudoelements';
+}
+
 @theme {
     --font-sans: Inter, sans-serif;
     --font-ur-sans: "Noto Sans Arabic", sans-serif;
@@ -9,9 +13,22 @@
     --color-white: #CECDC3;
     --color-gray: #878580;
     --color-black: #100F0F;
-    --text-black: #878580;
+    --text-black: #100F0F;
     --color-deactive: #55524E;
 
     --color-correct: #879A39;
     --color-error: #D14D41;
+    --color-select: #8B7EC8;
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+    background-color: #878580;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+    background: #CECDC3;
 }

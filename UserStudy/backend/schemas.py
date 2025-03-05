@@ -1,5 +1,33 @@
 from pydantic import BaseModel
 
+class Measure(BaseModel):
+    user: int
+    condition: str
+    stimulus: str
+    start_time : float
+    end_time: float
+    log: list
+    error_log: list
+    transposition_count:int
+    ommission_count:int
+    substitution_count:int
+    addition_count:int
+    wpm : float
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class User(BaseModel):
     name:str
     email:str

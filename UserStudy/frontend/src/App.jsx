@@ -3,6 +3,7 @@ import Consent from "./pages/Consent";
 import Baseline from "./pages/Baseline";
 import Ime from "./pages/Ime";
 import Crulp from "./pages/Crulp";
+import Windows from "./pages/Windows";
 
 function Test() {
   return (
@@ -20,7 +21,7 @@ function App() {
             <Route path="/baseline" element={<Baseline />} />
             <Route path="/crulp" element={<Crulp />} />
             <Route path="/ime" element={<Ime />} />
-            <Route path="/windows" element={<Test />} />
+            <Route path="/windows" element={<Windows />} />
         </Routes>
     </Router>
   );

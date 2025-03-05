@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 
+// Prevent space start
+
 async function getTransliterations(text, langCode = "ur") {
     const url = `https://inputtools.google.com/request?itc=${langCode}-t-i0-und&text=${encodeURIComponent(text)}`;
     try {
@@ -27,10 +29,10 @@ function compare_safe(text,target){
     }
 }
 
-export default function InputIme({ setCounter }){
-    const targetText = "یہ کہانی دس بار سو لی";
+export default function InputIme({ targetText = "", setCounter }){
    
     const [keyLog, setKeyLog] = useState([]);
+    const [errorLog, setErrorLog] = useState([]);
     
     const inputRef = useRef(null);
     const [input, setInput] = useState("");
@@ -64,6 +66,39 @@ export default function InputIme({ setCounter }){
             setShowSuggestions(false);
             e.preventDefault();
             setCurrentWord("")
+
+
+            // error analysis only done when new char added.
+            let new_string = new_input.trim()
+            // transposition
+            if (new_string.length>=2 && new_string.length<=targetText.length){
+                let raw = new_string.slice(-2)
+                let candidate = raw.split("").reverse().join("")
+                let target = targetText.slice(new_string.length-2,new_string.length)
+                console.log(raw)
+                console.log(candidate)
+                console.log(target)
+                if(candidate == target){
+                    setErrorLog(prevLog => [...prevLog, { error_type: "transposition", input:raw, target:target}]);
+                    console.log("ERR:TRANS")
+                }
+            }
+
+            // omission
+            if (new_string.length<targetText.length && new_string[new_string.length-1] == targetText[new_string.length]){
+                setErrorLog(prevLog => [...prevLog, { error_type: "omission", input:new_string[new_string.length-1], target:targetText[new_string.length-1]}]);
+                console.log("ERR:OM")
+            }
+
+            // addition
+            if (new_string.length>=3 && new_string.length<=targetText.length){
+                let candidate = new_string[new_string.length-3] + new_string[new_string.length-1]
+                let target = targetText.slice(new_string.length-3,new_string.length-1)
+                if(candidate == target){
+                    setErrorLog(prevLog => [...prevLog, { error_type: "addidtion", input:new_string.slice(-3), target:target}]);
+                    console.log("ERR:ADD")
+                }
+            }
         } else if (e.key === " " && showSuggestions === false){
             new_input = new_input + "\u00A0"
             setInput(new_input)
@@ -80,9 +115,7 @@ export default function InputIme({ setCounter }){
         else{setIsEmpty(false)}
 
         if(new_input.trim()==targetText){
-            console.log(new_input)
-            // TODO: change this to also account for number of stimuli
-            setCounter(21)
+            setCounter((prev) => prev + 1)
         }
     };
 
@@ -116,14 +149,19 @@ export default function InputIme({ setCounter }){
             const isLastWord = i === input.length - 1;
             if (compare_safe(input[i],targetText[i])) {
                 result.push(
-                    <span key={i} className="text-white bg-green-500">
+                    <span key={i} className="bg-correct">
                         {input[i]}
                     </span>
                 );
-            }
-            else{
+            }else if(input[i] == " "){
                 result.push(
-                    <span key={i} className="text-white bg-red-600">
+                    <span key={i} className=" bg-error">
+                        &nbsp;
+                    </span>
+                );
+            }else{
+                result.push(
+                    <span key={i} className="bg-error">
                         {input[i]}
                     </span>
                 );
@@ -136,7 +174,7 @@ export default function InputIme({ setCounter }){
         let result = [];
         if(input.length<targetText.length){
             result.push(
-                <span key="remaining" className="text-gray-500">{targetText.slice(input.length)}</span>
+                <span key="remaining" className="text-deactive">{targetText.slice(input.length)}</span>
             );
         }
         return result 
@@ -144,11 +182,11 @@ export default function InputIme({ setCounter }){
 
     return(
         <div className="p-4 flex flex-col items-center">
-            <div className="text-2xl font-mono relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 {targetText}
             </div>
 
-            <div ref = {inputAreaRef} className="text-2xl font-mono relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div ref = {inputAreaRef} className="text-4xl pt-7 font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 <span ref={lastWordRef}>{renderText()}</span>
                 {renderRemaining()}
             </div>
@@ -167,7 +205,7 @@ export default function InputIme({ setCounter }){
             {/* Show Suggestions */}
             {showSuggestions && (
                 <ul
-                className="absolute bg-white border border-gray-300 shadow-md rounded p-1"
+                className="absolute text-xl bg-white border border-black shadow-md rounded p-1"
                 style={{
                     position: "absolute",
                     top: `${position.top}px`,
@@ -178,10 +216,11 @@ export default function InputIme({ setCounter }){
                 <li key="current">
                     {current_word}
                 </li>
+
                 <hr></hr>
                 {suggestions.map((suggestion, index) => (
-                    <li key={index} className={`p-1 cursor-pointer ${
-                        selectedIndex === index ? "bg-blue-500 text-white" : ""
+                    <li key={index} className={`font-ur-sans p-1 cursor-pointer ${
+                        selectedIndex === index ? "bg-select text-black" : ""
                     }`}>
                     {suggestion}
                     </li>
