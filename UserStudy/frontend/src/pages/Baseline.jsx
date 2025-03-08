@@ -20,7 +20,7 @@ export default function Baseline() {
     const [counter, setCounter] = useState(0);
     const navigate = useNavigate();
 
-    // Retrives id and @TODO: first condition from local storage.
+    // retrives id.
     useEffect(()=>{
         const id = localStorage.getItem("uid");
         if (id) {
@@ -29,7 +29,6 @@ export default function Baseline() {
         else{
             console.log("no id")
         }
-        
         const cached_counter = localStorage.getItem("counter");
         if(cached_counter){
             console.log("should be first")
@@ -38,30 +37,38 @@ export default function Baseline() {
         }
     },[])
  
-    // Redirect when current surpasses stimuli count.
+    // redirect when current surpasses stimuli count.
     useEffect(() => {
         if (counter >= stimuli.length) {
             // reset counter from local storage
-            localStorage.setItem("counter", 0)
-            navigate("/crulp");
+            localStorage.setItem("counter", 0);
+            const conditions = localStorage.getItem("condition_order");
+            const next = JSON.parse(conditions)[0].toLowerCase();
+            // start condition counting
+            localStorage.setItem("current_condition", 0);
+            navigate("/" + next);
         }else if(counter> 0){
             // update to local storage
-            localStorage.setItem("counter", counter)
+            localStorage.setItem("counter", counter);
         }
     }, [counter, navigate]);
 
     return (
         <div className=" p-6 px-[10vw] flex-col space-y-3 justify-center">
+            {/* Page title */}
             <div>
                 <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
                 <h3 className="text-2xl font-bold">Measuring Baseline</h3>
             </div>
+            {/* Subtitle */}
             <h3 className="mt-10 px-3 bg-black text-white text-2xl">
                 We will begin by taking a baseline of your typing speed.
             </h3>
+            {/* Instructions */}
             <p>
                 To get an idea of how fast you type, we would like you to please enter the text below. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up on the lower text highlighted in <span className="bg-error border-1">red</span>. 
             </p>
+            {/* Input */}
             <div className="bg-gray border-4 p-6">
                 <div className="flex justify-center">
                     <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{counter}/{stimuli.length}</div>

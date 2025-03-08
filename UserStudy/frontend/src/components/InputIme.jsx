@@ -1,10 +1,11 @@
 import React from "react";
+import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 
-// Prevent space start
+// API call to google translitarate. Used to power the IME
+async function getTransliterations(text) {
+    const url = `https://inputtools.google.com/request?itc=ur-t-i0-und&text=${encodeURIComponent(text)}&num=5`;
 
-async function getTransliterations(text, langCode = "ur") {
-    const url = `https://inputtools.google.com/request?itc=${langCode}-t-i0-und&text=${encodeURIComponent(text)}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -14,13 +15,13 @@ async function getTransliterations(text, langCode = "ur") {
         } else {
             throw new Error("Failed to fetch transliterations");
         }
-
     } catch (error) {
         console.error("Error:", error);
         return null;
     }
 }
 
+// Comparison function for chars that treates different spaces as the same
 function compare_safe(text,target){
     if (text=== "\u00A0" && target === " "){
         return true;
@@ -29,28 +30,56 @@ function compare_safe(text,target){
     }
 }
 
-export default function InputIme({ targetText = "", setCounter }){
-   
-    const [keyLog, setKeyLog] = useState([]);
-    const [errorLog, setErrorLog] = useState([]);
-    
-    const inputRef = useRef(null);
+export default function InputIme({ id = -1, condition = "", targetText = "", setCounter }){
     const [input, setInput] = useState("");
-
+    const [keyLog, setKeyLog] = useState([]);
+    const [startTime, setStartTime] = useState(null);
+    const [errorLog, setErrorLog] = useState([]);
+    const [transposition_count, setTrans] = useState(0);
+    const [ommission_count, setOmm] = useState(0);
+    const [substitution_count, setSub] = useState(0);
+    const [addition_count, setAdd] = useState(0);
+    
+    
     const [current_word, setCurrentWord] = useState("");
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [position, setPosition] = useState({ top: 0, left: 0 });
-
+    
     const lastWordRef = useRef(null);
     const inputAreaRef = useRef(null);
     const [isEmpty, setIsEmpty] = useState("");
+    
+    const inputRef = useRef(null);
 
+    const [start, setStart] = useState(false);
+    const [end, setEnd] = useState(false)
+    
+    // start timer
+    const handleFocus = (e) =>{
+        if (start === false){
+            setStart(true);
+            console.log("started")
+        }
+    }
+
+    // unlike layout a majority of the ime logic is here at the key level.
     const handleKeyDown = (e) => {
-        const timestamp = Date.now();
-        setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]); // Log the key presses
+        // cache time stamp
+        timestamp = Date.now()
+        // dont do anything if not started
+        if (start === false){
+            e.preventDefault();
+            return;
+        }else if (start=== true && startTime === null){
+            setStartTime(timestamp);
+        }
+
+        // Log the key presses
+        setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]); 
         
+        // navigate transliteration options
         let new_input = input
         if (e.key === "ArrowDown") {
             setSelectedIndex((prev) =>
@@ -61,15 +90,13 @@ export default function InputIme({ targetText = "", setCounter }){
                 prev > 0 ? prev - 1 : prev
             );
         } else if (e.key === "Enter" || (e.key === " " && showSuggestions === true)) {
-            new_input = new_input + suggestions[selectedIndex] +" "
-            setInput(new_input);
-            setShowSuggestions(false);
-            e.preventDefault();
-            setCurrentWord("")
-
+            // option Selected. Apply.
+            let new_string = new_input + suggestions[selectedIndex]
 
             // error analysis only done when new char added.
-            let new_string = new_input.trim()
+            let new_trans = transposition_count;
+            let new_omm = ommission_count;
+            let new_add = addition_count;
             // transposition
             if (new_string.length>=2 && new_string.length<=targetText.length){
                 let raw = new_string.slice(-2)
@@ -80,58 +107,72 @@ export default function InputIme({ targetText = "", setCounter }){
                 console.log(target)
                 if(candidate == target){
                     setErrorLog(prevLog => [...prevLog, { error_type: "transposition", input:raw, target:target}]);
-                    console.log("ERR:TRANS")
+                    new_trans +=1
+                    setTrans(new_trans)
                 }
             }
-
             // omission
             if (new_string.length<targetText.length && new_string[new_string.length-1] == targetText[new_string.length]){
                 setErrorLog(prevLog => [...prevLog, { error_type: "omission", input:new_string[new_string.length-1], target:targetText[new_string.length-1]}]);
-                console.log("ERR:OM")
+                new_omm+=1
+                setOmm(new_omm)
             }
-
             // addition
             if (new_string.length>=3 && new_string.length<=targetText.length){
                 let candidate = new_string[new_string.length-3] + new_string[new_string.length-1]
                 let target = targetText.slice(new_string.length-3,new_string.length-1)
                 if(candidate == target){
                     setErrorLog(prevLog => [...prevLog, { error_type: "addidtion", input:new_string.slice(-3), target:target}]);
-                    console.log("ERR:ADD")
+                    new_add+=1
+                    setAdd(new_add)
                 }
             }
+            
+            // apply the selected word
+            setInput(new_string+" ");
+            setShowSuggestions(false);
+            e.preventDefault();
+            setCurrentWord("")
         } else if (e.key === " " && showSuggestions === false){
+            // handle spaces. For confirmed text.
             new_input = new_input + "\u00A0"
             setInput(new_input)
             e.preventDefault();
             setCurrentWord("")
         }else if (e.key === "Backspace" && showSuggestions===false){
+            // handle charachter deleting for confirmed text
             new_input = new_input.slice(0,-1)
             setInput(new_input)
         }else if(e.key == "ArrowLeft" || e.key == "ArrowRight"){
+            // ignore navigation
             e.preventDefault();
         }
 
+        // handle empty string as input
         if(new_input.length<1){setIsEmpty(true)}
         else{setIsEmpty(false)}
 
+        // handle text completion
         if(new_input.trim()==targetText){
-            setCounter((prev) => prev + 1)
+            setEnd(true)
         }
     };
 
+    // The input feild onyl deals with one token. The roman input
     const handleInputChange = (e) => {
         const raw_input = e.target.value
         const word = raw_input.trim();
         setCurrentWord(word)
         if(word.length>0){
             setShowSuggestions(true)
-            getTransliterations(word, "ur").then(setSuggestions);
+            getTransliterations(word).then(setSuggestions);
         }else{
             setShowSuggestions(false)
             setSuggestions([])
         }
     };
 
+    // shows and hides drop down for transliteration suggestions
     useEffect(() => {
         if (isEmpty){
             const rect = inputAreaRef.current.getBoundingClientRect();
@@ -142,6 +183,42 @@ export default function InputIme({ targetText = "", setCounter }){
         }
     }, [showSuggestions]);
 
+    // stimulus completed. Write to server and prepare for next
+    useEffect(() => {
+        if (end==true){
+            const end_time = Date.now();
+            try{
+                axios.post("http://127.0.0.1:8000/result", {
+                    user: id,
+                    condition: condition,
+                    stimulus: targetText,
+                    start_time : startTime,
+                    end_time: end_time,
+                    log: keyLog,
+                    error_log:errorLog,
+                    transposition_count : transposition_count,
+                    ommission_count : ommission_count,
+                    substitution_count : substitution_count,
+                    addition_count : addition_count,
+                    wpm : (end_time-startTime) / targetText.split("").length
+                }, {headers: {
+                      "Content-Type": "application/json",
+                    },
+                })
+            } catch (err) {
+                console.error("Error submitting data:", err);
+            }
+            // reset for next stimulus
+            setStartTime(null)
+            setCounter((prev) => prev + 1)
+            setInput("")
+            setKeyLog([])
+            setErrorLog([])
+            setEnd(false)
+        }
+    }, [end]);
+
+    // render transliterated text
     const renderText = () => {
         let result = [];
         
@@ -170,6 +247,7 @@ export default function InputIme({ targetText = "", setCounter }){
         return result;
     }
 
+    // render remaining text
     const renderRemaining = () => {
         let result = [];
         if(input.length<targetText.length){
@@ -182,25 +260,16 @@ export default function InputIme({ targetText = "", setCounter }){
 
     return(
         <div className="p-4 flex flex-col items-center">
+            {/* Stimulus Text */}
             <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 {targetText}
             </div>
 
+            {/* Rendered Input Field */}
             <div ref = {inputAreaRef} className="text-4xl pt-7 font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 <span ref={lastWordRef}>{renderText()}</span>
                 {renderRemaining()}
             </div>
-
-            {/* Hidden Input Field */}
-            <input
-                ref={inputRef}
-                type="text"
-                className="absolute opacity-0 w-0 h-0"
-                onKeyDown={handleKeyDown}
-                onChange={handleInputChange}
-                value={current_word}
-                autoFocus
-            />
 
             {/* Show Suggestions */}
             {showSuggestions && (
@@ -227,6 +296,17 @@ export default function InputIme({ targetText = "", setCounter }){
                 ))}
                 </ul>
             )}
+
+            {/* Hidden Input Field Both rendered options set focus on inputRef*/}
+            <input
+                ref={inputRef}
+                type="text"
+                className="absolute opacity-0 w-0 h-0"
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                value={current_word}
+            />
         </div>
     )
 }

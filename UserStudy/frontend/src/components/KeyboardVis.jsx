@@ -28,26 +28,26 @@ export default function KeyboardVis({layout}) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center">
       {layout.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center space-x-2 mb-2">
+        <div key={rowIndex} className="flex justify-center space-x-2 mb-2 py-1">
           {row.map((key) => (
             <div
               key={key.en_upper}
-              className={`w-16 h-16 border-2 border-black flex items-center justify-center shadow-[-0.2rem_0.2rem_rgba(0,0,0,1)]
+              className={`w-16 h-16 border-2 border-black flex items-center justify-around shadow-[-0.2rem_0.2rem_rgba(0,0,0,1)]
                           ${pressedKeys.has(key.en_upper) || pressedKeys.has(key.en_lower) ? "bg-gray text-black" : "bg-white"}`}
             >
-                <div className=" flex flex-col p-3">
+                <div className="flex flex-col">
                     {/* English Upper */}
-                    <span className="text-black text-sm">{key.en_upper}</span>
+                    <span className="text-gray-dark text-lg">{key.en_upper}</span>
                     {/* English Lower */}
-                    <span className="text-black text-sm">{key.en_lower}</span>
+                    <span className="text-gray-dark text-lg">{key.en_lower}</span>
                 </div>
-                <div className=" flex flex-col items-center pe-2 p-3">
+                <div className="flex flex-col items-cente">
                     {/* Urdu Upper */}
-                    <span className="text-black text-lg font-ur-sans">{key.ur_upper}</span>
+                    <span className="text-black font-semibold text-lg font-ur-sans">{key.ur_upper}</span>
                     {/* Urdu Lower */}
-                    <span className="text-black text-lg font-ur-sans">{key.ur_lower}</span>
+                    <span className="text-black font-semibold text-lg font-ur-sans">{key.ur_lower}</span>
                 </div>
             </div>
           ))}

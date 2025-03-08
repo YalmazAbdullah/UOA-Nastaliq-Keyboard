@@ -53,11 +53,11 @@ async def start_session():
     con.commit()
 
     # set up condition order
-    condition_order = [
-        current_experiment["Condition 1"],
-        current_experiment["Condition 2"],
-        current_experiment["Condition 3"]
-    ]
+    condition_order = {
+        current_experiment["Condition 1"]:False,
+        current_experiment["Condition 2"]:False,
+        current_experiment["Condition 3"]:False
+    }
 
     with open(STIMULUS_ADRESS) as file:
         stimuli = load(file)
@@ -69,7 +69,7 @@ async def start_session():
         ]
     
     # send information to client as response
-    return {"message": "Hello New User", "uid": new_uid, "condition_order": condition_order, "stimuli_bins": stimuli_bins, }
+    return {"message": "Hello New User", "uid": new_uid, "condition_order": list(condition_order.keys()), "stimuli_bins": stimuli_bins, }
 
 
 @app.post("/result", status_code=201)
