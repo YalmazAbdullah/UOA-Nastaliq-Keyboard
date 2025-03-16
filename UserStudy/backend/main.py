@@ -1,10 +1,14 @@
 import sqlite3
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import schemas
 import utils
 from json import dumps, load
 import pandas as pd
 from fastapi import HTTPException
+import hmac
+import hashlib
+import base64
 
 # define stimulus bins
 STIMULUS_ADRESS = "./backend/assets/stimulus_bins.json"
@@ -13,6 +17,17 @@ CSV_ADRESS = "./backend/assets/counter_balance.csv"
 # set up api
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # connect to databse
 con = sqlite3.connect("./backend/_database.db")
 cursor = con.cursor()
@@ -20,7 +35,20 @@ test_db = {}
 
 # cached variables
 stimuli_bins = []
-condition_order = []
+baseline_stims = [
+    "this is a test input for the baseline 1",
+    "this is a test input for the baseline 2",
+    "this is a test input for the baseline 3",
+    "this is a test input for the baseline 4",
+    "this is a test input for the baseline 5",
+]
+
+SECRET_KEY = b"user-code-seed"  # Encryption Key
+
+def generate_code(num):
+    num_bytes = str(num).encode()
+    hash_bytes = hmac.new(SECRET_KEY, num_bytes, hashlib.sha256).digest()
+    return base64.urlsafe_b64encode(hash_bytes)[:6].decode() 
 
 @app.post("/start_session")
 async def start_session():
@@ -29,6 +57,9 @@ async def start_session():
     
     # get that entery id
     new_uid = cursor.lastrowid 
+
+    # create user_code
+    u_code = generate_code(new_uid)
 
     # get last incomplete condition and bin form gls csv
     counter_balance = pd.read_csv(CSV_ADRESS)
@@ -49,27 +80,32 @@ async def start_session():
     counter_balance.to_csv(CSV_ADRESS, index=False)
 
     # send gls id to database and commit to database
-    cursor.execute("UPDATE users SET gls_id = ? WHERE uid = ?", (current_experiment["id"], new_uid))
+    cursor.execute("UPDATE users SET gls_id = ? WHERE uid = ?", (int(current_experiment["id"]), new_uid))
+    con.commit()
+    cursor.execute("UPDATE users SET code = ? WHERE uid = ?", (u_code, new_uid))
     con.commit()
 
     # set up condition order
-    condition_order = {
-        current_experiment["Condition 1"]:False,
-        current_experiment["Condition 2"]:False,
-        current_experiment["Condition 3"]:False
-    }
+    condition_order = [
+        "baseline",
+        current_experiment["Condition 1"],
+        current_experiment["Condition 2"],
+        current_experiment["Condition 3"],
+        "end"
+    ]
 
     with open(STIMULUS_ADRESS) as file:
         stimuli = load(file)
         # fetch stimuli
         stimuli_bins = [
+            baseline_stims,
             stimuli[current_experiment["Bin 1"]],
             stimuli[current_experiment["Bin 2"]],
             stimuli[current_experiment["Bin 3"]]
         ]
     
     # send information to client as response
-    return {"message": "Hello New User", "uid": new_uid, "condition_order": list(condition_order.keys()), "stimuli_bins": stimuli_bins, }
+    return {"uid": new_uid, "conditions": condition_order, "stimuli": stimuli_bins, "code": u_code}
 
 
 @app.post("/result", status_code=201)

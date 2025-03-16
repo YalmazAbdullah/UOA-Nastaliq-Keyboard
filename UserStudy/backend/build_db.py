@@ -9,11 +9,12 @@ def main():
     cursor.execute("""
                    CREATE TABLE IF NOT EXISTS users(
                         uid INTEGER PRIMARY KEY AUTOINCREMENT,
-                        gls_id INTEGER DEFAULT NULL, 
+                        gls_id INTEGER DEFAULT 0, 
+                        code TEXT,
                         completed BOOLEAN DEFAULT 0
                     )
                     """)
-
+    
     # build measures table
     cursor.execute(""" 
                    CREATE TABLE IF NOT EXISTS measures(

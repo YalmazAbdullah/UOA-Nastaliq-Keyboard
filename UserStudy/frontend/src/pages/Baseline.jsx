@@ -6,52 +6,43 @@ import KeyboardVis from "../components/KeyboardVis";
 import InputBaseline from "../components/InputBaseline";
 import {QWERTY_LAYOUT} from "../assets/layouts"
 
-// Hard Coded Stimuli
-const stimuli = [
-    "this is a test input for the baseline 1",
-    "this is a test input for the baseline 2",
-    "this is a test input for the baseline 3",
-    "this is a test input for the baseline 4",
-    "this is a test input for the baseline 5",
-]
-
+// Baseline condition to get measure typing speed of the user.
 export default function Baseline() {
-    const [uid, setUid] = useState(null);
-    const [counter, setCounter] = useState(0);
+    const [currentStim, setCurrentStim] = useState(0);
+    const [stimuli, setStimuli] = useState(["test"]);
+    const [bg_color, setBgColor] = useState("bg-gray border-4 p-6")
     const navigate = useNavigate();
 
-    // retrives id.
+    // retrives id and current condition.
     useEffect(()=>{
-        const id = localStorage.getItem("uid");
-        if (id) {
-            setUid(id);
+        //if current condition not baseline then move to actual current condition. Prevents back tracking.
+        let cached_currentCondition = localStorage.getItem("current_condition");
+        if (cached_currentCondition !=0){
+            console.log("condition already completed")
+            let conditions = localStorage.getItem("conditions");
+            let restore = JSON.parse(conditions)[cached_currentCondition].toLowerCase();
+            navigate("/"+restore);
         }
-        else{
-            console.log("no id")
-        }
-        const cached_counter = localStorage.getItem("counter");
-        if(cached_counter){
-            console.log("should be first")
-            console.log(cached_counter)
-            setCounter(Number(cached_counter))
-        }
+
+        // set user values
+        setCurrentStim(Number(localStorage.getItem("current_stim")));
+        setStimuli(JSON.parse(localStorage.getItem("stimuli"))[0])
+        console.log("done")
     },[])
- 
+
     // redirect when current surpasses stimuli count.
     useEffect(() => {
-        if (counter >= stimuli.length) {
-            // reset counter from local storage
-            localStorage.setItem("counter", 0);
-            const conditions = localStorage.getItem("condition_order");
-            const next = JSON.parse(conditions)[0].toLowerCase();
-            // start condition counting
-            localStorage.setItem("current_condition", 0);
+        if (currentStim >= stimuli.length) {
+            // increment condition counter and move to next condition
+            localStorage.setItem("current_condition", 1);
+            const conditions = localStorage.getItem("conditions");
+            const next = JSON.parse(conditions)[1].toLowerCase();
             navigate("/" + next);
-        }else if(counter> 0){
-            // update to local storage
-            localStorage.setItem("counter", counter);
+        }else if(currentStim> 0){
+            // update to stimulus index
+            localStorage.setItem("current_stim", currentStim);
         }
-    }, [counter, navigate]);
+    }, [currentStim, navigate]);
 
     return (
         <div className=" p-6 px-[10vw] flex-col space-y-3 justify-center">
@@ -69,11 +60,11 @@ export default function Baseline() {
                 To get an idea of how fast you type, we would like you to please enter the text below. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up on the lower text highlighted in <span className="bg-error border-1">red</span>. 
             </p>
             {/* Input */}
-            <div className="bg-gray border-4 p-6">
+            <div className={bg_color}>
                 <div className="flex justify-center">
-                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{counter}/{stimuli.length}</div>
+                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim}/{stimuli.length}</div>
                 </div>
-                <InputBaseline id={uid} targetText={stimuli[counter]} setCounter={setCounter}/>
+                <InputBaseline targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBgColor = {setBgColor}/>
                 <KeyboardVis layout={QWERTY_LAYOUT}/>
             </div>
         </div>
