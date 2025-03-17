@@ -20,6 +20,15 @@
     --color-correct: #879A39;
     --color-error: #D14D41;
     --color-select: #8B7EC8;
+    --color-gray-blue:#8B7EC8;
+    --color-ink-blue:#4385BE;
+    --color-cursor:#5E409D;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
 .scrollbar-visible::-webkit-scrollbar {

@@ -30,14 +30,13 @@ function compare_safe(text,target){
     }
 }
 
-export default function InputIme({ id = -1, condition = "", targetText = "", setCounter }){
+export default function InputIme({targetText = "", setCurrentStim, setBoxColor, setBgColor }){
     const [input, setInput] = useState("");
     const [keyLog, setKeyLog] = useState([]);
     const [startTime, setStartTime] = useState(null);
     const [errorLog, setErrorLog] = useState([]);
     const [transposition_count, setTrans] = useState(0);
     const [ommission_count, setOmm] = useState(0);
-    const [substitution_count, setSub] = useState(0);
     const [addition_count, setAdd] = useState(0);
     
     
@@ -47,27 +46,31 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [position, setPosition] = useState({ top: 0, left: 0 });
     
-    const lastWordRef = useRef(null);
+    const inputTextRef = useRef(null);
     const inputAreaRef = useRef(null);
-    const [isEmpty, setIsEmpty] = useState("");
+    const [isEmpty, setIsEmpty] = useState(true);
     
     const inputRef = useRef(null);
 
     const [start, setStart] = useState(false);
     const [end, setEnd] = useState(false)
+    const [isFocused, setFocus] = useState(false)
     
     // start timer
     const handleFocus = (e) =>{
         if (start === false){
             setStart(true);
-            console.log("started")
+            setFocus(true)
+            setBoxColor("bg-white")
+            setBgColor("bg-gray")
         }
     }
 
     // unlike layout a majority of the ime logic is here at the key level.
     const handleKeyDown = (e) => {
         // cache time stamp
-        timestamp = Date.now()
+        let timestamp = Date.now()
+
         // dont do anything if not started
         if (start === false){
             e.preventDefault();
@@ -76,9 +79,16 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
             setStartTime(timestamp);
         }
 
-        // Log the key presses
-        setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]); 
-        
+        // Filter the inputs and log
+        switch (e.key) {
+        case "ArrowLeft" || "ArrowRight":
+            // prevent cursor navigation.
+            e.preventDefault();
+        default:
+            // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
+            setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
+        }
+
         // navigate transliteration options
         let new_input = input
         if (e.key === "ArrowDown") {
@@ -91,45 +101,11 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
             );
         } else if (e.key === "Enter" || (e.key === " " && showSuggestions === true)) {
             // option Selected. Apply.
-            let new_string = new_input + suggestions[selectedIndex]
+            new_input = new_input + suggestions[selectedIndex]
+            setSelectedIndex(0)
 
-            // error analysis only done when new char added.
-            let new_trans = transposition_count;
-            let new_omm = ommission_count;
-            let new_add = addition_count;
-            // transposition
-            if (new_string.length>=2 && new_string.length<=targetText.length){
-                let raw = new_string.slice(-2)
-                let candidate = raw.split("").reverse().join("")
-                let target = targetText.slice(new_string.length-2,new_string.length)
-                console.log(raw)
-                console.log(candidate)
-                console.log(target)
-                if(candidate == target){
-                    setErrorLog(prevLog => [...prevLog, { error_type: "transposition", input:raw, target:target}]);
-                    new_trans +=1
-                    setTrans(new_trans)
-                }
-            }
-            // omission
-            if (new_string.length<targetText.length && new_string[new_string.length-1] == targetText[new_string.length]){
-                setErrorLog(prevLog => [...prevLog, { error_type: "omission", input:new_string[new_string.length-1], target:targetText[new_string.length-1]}]);
-                new_omm+=1
-                setOmm(new_omm)
-            }
-            // addition
-            if (new_string.length>=3 && new_string.length<=targetText.length){
-                let candidate = new_string[new_string.length-3] + new_string[new_string.length-1]
-                let target = targetText.slice(new_string.length-3,new_string.length-1)
-                if(candidate == target){
-                    setErrorLog(prevLog => [...prevLog, { error_type: "addidtion", input:new_string.slice(-3), target:target}]);
-                    new_add+=1
-                    setAdd(new_add)
-                }
-            }
-            
             // apply the selected word
-            setInput(new_string+" ");
+            setInput(new_input+" ");
             setShowSuggestions(false);
             e.preventDefault();
             setCurrentWord("")
@@ -143,9 +119,6 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
             // handle charachter deleting for confirmed text
             new_input = new_input.slice(0,-1)
             setInput(new_input)
-        }else if(e.key == "ArrowLeft" || e.key == "ArrowRight"){
-            // ignore navigation
-            e.preventDefault();
         }
 
         // handle empty string as input
@@ -153,7 +126,7 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
         else{setIsEmpty(false)}
 
         // handle text completion
-        if(new_input.trim()==targetText){
+        if(new_input.replace(/\s+/g, " ") == targetText.replace(/\s+/g, " ")){
             setEnd(true)
         }
     };
@@ -177,20 +150,33 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
         if (isEmpty){
             const rect = inputAreaRef.current.getBoundingClientRect();
             setPosition({ top: rect.bottom + window.scrollY, left: rect.right + window.scrollX });
-        }else if(lastWordRef.current) {
-            const rect = lastWordRef.current.getBoundingClientRect();
+        }else if(inputTextRef.current) {
+            const rect = inputTextRef.current.getBoundingClientRect();
             setPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
         }
     }, [showSuggestions]);
+
+    useEffect (() => {
+        if (isEmpty){
+            console.log("called")
+            const rect = inputAreaRef.current.getBoundingClientRect();
+            // setCaretPosition({ top: rect.top + window.scrollY, left: rect.right + window.scrollX });
+        }else if(inputTextRef.current) {
+            console.log("called2")
+            const rect = inputTextRef.current.getBoundingClientRect();
+            // setCaretPosition({ top: rect.top + window.scrollY, left: rect.left + window.scrollX });
+        }
+    }, [isFocused,input]);
 
     // stimulus completed. Write to server and prepare for next
     useEffect(() => {
         if (end==true){
             const end_time = Date.now();
+            const uid = localStorage.getItem("uid");
             try{
                 axios.post("http://127.0.0.1:8000/result", {
-                    user: id,
-                    condition: condition,
+                    user: uid,
+                    condition: "ime",
                     stimulus: targetText,
                     start_time : startTime,
                     end_time: end_time,
@@ -198,7 +184,7 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
                     error_log:errorLog,
                     transposition_count : transposition_count,
                     ommission_count : ommission_count,
-                    substitution_count : substitution_count,
+                    substitution_count : 0,
                     addition_count : addition_count,
                     wpm : (end_time-startTime) / targetText.split("").length
                 }, {headers: {
@@ -210,7 +196,7 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
             }
             // reset for next stimulus
             setStartTime(null)
-            setCounter((prev) => prev + 1)
+            setCurrentStim((prev) => prev + 1)
             setInput("")
             setKeyLog([])
             setErrorLog([])
@@ -223,7 +209,6 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
         let result = [];
         
         for (let i = 0; i < input.length; i++){
-            const isLastWord = i === input.length - 1;
             if (compare_safe(input[i],targetText[i])) {
                 result.push(
                     <span key={i} className="bg-correct">
@@ -266,9 +251,25 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
             </div>
 
             {/* Rendered Input Field */}
-            <div ref = {inputAreaRef} className="text-4xl pt-7 font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
-                <span ref={lastWordRef}>{renderText()}</span>
+            <div className="pt-7">
+            <div ref = {inputAreaRef} className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+                <span ref={inputTextRef}>{renderText()}</span>
+                {!isEmpty && (
+                <span
+                    className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${
+                    isFocused ? "" : "hidden"
+                    }`}
+                />
+                )}
                 {renderRemaining()}
+                {isEmpty && (
+                <span
+                    className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${
+                    isFocused ? "" : "hidden"
+                    }`}
+                />
+                )}
+            </div>
             </div>
 
             {/* Show Suggestions */}
@@ -285,7 +286,6 @@ export default function InputIme({ id = -1, condition = "", targetText = "", set
                 <li key="current">
                     {current_word}
                 </li>
-
                 <hr></hr>
                 {suggestions.map((suggestion, index) => (
                     <li key={index} className={`font-ur-sans p-1 cursor-pointer ${

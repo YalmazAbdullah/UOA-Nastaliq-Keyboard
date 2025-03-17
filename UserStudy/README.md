@@ -1,12 +1,7 @@
-- tutorials
-- polish pages
-- wpm calc
-- error counter
-- disable arrow nav
+- identify stimuli 20*3 + 20 pesudo sentences
+
+- exit survey
+- study complete page
 - deploy
-
-
-
-- hook up with server api
 
 

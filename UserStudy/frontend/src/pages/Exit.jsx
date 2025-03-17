@@ -12,7 +12,7 @@ export default function Exit() {
                 <h3 className="text-2xl font-bold">Informed Consent</h3>
             </div>
 
-            <h3 className="mt-10 px-3 bg-black text-white text-2xl">Hello! and thank you for participating.</h3>
+            <h3 className="px-3 bg-black text-white text-2xl">Hello! and thank you for participating.</h3>
 
             <p>In this project, we are evaluating three different Urdu text entry tools. You will be asked to type a series of sentences using each tool, followed by a short questionnaire at the end of the session. The entire process is expected to take no more than XX minutes. <b>We request that you complete this in one sitting and one attempt.</b> Before we begin, we would like you to read the following consent form carefully.
             </p>

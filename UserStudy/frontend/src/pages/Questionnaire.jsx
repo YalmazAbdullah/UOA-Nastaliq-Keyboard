@@ -74,7 +74,7 @@ export default function Questionnaire() {
             <h1 className="text-7xl font-black ">Evaluation of Urdu Text Input Options.</h1>
             <h3 className="text-2xl font-bold">Questionnaire</h3>
         </div>
-        <h3 className="mt-10 px-3 bg-black text-white text-2xl">All the conditions are now complete!</h3>
+        <h3 className="px-3 bg-black text-white text-2xl">All the conditions are now complete!</h3>
 
         <p>Please carefully read and fill out the forllowing questionnaire.</p>
 

@@ -35,7 +35,7 @@ export default function KeyboardVis({layout}) {
             <div
               key={key.en_upper}
               className={`w-16 h-16 border-2 border-black flex items-center justify-around shadow-[-0.2rem_0.2rem_rgba(0,0,0,1)]
-                          ${pressedKeys.has(key.en_upper) || pressedKeys.has(key.en_lower) ? "bg-gray text-black" : "bg-white"}`}
+                          ${pressedKeys.has(key.en_upper) || pressedKeys.has(key.en_lower) ? "bg-ink-blue text-black" : "bg-white"}`}
             >
                 <div className="flex flex-col">
                     {/* English Upper */}

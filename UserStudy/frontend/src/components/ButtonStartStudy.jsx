@@ -11,22 +11,25 @@ export default function ButtonStartStudy() {
   // Create the user session or restore if already exists
   const createSession = async () => {
     // Prevent duplicate requests
-    if (loading) return; 
+    if (loading) {return; }
     setLoading(true);
 
 
     // check local storage to see if already in progress/completed
     const status = localStorage.getItem("status");
-    if(status && status==="completed"){
-      console.log("Study already completed.");
+    if(status && (status==="completed" || status==="withdrawn")){
+      console.log("Study already completed or withdrawn.");
+      // repeaters page
       navigate("/end");
+      return; 
     }
     else if(status && status==="inprogress"){
       console.log("Study already in progress. Restore session.");
       let index = Number(localStorage.getItem("current_condition"));
       let conditions = localStorage.getItem("conditions");
-      restore = JSON.parse(conditions)[index].toLowerCase();
+      let restore = JSON.parse(conditions)[index].toLowerCase();
       navigate("/"+restore);
+      return; 
     }
     
 
@@ -36,11 +39,13 @@ export default function ButtonStartStudy() {
       //double check if study is complete
       if(res.data["message"] == "Study Complete"){
         // study is already completed
+        // TODO seperate page for this
         navigate("/end");
       }
       else{
         // Success
         localStorage.clear();
+        localStorage.setItem("status", "inprogress")
         localStorage.setItem("current_condition", 0);
         localStorage.setItem("current_stim", 0);
         localStorage.setItem("uid", res.data["uid"]);
@@ -59,7 +64,7 @@ export default function ButtonStartStudy() {
   };
 
   return (
-    <div>
+    <>
         <button 
         type = "submit" 
         onClick={createSession}
@@ -67,6 +72,6 @@ export default function ButtonStartStudy() {
         className="px-10 mt-3 py-2 bg-black text-white text-lg hover:underline">
             Start
         </button>
-    </div>
+    </>
   );
 }

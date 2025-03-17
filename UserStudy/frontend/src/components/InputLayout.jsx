@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import {ADJACENCY} from "../assets/error_data"
 
-export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwerty, targetText = "", setCounter }){
+export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targetText = "", setCurrentStim, setBoxColor, setBgColor }){
     const [input, setInput] = useState("");
     const [keyLog, setKeyLog] = useState([]);
     const [startTime, setStartTime] = useState(null);
@@ -12,22 +12,27 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
     const [ommission_count, setOmm] = useState(0);
     const [substitution_count, setSub] = useState(0);
     const [addition_count, setAdd] = useState(0);
+    const [isEmpty, setIsEmpty] = useState(true);
+
     const inputRef = useRef(null);
 
     const [start, setStart] = useState(false);
     const [end, setEnd] = useState(false)
+    const [isFocused, setFocus] = useState(false)
 
     // start timer
     const handleFocus = (e) =>{
         if (start === false){
             setStart(true);
-            console.log("started")
+            setFocus(true)
+            setBoxColor("bg-white")
+            setBgColor("bg-gray")
         }
     }
 
     const handleKeyDown = (e) => {
         // cache time stamp
-        timestamp = Date.now()
+        let timestamp = Date.now()
         // dont do anything if not started
         if (start === false){
             e.preventDefault();
@@ -44,7 +49,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
         default:
             // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
             console.log(e.key)
-            setKeyLog(prevLog => [...prevLog, { key: e.key, new_timestamp }]);
+            setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
         }
     }
 
@@ -53,6 +58,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
         var raw_string = e.target.value
         if(raw_string<=0){
             setInput("")
+            setIsEmpty(true)
             return
         }
 
@@ -67,6 +73,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
                 new_string += element
             }
         }
+        setIsEmpty(false)
         setInput(new_string)
 
         // error analysis only done when new char added.
@@ -94,9 +101,10 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
             }
             // addition
             if (new_string.length>=3 && new_string.length<=targetText.length){
+                let value = new_string[new_string.length-3] + new_string[new_string.length-2]
                 let candidate = new_string[new_string.length-3] + new_string[new_string.length-1]
                 let target = targetText.slice(new_string.length-3,new_string.length-1)
-                if(candidate == target){
+                if(value!== target && candidate == target){
                     setErrorLog(prevLog => [...prevLog, { error_type: "addidtion", input:new_string.slice(-3), target:target}]);
                     new_add+=1
                     setAdd(new_add)
@@ -117,7 +125,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
         }
 
         // input complete send to server
-        if(new_string===targetText){
+        if(new_string.replace(/\s+/g, " ") == targetText.replace(/\s+/g, " ")){
             setEnd(true)
         }
     };
@@ -126,9 +134,10 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
     useEffect(() => {
         if (end==true){
             const end_time = Date.now();
+            const uid = localStorage.getItem("uid");
             try{
                 axios.post("http://127.0.0.1:8000/result", {
-                    user: id,
+                    user: uid,
                     condition: condition,
                     stimulus: targetText,
                     start_time : startTime,
@@ -141,7 +150,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
                     addition_count : addition_count,
                     wpm : (end_time-startTime) / targetText.split("").length
                 }, {headers: {
-                      "Content-Type": "application/json",
+                        "Content-Type": "application/json",
                     },
                 })
             } catch (err) {
@@ -149,7 +158,7 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
             }
             // reset for next stimulus
             setStartTime(null)
-            setCounter((prev) => prev + 1)
+            setCurrentStim((prev) => prev + 1)
             setInput("")
             setKeyLog([])
             setErrorLog([])
@@ -187,14 +196,18 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
                 );
             }
         }
+        return result 
+    }
 
-        // add the remaining text
+    // render remaining text
+    const renderRemaining = () => {
+        let result = [];
         if(input.length<targetText.length){
             result.push(
                 <span key="remaining" className="text-deactive">{targetText.slice(input.length)}</span>
             );
         }
-        return result;
+        return result 
     }
 
     return(
@@ -206,8 +219,25 @@ export default function InputLayout({ id = -1, condition = "",qwerty_ur, ur_qwer
             </div>
 
             {/* Rendered Input Field */}
-            <div className="text-4xl pt-7 font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
-                {renderText()}
+            <div className="pt-7">
+            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+                <span>{renderText()}</span>
+                {!isEmpty && (
+                <span
+                    className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${
+                    isFocused ? "" : "hidden"
+                    }`}
+                />
+                )}
+                {renderRemaining()}
+                {isEmpty && (
+                <span
+                    className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${
+                    isFocused ? "" : "hidden"
+                    }`}
+                />
+                )}
+            </div>
             </div>
 
             {/* Hidden Input Field Both rendered options set focus on inputRef*/}

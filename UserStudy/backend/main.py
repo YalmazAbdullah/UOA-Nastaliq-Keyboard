@@ -1,5 +1,5 @@
 import sqlite3
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import schemas
 import utils
@@ -50,6 +50,7 @@ def generate_code(num):
     hash_bytes = hmac.new(SECRET_KEY, num_bytes, hashlib.sha256).digest()
     return base64.urlsafe_b64encode(hash_bytes)[:6].decode() 
 
+
 @app.post("/start_session")
 async def start_session():
     # create new enetery in database
@@ -91,7 +92,7 @@ async def start_session():
         current_experiment["Condition 1"],
         current_experiment["Condition 2"],
         current_experiment["Condition 3"],
-        "end"
+        "questionnaire"
     ]
 
     with open(STIMULUS_ADRESS) as file:
@@ -118,6 +119,16 @@ async def create_user(measure:schemas.Measure):
             measure.transposition_count, measure.ommission_count, 
             measure.substitution_count, measure.addition_count,  
             measure.wpm))
+        con.commit()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid request: {str(e)}")
+
+
+# test ping: http://XYZ/withdraw?uid=1
+@app.put("/withdraw", status_code=201)
+async def withdraw(uid: int = Query(-1)):
+    try:
+        cursor.execute("UPDATE users SET status = ? WHERE uid = ?", ("WITHDRAWN", uid))
         con.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid request: {str(e)}")

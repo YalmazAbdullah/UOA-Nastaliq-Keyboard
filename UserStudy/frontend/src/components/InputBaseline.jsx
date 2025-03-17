@@ -3,7 +3,7 @@
     import { useState, useRef, useEffect } from "react";
     import {ADJACENCY} from "../assets/error_data"
 
-    export default function InputBaseline({ targetText ="", setCurrentStim, setBgColor }){   
+    export default function InputBaseline({ targetText ="", setCurrentStim, setBoxColor, setBgColor }){   
         const [input, setInput] = useState("");
         const [keyLog, setKeyLog] = useState([]);
         const [startTime, setStartTime] = useState(null);
@@ -12,15 +12,19 @@
         const [ommission_count, setOmm] = useState(0);
         const [substitution_count, setSub] = useState(0);
         const [addition_count, setAdd] = useState(0);
+
         const inputRef = useRef(null);
 
         const [start, setStart] = useState(false);
         const [end, setEnd] = useState(false);
+        const [isFocused, setFocus] = useState(false)
 
         // start timer
         const handleFocus = (e) =>{
             setStart(true)
-            setBgColor("bg-blue-500 border-4 p-6")
+            setFocus(true)
+            setBoxColor("bg-white")
+            setBgColor("bg-gray")
         }
 
         const handleKeyDown = (e) => {
@@ -32,6 +36,17 @@
                 return;
             }else if (start=== true && startTime === null){
                 setStartTime(timestamp);
+            }
+
+            // Filter the inputs and log
+            switch (e.key) {
+            case "ArrowDown" || "ArrowUp" || "ArrowLeft" || "ArrowRight":
+                // prevent cursor navigation.
+                e.preventDefault();
+            default:
+                // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
+                console.log(e.key)
+                setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
             }
         }
 
@@ -71,10 +86,11 @@
                     setOmm(new_omm)
                 }
                 // addition
-                if (new_string.length>=3 && new_string.length<=targetText.length){
+                if (new_string.length>=3 && new_string.length<=targetText.length+1){
+                    let value = new_string[new_string.length-3] + new_string[new_string.length-2]
                     let candidate = new_string[new_string.length-3] + new_string[new_string.length-1]
                     let target = targetText.slice(new_string.length-3,new_string.length-1)
-                    if(candidate == target){
+                    if(value!== target && candidate == target){
                         setErrorLog(prevLog => [...prevLog, { error_type: "addidtion", input:new_string.slice(-3), target:target}]);
                         new_add+=1
                         setAdd(new_add)
@@ -96,78 +112,83 @@
 
     // stimulus completed. Write to server and prepare for next
     useEffect(() => {
-            if (end==true){
-                const end_time = Date.now();
-                const uid = localStorage.getItem("uid");
-                try{
-                    axios.post("http://127.0.0.1:8000/result", {
-                        user: uid,
-                        condition: "baseline",
-                        stimulus: targetText,
-                        start_time : startTime,
-                        end_time: end_time,
-                        log: keyLog,
-                        error_log:errorLog,
-                        transposition_count : transposition_count,
-                        ommission_count : ommission_count,
-                        substitution_count : substitution_count,
-                        addition_count : addition_count,
-                        wpm : (end_time-startTime) / targetText.split("").length
-                    }, {headers: {
+        if (end==true){
+            const end_time = Date.now();
+            const uid = localStorage.getItem("uid");
+            try{
+                axios.post("http://127.0.0.1:8000/result", {
+                    user: uid,
+                    condition: "baseline",
+                    stimulus: targetText,
+                    start_time : startTime,
+                    end_time: end_time,
+                    log: keyLog,
+                    error_log:errorLog,
+                    transposition_count : transposition_count,
+                    ommission_count : ommission_count,
+                    substitution_count : substitution_count,
+                    addition_count : addition_count,
+                    wpm : (end_time-startTime) / targetText.split("").length
+                }, {headers: {
                         "Content-Type": "application/json",
-                        },
-                    })
-                } catch (err) {
-                    console.error("Error submitting data:", err);
-                }
-                // reset for next stimulus
-                setStartTime(null)
-                setCurrentStim((prev) => prev + 1)
-                setInput("")
-                setKeyLog([])
-                setErrorLog([])
-                setEnd(false)
+                    },
+                })
+            } catch (err) {
+                console.error("Error submitting data:", err);
             }
-        }, [end]);
+            // reset for next stimulus
+            setStartTime(null)
+            setCurrentStim((prev) => prev + 1)
+            setInput("")
+            setKeyLog([])
+            setErrorLog([])
+            setEnd(false)
+        }
+    }, [end]);
 
-        // Function for rendering the text input by a user. Provides highlighting.
-        const renderText = () => {
-            let result = [];
-        
-            // loop over each charachter
-            for (let i = 0; i < input.length; i++){
-                // highlight based on whether it is correct or incorrect
-                if (input[i] === targetText[i]) {
-                    // correct
-                    result.push(
-                        <span key={i} className=" bg-correct">
-                            {input[i]}
-                        </span>
-                    );
-                }else if(input[i] == " "){
-                    // accounts for multiple space charachters
-                    result.push(
-                        <span key={i} className=" bg-error">
-                            &nbsp;
-                        </span>
-                    );
-                }else{
-                    // incorrect
-                    result.push(
-                        <span key={i} className=" bg-error">
-                            {input[i]}
-                        </span>
-                    );
-                }
-            }
-            
-            // add the remaining text
-            if(input.length<targetText.length){
+    // Function for rendering the text input by a user. Provides highlighting.
+    const renderText = () => {
+        let result = [];
+    
+        // loop over each charachter
+        for (let i = 0; i < input.length; i++){
+            // highlight based on whether it is correct or incorrect
+            if (input[i] === targetText[i]) {
+                // correct
                 result.push(
-                    <span key="remaining" className="text-deactive">{targetText.slice(input.length)}</span>
+                    <span key={i} className=" bg-correct">
+                        {input[i]}
+                    </span>
+                );
+            }else if(input[i] == " "){
+                // accounts for multiple space charachters
+                result.push(
+                    <span key={i} className=" bg-error">
+                        &nbsp;
+                    </span>
+                );
+            }else{
+                // incorrect
+                result.push(
+                    <span key={i} className=" bg-error">
+                        {input[i]}
+                    </span>
                 );
             }
+        }
+        
         return result;
+    }
+
+    // render remaining text
+    const renderRemaining = () => {
+        let result = [];
+        if(input.length<targetText.length){
+            result.push(
+                <span key="remaining" className="text-deactive">{targetText.slice(input.length)}</span>
+            );
+        }
+        return result 
     }
 
     return(
@@ -180,7 +201,13 @@
 
             {/* Rendered Input Field */}
             <div className="text-3xl pt-7 font-mono relative cursor-text" onClick={() => inputRef.current.focus()}>
-                {renderText()}
+                <span>{renderText()}</span>
+                <span
+                    className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${
+                        isFocused ? "" : "hidden"
+                    }`}
+                />
+                {renderRemaining()}
             </div>
 
             {/* Hidden Input Field Both rendered options set focus on inputRef*/}
@@ -191,6 +218,7 @@
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     onFocus={handleFocus}
+                    onBlur={() => setFocus(false)}
                     value={input}
             />
         </div>

@@ -11,7 +11,7 @@ def main():
                         uid INTEGER PRIMARY KEY AUTOINCREMENT,
                         gls_id INTEGER DEFAULT 0, 
                         code TEXT,
-                        completed BOOLEAN DEFAULT 0
+                        status TEXT DEFAULT INCOMPLETE
                     )
                     """)
     
