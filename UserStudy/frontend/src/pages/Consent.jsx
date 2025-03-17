@@ -83,7 +83,7 @@ export default function Consent() {
             
             <h3 className=" text-xl font-bold underline">6. Further Information:</h3>
             <p>
-                Please contact <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:demmanse@ualberta.ca">Carrie Demmans Epp</a>, or <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:edtekla@ualberta.ca">Yalmaz Ali Abdullah</a>, if you would like to know more. They are both happy to answer questions about this study and what we are doing. Please contact either of them if you have any questions or concerns.The plan for this study has been reviewed by a Research Ethics Board at the University of Alberta (Pro00082188). If you have questions about your rights or how research should be conducted, you can call (780) 492-2615.  This office is independent of the researchers.
+                Please contact <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:demmanse@ualberta.ca">Carrie Demmans Epp</a>, or <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:edtekla@ualberta.ca">Yalmaz Ali Abdullah</a> with <b>Urdu Keyboard Study</b> in the subject line, if you would like to know more. They are both happy to answer questions about this study and what we are doing. Please contact either of them if you have any questions or concerns.The plan for this study has been reviewed by a Research Ethics Board at the University of Alberta (Pro00082188). If you have questions about your rights or how research should be conducted, you can call (780) 492-2615.  This office is independent of the researchers.
             </p>
 
             <p>

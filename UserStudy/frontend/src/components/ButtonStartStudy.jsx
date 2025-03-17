@@ -19,8 +19,7 @@ export default function ButtonStartStudy() {
     const status = localStorage.getItem("status");
     if(status && (status==="completed" || status==="withdrawn")){
       console.log("Study already completed or withdrawn.");
-      // repeaters page
-      navigate("/end");
+      navigate("/repeat");
       return; 
     }
     else if(status && status==="inprogress"){
@@ -41,6 +40,9 @@ export default function ButtonStartStudy() {
         // study is already completed
         // TODO seperate page for this
         navigate("/end");
+      }
+      if(res.data["status"] == "WITHDRAWN" || res.data["status"] == "COMPLETE"){
+        navigate("/repeat");
       }
       else{
         // Success

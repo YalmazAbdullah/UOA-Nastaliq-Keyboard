@@ -14,6 +14,21 @@ class Measure(BaseModel):
     addition_count:int
     wpm : float
 
+class QuestionData(BaseModel):
+    ranking: list
+    rankingReason: str
+    romanUrduUsage: str
+    urduScriptUsage: str
+    urduContexts: str
+    otherCommunication: str
+    accessDifficulty: str
+    urduContent: str
+    langaugeUse: str
+    langaugeAcq: str
+    birthYear: int
+    gender: str
+    feedback: str = None  # Optional field
+
 
 
 

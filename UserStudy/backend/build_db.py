@@ -2,7 +2,7 @@ import sqlite3
 
 def main():
     # Create SQLite database and table
-    conn = sqlite3.connect("./backend/_database.db")
+    conn = sqlite3.connect("./_database.db")
     cursor = conn.cursor()
 
     # build user table
@@ -31,6 +31,28 @@ def main():
                         substitution_count INTEGER,
                         addition_count INTEGER,
                         wpm REAL,
+                        FOREIGN KEY(user) REFERENCES users(uid)
+                    )
+                   """)
+    
+    # build measures table
+    cursor.execute(""" 
+                   CREATE TABLE IF NOT EXISTS questions(
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        user INTEGER,
+                        ranking TEXT,
+                        rankingReason TEXT,
+                        romanUrduUsage TEXT,
+                        urduScriptUsage TEXT,
+                        urduContexts TEXT,
+                        otherCommunication TEXT,
+                        accessDifficulty TEXT,
+                        urduContent TEXT,
+                        langaugeUse TEXT,
+                        langaugeAcq TEXT,
+                        birthYear INTEGER,
+                        gender TEXT,
+                        feedback TEXT,
                         FOREIGN KEY(user) REFERENCES users(uid)
                     )
                    """)
