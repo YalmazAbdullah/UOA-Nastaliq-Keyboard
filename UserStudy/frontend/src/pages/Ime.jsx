@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import KeyboardVis from "../components/KeyboardVis";
 import InputIme from "../components/InputIme";
 import {QWERTY_LAYOUT} from "../assets/layouts"
+import ButtonWithdraw from "../components/ButtonWithdraw";
 
 export default function Ime() {
     const [currentStim, setCurrentStim] = useState(0);

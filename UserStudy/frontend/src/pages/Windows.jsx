@@ -6,6 +6,7 @@ import KeyboardVis from "../components/KeyboardVis";
 import {WINDOWS_LAYOUT} from "../assets/layouts"
 import {QWERTY_TO_WINDOWS} from "../assets/layouts"
 import {WINDOWS_TO_QWERTY} from "../assets/layouts"
+import ButtonWithdraw from "../components/ButtonWithdraw";
 
 export default function Windows() {
     const [currentStim, setCurrentStim] = useState(0);

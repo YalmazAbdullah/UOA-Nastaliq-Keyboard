@@ -6,6 +6,7 @@ import KeyboardVis from "../components/KeyboardVis";
 import {CRULP_LAYOUT} from "../assets/layouts"
 import {QWERTY_TO_CRULP} from "../assets/layouts"
 import {CRULP_TO_QWERTY} from "../assets/layouts"
+import ButtonWithdraw from "../components/ButtonWithdraw";
 
 export default function Crulp() {
     const [currentStim, setCurrentStim] = useState(0);
