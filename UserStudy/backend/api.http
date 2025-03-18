@@ -1,10 +1,10 @@
 ###
 //test root
-POST http://yalmazabdullah.com/api//start_session
+POST https://yalmazabdullah.com/api//start_session
 
 ###
 //test user creation
-POST http://yalmazabdullah.com/api//user/
+POST https://yalmazabdullah.com/api//user/
 Content-Type: application/json
 
 {
