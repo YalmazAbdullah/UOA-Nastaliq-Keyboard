@@ -116,7 +116,7 @@
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post("http://localhost:8000/result", {
+                axios.post("http://yalmazabdullah.com/api//result", {
                     user: uid,
                     condition: "baseline",
                     stimulus: targetText,
