@@ -34,7 +34,7 @@ export default function ButtonStartStudy() {
 
     // API request to fetch session
     try {
-      const res = await axios.post("http://127.0.0.1:8000/start_session");
+      const res = await axios.post("http://localhost:8000/start_session");
       //double check if study is complete
       if(res.data["message"] == "Study Complete"){
         // study is already completed

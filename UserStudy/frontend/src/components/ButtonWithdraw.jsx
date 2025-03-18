@@ -16,7 +16,7 @@ export default function ButtonWithdraw(){
         // API request to fetch session
         try {
             let id = localStorage.getItem("uid")
-            await axios.put("http://127.0.0.1:8000/withdraw?uid="+id);
+            await axios.put("http://localhost:8000/withdraw?uid="+id);
         } catch (err) {
             console.error(err);
         } finally {
