@@ -17,7 +17,13 @@ CSV_ADRESS = "./assets/counter_balance.csv"
 # set up api
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "http://localhost:3000",  
+    "http://127.0.0.1:3000",  
+    "https://yalmazadbdullah.com",  
+    "https://www.yalmazadbdullah.com",
+    "*"
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +32,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def read_root():
+    return {"message": "CORS enabled!"}
 
 def get_db():
     con = sqlite3.connect("./_database.db")
