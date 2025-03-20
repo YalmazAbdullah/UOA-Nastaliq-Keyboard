@@ -47,9 +47,6 @@ stimuli_bins = []
 baseline_stims = [
     "this is a test input for the baseline 1",
     "this is a test input for the baseline 2",
-    "this is a test input for the baseline 3",
-    "this is a test input for the baseline 4",
-    "this is a test input for the baseline 5",
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key

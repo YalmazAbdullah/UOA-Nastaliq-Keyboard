@@ -1,7 +1,6 @@
 import React from "react";
-import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
 import ButtonStartStudy from "../components/ButtonStartStudy";
+import uaLogo from '../assets/ua_logo.svg' 
 
 // Home page. Requests user consent.
 export default function Consent() {
@@ -16,7 +15,7 @@ export default function Consent() {
 
             {/* PREAMBLE */}
             <p>
-                The purpose of this project is to improve Urdu text entry tools by evaluating currently available options and identifying their limitations. To do this, you will be asked to interact with three different Urdu text entry tools and answer a questionnaire afterwards. Your participation should take around  40-45 minutes. Specific study activities include:
+                The purpose of this project is to improve Urdu text entry tools by evaluating currently available options and identifying their limitations. To do this, you will be asked to interact with three different Urdu text entry tools and answer a questionnaire afterwards. Your participation should take around 40-45 minutes. Specific study activities include:
             </p>
             <span>
                 <ul className="list-disc px-10">
@@ -26,7 +25,7 @@ export default function Consent() {
                 </ul>
             </span>
             <p className="pt-5">
-            To ensure the integrety of experiment we request that you complete this in <b>one sitting, and <span className="bg-error border-1">do no participate multiple times</span></b>. Before we begin, we would like you to read the following consent form carefully.
+            To ensure the integrity of the experiment we request that you complete this in <b>one sitting, and <span className="bg-error border-1">do not participate multiple times</span></b>. Before we begin, we would like you to read the following consent form carefully.
             </p>
 
             {/* CONSENT FORM */}
@@ -34,6 +33,16 @@ export default function Consent() {
             <h3 className="text-3xl p-3 font-bold bg-black text-white">Consent Form.</h3>
             <div className="h-100 overflow-y-scroll scrollbar-visible">
             <div className="flex-col space-y-2  p-3">
+            <div className="flex place-content-between">
+                <img src={uaLogo} alt="University of Alberta logo" />
+                <div className="p0 m0">
+                    <p className="font-bold">DEPARTMENT OF COMPUTING SCIENCE</p>
+                    <p>Athabasca Hall 2-52D</p>
+                    <p>Edmonton, Alberta, Canada T6G 2E8</p>
+                    <p>cdemmansepp@ualberta.ca</p>
+                </div>
+            </div>
+            <hr></hr>
             <p>
                 The data collected from this study will be used in articles for publication in journals and conference proceedings. Any write-ups of the data will not include information that can be linked directly to you.
             </p>
@@ -53,7 +62,7 @@ export default function Consent() {
 
             <h3 className=" text-xl font-bold underline">3. Remuneration:</h3>
             <p>
-                To thank you for your time, we will be pleased to make a summary of the results available to you once they have been compiled. This summary will outline the research and discuss our findings and recommendations. It will be made available through our lab <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "https://spaces.facsci.ualberta.ca/edtekla/publications/">website</a>. We expect this summary to be available in May. 2025.
+                To thank you for your time, we will be pleased to make a summary of the results available to you once they have been compiled. This summary will outline the research and discuss our findings and recommendations. It will be made available through our lab <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "https://spaces.facsci.ualberta.ca/edtekla/publications/" target="_blank">website</a>. We expect this summary to be available in May. 2025.
             </p>
             <p>
                 You are also eligible to receive an honorarium worth $15 If you are in Canada this will be e-transferred to you. For participants in Pakistan, the remuneration will be transferred through Remitly via Easypaisa. In both cases the information required to complete this transfer will be collected at the end of the study or upon clicking the withdraw button. This information will be stored separately from your data collected as part of the study.  
@@ -83,11 +92,11 @@ export default function Consent() {
             
             <h3 className=" text-xl font-bold underline">6. Further Information:</h3>
             <p>
-                Please contact <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:demmanse@ualberta.ca">Carrie Demmans Epp</a>, or <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:edtekla@ualberta.ca">Yalmaz Ali Abdullah</a> with <b>Urdu Keyboard Study</b> in the subject line, if you would like to know more. They are both happy to answer questions about this study and what we are doing. Please contact either of them if you have any questions or concerns.The plan for this study has been reviewed by a Research Ethics Board at the University of Alberta (Pro00082188). If you have questions about your rights or how research should be conducted, you can call (780) 492-2615.  This office is independent of the researchers.
+                Please contact <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:demmanse@ualberta.ca" target="_blank">Carrie Demmans Epp</a>, or <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "mailto:edtekla@ualberta.ca" target="_blank">Yalmaz Ali Abdullah</a> with <b>Urdu Keyboard Study</b> in the subject line, if you would like to know more. They are both happy to answer questions about this study and what we are doing. Please contact either of them if you have any questions or concerns.The plan for this study has been reviewed by a Research Ethics Board at the University of Alberta (Pro00082188). If you have questions about your rights or how research should be conducted, you can call (780) 492-2615.  This office is independent of the researchers.
             </p>
 
             <p>
-                A PDF copy of consent form is available <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "/Consent Form.pdf" download="Consent Form.pdf">here</a>.
+                A PDF copy of consent form is available <a className="text-blue-700 text-bold hover:underline after:content-['_↗']" href = "/Consent Form.pdf" target="_blank" download="Consent Form.pdf">here</a>.
             </p>
             </div>
             </div>

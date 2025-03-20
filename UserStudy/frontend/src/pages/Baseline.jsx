@@ -58,7 +58,7 @@ export default function Baseline() {
             </h3>
             {/* Instructions */}
             <p>
-                To get an idea of how fast you type, we would like you to please type out the text samples below. These are pesudo sentences that use words which sound similar to english but have no actual meaning. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up on the lower text highlighted in <span className="bg-error border-1">red</span>. 
+                To get an idea of how fast you type, we would like you to please type out the text samples below. These are pseudo sentences that use words which sound similar to English but have no actual meaning. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up on the lower text highlighted in <span className="bg-error border-1">red</span>. 
             </p>
             <p>
                 The first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.

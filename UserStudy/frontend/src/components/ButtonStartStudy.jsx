@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { endpoint_dev,endpoint_live } from "../api";
 
 // Button that makes API request to create user and gets back
 // experimental structure information such as id, stimulus bins, condition order
@@ -34,7 +35,7 @@ export default function ButtonStartStudy() {
 
     // API request to fetch session
     try {
-      const res = await axios.post("https://yalmazabdullah.com/api//start_session");
+      const res = await axios.post(endpoint_dev+"start_session");
       //double check if study is complete
       if(res.data["message"] == "Study Complete"){
         // study is already completed
