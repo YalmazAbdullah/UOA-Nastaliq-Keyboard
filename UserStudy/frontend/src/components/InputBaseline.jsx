@@ -2,6 +2,7 @@
     import axios from "axios";
     import { useState, useRef, useEffect } from "react";
     import {ADJACENCY} from "../assets/error_data"
+    import { endpoint_live } from "../api";
 
     export default function InputBaseline({ targetText ="", setCurrentStim, setBoxColor, setBgColor }){   
         const [input, setInput] = useState("");
@@ -116,7 +117,7 @@
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post(endpoint+"/result", {
+                axios.post(endpoint_live+"/result", {
                     user: uid,
                     condition: "baseline",
                     stimulus: targetText,

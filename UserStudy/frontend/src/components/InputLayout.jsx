@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import {ADJACENCY} from "../assets/error_data"
+import { endpoint_live } from "../api";
 
 export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targetText = "", setCurrentStim, setBoxColor, setBgColor }){
     const [input, setInput] = useState("");
@@ -136,7 +137,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post(endpoint+"result", {
+                axios.post(endpoint_live+"result", {
                     user: uid,
                     condition: condition,
                     stimulus: targetText,

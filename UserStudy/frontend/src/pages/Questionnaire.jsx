@@ -7,6 +7,7 @@ import {Reorder} from "framer-motion"
 import KeyboardVisNoInteract from "../components/KeyboardVisNoInteract";
 import {QWERTY_LAYOUT, WINDOWS_LAYOUT, CRULP_LAYOUT} from "../assets/layouts"
 import { useNavigate } from "react-router-dom";
+import { endpoint_live } from "../api";
 
 // Validation schema with required Likert questions
 const schema = z.object({
@@ -62,7 +63,7 @@ export default function Questionnaire() {
       console.log("Survey Data:", data);
       try {
         const uid = localStorage.getItem("uid")
-        const response = await axios.post(`${endpoint}/submit?uid=${uid}`, data);
+        const response = await axios.post(`${endpoint_live}/submit?uid=${uid}`, data);
         console.log("Success:", response.data);
       } catch (error) {
         console.error("Error:", error.response?.data?.detail || "Unknown error");

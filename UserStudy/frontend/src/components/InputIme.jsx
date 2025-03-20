@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
+import { endpoint_live } from "../api";
 
 // API call to google translitarate. Used to power the IME
 async function getTransliterations(text) {
@@ -174,7 +175,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post(endpoint+"/result", {
+                axios.post(endpoint_live+"/result", {
                     user: uid,
                     condition: "ime",
                     stimulus: targetText,
