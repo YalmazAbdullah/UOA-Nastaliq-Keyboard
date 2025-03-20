@@ -136,7 +136,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post(endpoint_dev+"result", {
+                axios.post(endpoint+"result", {
                     user: uid,
                     condition: condition,
                     stimulus: targetText,
