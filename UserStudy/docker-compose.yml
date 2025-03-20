@@ -49,7 +49,7 @@
 
 services:
   
-  backend:git s
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
