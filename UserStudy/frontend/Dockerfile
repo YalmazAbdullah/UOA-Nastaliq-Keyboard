@@ -33,8 +33,14 @@ RUN npm run build
 
 # --- Production Stage ---
 FROM nginx:alpine
+RUN apk add --no-cache certbot certbot-nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
+RUN mkdir -p /etc/letsencrypt
 EXPOSE 80
+EXPOSE 443
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

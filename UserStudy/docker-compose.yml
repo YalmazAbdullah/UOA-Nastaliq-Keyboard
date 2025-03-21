@@ -64,5 +64,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"  # Expose the frontend (optional, as Nginx will handle this)
+      - "443:443"
     depends_on:
       - backend # Ensure the backend starts first
+    volumes:  
+      - ./frontend/nginx:/etc/nginx/conf.d # Keep your Nginx config
+      - letsencrypt:/etc/letsencrypt 
+volumes:
+  letsencrypt:
