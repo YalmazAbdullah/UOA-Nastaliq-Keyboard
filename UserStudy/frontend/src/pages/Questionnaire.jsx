@@ -63,7 +63,7 @@ export default function Questionnaire() {
       console.log("Survey Data:", data);
       try {
         const uid = localStorage.getItem("uid")
-        const response = await axios.post(`${endpoint_live}/submit?uid=${uid}`, data);
+        const response = await axios.post(`${endpoint_live}submit?uid=${uid}`, data);
         console.log("Success:", response.data);
       } catch (error) {
         console.error("Error:", error.response?.data?.detail || "Unknown error");

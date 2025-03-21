@@ -175,7 +175,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             const end_time = Date.now();
             const uid = localStorage.getItem("uid");
             try{
-                axios.post(endpoint_live+"/result", {
+                axios.post(endpoint_live+"result", {
                     user: uid,
                     condition: "ime",
                     stimulus: targetText,
