@@ -47,28 +47,64 @@
 #       - frontend
 #       - backend
 
-services:
+# services:
   
+#   backend:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     restart: always
+#     volumes:
+#       - ./backend/_database.db:/app/_database.db  # Bind mount for the database
+#       - ./backend/assets:/app/assets             # Bind mount for the assets directory
+  
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     ports:
+#       - "80:80"  # Expose the frontend (optional, as Nginx will handle this)
+#       - "443:443"
+#     depends_on:
+#       - backend # Ensure the backend starts first
+#     volumes:  
+#       - ./frontend/nginx:/etc/nginx/conf.d # Keep your Nginx config
+#       - letsencrypt:/etc/letsencrypt 
+# volumes:
+#   letsencrypt:
+
+# version: '3.8'
+
+services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - ./backend/_database.db:/app/_database.db  # Bind mount for the database
-      - ./backend/assets:/app/assets             # Bind mount for the assets directory
-  
+      - ./backend/_database.db:/app/_database.db  # Optional: If you have a database
+      - ./backend/assets:/app/assets             # Optional: If you have static assets
+    expose:
+      - "8000"
+
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "80"
+
+  nginxproxymanager:
+    image: 'jc21/nginx-proxy-manager:latest'
     ports:
-      - "80:80"  # Expose the frontend (optional, as Nginx will handle this)
-      - "443:443"
+      - '80:80'
+      - '443:443'
+      - '81:81'  # Change if 81 is in use
+    restart: always
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
     depends_on:
-      - backend # Ensure the backend starts first
-    volumes:  
-      - ./frontend/nginx:/etc/nginx/conf.d # Keep your Nginx config
-      - letsencrypt:/etc/letsencrypt 
-volumes:
-  letsencrypt:
+      - backend
+      - frontend
