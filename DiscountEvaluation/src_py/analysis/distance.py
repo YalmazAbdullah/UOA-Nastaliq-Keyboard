@@ -6,14 +6,18 @@ import pandas as pd
 from nltk import edit_distance
 
 # CUSTOM
-from transform_keystroke import transform
 from util import read_tsv
-from util import CRULP_MAPPTING, WINDOWS_MAPPING
 
 def edit_dist(dataset_name):
+    """
+    Calculates the Levinshtine distance for each sentence in provided data set. Required keystroke and sentence transformation to be performed first.
+
+    Args:
+        dataset_name: Used to read the transformed data.
+    """
     native,roman = read_tsv("transformed/sentences/"+dataset_name)
-    keystroke_CRULP = transform(native, CRULP_MAPPTING)
-    keystroke_Windows = transform(native, WINDOWS_MAPPING)
+    keystroke_CRULP = read_tsv("transformed/keystroke_CRULP/"+dataset_name)[0]
+    keystroke_Windows = read_tsv("transformed/keystroke_Windows/"+dataset_name)[0]
 
     crulp_roman_levin    = []
     windows_roman_levin  = []
@@ -41,18 +45,18 @@ def edit_dist(dataset_name):
         "WINDOWS_2_IME_DISTANCE": windows_roman_levin,
         "CRULP_2_WINDOWS_DISTANCE": crulp_windows_levin
     })
-    output.to_csv("./DiscountEvaluation/data/sentence/distance/"+dataset_name+".csv", index=True)
+    output.to_csv("../data/sentence/distance/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##
 ##################
 def main():
     print("Distance")
-    print("=============Dataset: Dakshina=============")
+    print("Dataset: Dakshina".center(100, "="))
     edit_dist("dakshina_dataset")
-    print("=============Dataset: Roman Urdu Parl=============")
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     edit_dist("roUrParl_dataset")
-    print("=============Dataset: Combined=============")
+    print("Dataset: Combined Subset".center(100, "="))
     edit_dist("combined_dataset")
 
 if __name__ == "__main__":

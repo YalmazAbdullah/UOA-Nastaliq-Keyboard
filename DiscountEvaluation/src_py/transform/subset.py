@@ -29,7 +29,7 @@ def generate():
     
     data3 = pd.concat([data1,data2], ignore_index=True)
     
-    write_tsv(data3['U'].tolist(),data3['R'].tolist(),"transformed/sentences/combined_dataset")
+    write_tsv(data3['U'].tolist(),data3['R'].tolist(),"transformed/sentences/combined_subset")
 
 def main():
     generate()

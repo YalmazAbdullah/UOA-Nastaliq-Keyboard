@@ -63,10 +63,10 @@ export default function Crulp() {
 
             {/* Instructions */}
             <p>
-                In this condtion we will be evaluating the CRULP keyboard layout. This is a phonetic keyboard layout, meaning that the Urdu letters are mapped to similar sounding English letters. For example <span className="text-lg font-ur-sans">"د"</span> is mapped to "d" because they sound similar. Typing the uppercase 'D' will input <span className="text-lg font-ur-sans">"ڈ"</span>.  We can confirm this by examining a visualization of the layout shown below.
+                In this condition we will be evaluating the CRULP keyboard layout. This is a phonetic keyboard layout, meaning that the Urdu letters are mapped to similar sounding English letters. For example <span className="text-lg font-ur-sans">"د"</span> is mapped to "d" because they sound similar. Typing the uppercase 'D' will input <span className="text-lg font-ur-sans">"ڈ"</span>.  We can confirm this by examining a visualization of the layout shown below.
             </p>
             <p>
-                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin. 
+                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
             </p>
 
             {/* Input */}

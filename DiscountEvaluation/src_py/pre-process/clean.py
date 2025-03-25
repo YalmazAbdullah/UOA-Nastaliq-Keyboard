@@ -1,6 +1,7 @@
 # STL
 import re
 from pprint import pprint
+from tqdm import tqdm
 
 # Vendor
 from urduhack.preprocessing import remove_accents
@@ -30,19 +31,13 @@ STANDARD_SUBSTITUTIONS = {
 
 def standardize(native, roman):
     '''
-    Standardizes the data. All diacritics are removed from the text.
-    The data contains a mix of ltr and rtl punctuation. Ltr punc in urdu with 
-    the proper rtl punctuation. The numerals
-    are also not accessible on all keyboard so we replace all urdu numerals with 
-    regular numbers. Lastly there are some chars like ى which have mixed urdu arabic
-    encoding. Replaces these to follow the same encoding.
+    Standardizes the data. All diacritics are removed from the text. The data contains a mix of ltr and rtl punctuation. Ltr punc in urdu with the proper rtl punctuation. The numerals are also not accessible on all keyboard so we replace all urdu numerals with  regular numbers. Lastly there are some chars like ى which have mixed urdu arabic encoding. Replaces these to follow the same encoding.
     
     This function only does substitution and addition. No subtraction.
 
     Args:
         native (list): list holding urdu tokens
         roman (list): list holding roman tokens
-    
     Returns:
         native (list): list holding urdu tokens 
         roman (list): list holding roman tokens
@@ -51,7 +46,7 @@ def standardize(native, roman):
     pattern = re.compile('|'.join(re.escape(key) for key in STANDARD_SUBSTITUTIONS.keys()))
 
     # process urdu text
-    for i in range(len(native)):
+    for i in tqdm(range(len(native)), desc="Standardizing Tokens"):
         if (native[i]=="</s>"):
             continue
 
@@ -63,12 +58,6 @@ def standardize(native, roman):
         native[i] = pattern.sub(lambda match: STANDARD_SUBSTITUTIONS[match.group(0)], native[i])
         # fix whitespace errors
         native[i] = native[i].replace(" ", "")
-
-    # process roman text
-    for i in range(len(roman)): 
-        if (roman[i]=="me"):
-            roman[i] = "me"
-
     return native,roman
 
 
@@ -79,32 +68,26 @@ def remove_missing(native, roman):
     Args:
         native (list): list holding urdu tokens
         roman (list): list holding roman tokens
-    
     Returns:
         native (list): list holding urdu tokens 
         roman (list): list holding roman tokens
     '''
     native_cleaned = []
     roman_cleaned = []
-    for i in range(len(roman)): 
+    print("Tokens Removed Because Missing (?)")
+    for i in tqdm(range(len(roman)), desc="Removing tokens with ?"): 
         if (roman[i]=="?" and native[i]!="؟"):
+            print(native[i]+ "||" +roman[i])
             continue
         native_cleaned.append(native[i])
         roman_cleaned.append(roman[i])
     return native_cleaned,roman_cleaned
 
 
-def is_inaccessible(token, char_set):
-    '''
-    Checks to see if all charachters in token are accessabile to the keyboards.
-    
-    Args:
-        token (string): token that is being checked
-        char_set (set): char_set of accessible tokens
-    '''
+def _is_inaccessible(token, char_set):
     for char in token:
         if char not in char_set:
-            return True
+            return char
     return False
 
 
@@ -116,7 +99,6 @@ def remove_inaccessible(a_text,b_text,char_set):
         a_text (list): list holding tokens. Urdu or roman either is fine but urdu prefered.
         b_text (list): list holding tokens. Roman or roman either is fine but roman prefered.
         set (set): set of accessible tokens
-        
     Returns:
         a_text (list): list holding tokens. 
         b_text (list): list holding tokens.
@@ -125,11 +107,14 @@ def remove_inaccessible(a_text,b_text,char_set):
     a_accessible = []
     b_accessible = []
     inaccessible_tokens = []
+    freq = {}
     # for each token
-    for i in range(len(a_text)):
+    for i in tqdm(range(len(a_text)),desc="Removing Inaccessible"):
         # check if all chars accessible
-        if(a_text[i] != "</s>" and is_inaccessible(a_text[i],char_set)):
+        val = _is_inaccessible(a_text[i],char_set)
+        if(a_text[i] != "</s>" and val):
             # add to list of inaccessible tokens
+            freq[val] = freq.get(val,0) + 1
             inaccessible_tokens.append(a_text[i])
             continue
         # add to ouput if they are
@@ -137,18 +122,20 @@ def remove_inaccessible(a_text,b_text,char_set):
         b_accessible.append(b_text[i])
 
     # build frequency table of inaccessible charachters
-    freq = {}
+    removal_freq = {}
     inaccessible_token_set = set()
     for token in inaccessible_tokens:
         inaccessible_token_set.add(token)
         for char in token:
             if (char not in char_set):
-                freq[char] = freq.get(char,0)+1
+                removal_freq[char] = removal_freq.get(char,0)+1
 
     # print out some info for error analysis
-    print("Inaccessible char frequency table")
+    print("Inaccessible Char Frequency Table".center(100, "-"))
     pprint(freq)
-    print("Inaccessible Tokens:")
+    print("Removed Char Frequency Table".center(100, "-"))
+    pprint(removal_freq)
+    print("Inaccessible Tokens:".center(100, "-"))
     pprint(inaccessible_token_set)
     print()
 
@@ -156,6 +143,15 @@ def remove_inaccessible(a_text,b_text,char_set):
 
 
 def clean(name,path,native_set,roman_set):
+    """
+    Cleans the provided data by standardizing coding variances, removing inaccessible charachters, and removing tokens with missing romanziations. The results are writtend to disk as tsv
+    
+    Args:
+        name (str): name of the dataset being processed used when saving
+        path (str): location of dirty dataset
+        native_set (set): a set of universally accessible charachters
+        roman_set (set): a set of roman charachters
+    """
     # read file
     native,roman = read_tsv(path)
     # standardize the text by replacing or adding certain chars
@@ -163,7 +159,9 @@ def clean(name,path,native_set,roman_set):
     # remove tokens that have no equivilent roman token
     native_cleaned,roman_cleaned = remove_missing(native,roman)
     # remove tokens that have charachters that are not accessible
+    print("Native".center(100, "/"))
     native_cleaned,roman_cleaned = remove_inaccessible(native_cleaned,roman_cleaned,native_set)
+    print("Roman".center(100, "/"))
     roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
@@ -174,26 +172,24 @@ def clean(name,path,native_set,roman_set):
 ##     MAIN     ##
 ##################
 def main():
-    print("###############################################")
-    print("=====================CLEAN=====================")
-    print("###############################################")
-    print()
-
     # get set of accessible charachters
-    set_CRULP = set(read_json("keyboards/mappings/CRULP").keys())
-    set_Windows = set(read_json("keyboards/mappings/Windows").keys())
-    native_set = set_CRULP.intersection(set_Windows)
     roman_set = set(read_json("keyboards/QWERTY")["Charachters"])
+    CRULP_set = set(read_json("keyboards/mappings/CRULP").keys())
+    Windows_set = set(read_json("keyboards/mappings/Windows").keys())
+    native_set = CRULP_set.intersection(Windows_set)
 
+    # print set of inaccessible charachters for rigour
+    union = CRULP_set.union(Windows_set)
     print("Set of Excluded Native Charachters:")
-    union = set_CRULP.union(set_Windows)
     print(union.difference(native_set))
 
     # clean the data
-    print("=============Dataset: Dakshina=============")
-    clean("dakshina_dataset","raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned",native_set,roman_set)
-    print("=============Dataset: Roman Urdu Parl=============")
-    clean("roUrParl_dataset","prepared/roUrParl_dataset",native_set,roman_set)
+    dakshina_path = "raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned"
+    roman_path = "prepared/roUrParl_dataset"
+    print("Dataset: Dakshina".center(100, "="))
+    clean("dakshina_dataset",dakshina_path,native_set,roman_set)
+    print("Dataset: Roman Urdu Parl".center(100, "="))
+    clean("roUrParl_dataset",roman_path,native_set,roman_set)
 
 if __name__ == "__main__":
     main()

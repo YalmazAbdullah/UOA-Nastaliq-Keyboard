@@ -1,3 +1,6 @@
+# STL
+from tqdm import tqdm
+
 # Custom
 from util import eval
 from util import read_tsv,write_tsv
@@ -26,7 +29,7 @@ def transform(native,roman):
     token_count = 0
 
     # for each token
-    for i in range(len(native)):
+    for i in tqdm(range(len(native)), desc="Back to Sentences"):
         # if it is end of sentence
         if native[i] == "</s>":
             # and sentence is more than one token
@@ -58,7 +61,7 @@ def transform(native,roman):
 
 def sentence_transform(dataset_name):
     '''
-    Simply a wraper to help process multiple datasets easily.
+    Simply a wraper to help process multiple datasets easily. Collapses tokens back into sentences.
 
     Args:
         dataset_name (string): name of the dataset. Must be in cleaned/
@@ -73,14 +76,11 @@ def sentence_transform(dataset_name):
 ##     MAIN     ##
 ##################
 def main():
-    print("###############################################")
-    print("===================TRANSFORM===================")
-    print("###############################################")
-    print()
-    print("=============Dataset: Dakshina=============")
+    # Dataset: Dakshina
+    print("Dataset: Dakshina".center(100, "="))
     sentence_transform("dakshina_dataset")
-    print()
-    print("=============Dataset: Roman Urdu Parl=============")
+    # Dataset: Roman Urdu Parl
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     sentence_transform("roUrParl_dataset")
 
 if __name__ == "__main__":

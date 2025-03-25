@@ -41,32 +41,34 @@ if ! $clean && ! $transform && ! $score; then
     usage
 fi
 
-mkdir ./DiscountEvaluation/logs/$(date +'%Y%m%d_%H%M%S')
-LOG_PATH="./DiscountEvaluation/logs/$(date +'%Y%m%d_%H%M%S')"
+mkdir ../logs/$(date +'%Y%m%d_%H%M%S')
+LOG_PATH="../logs/$(date +'%Y%m%d_%H%M%S')"
 
 # Main logic
 if $clean; then
     echo "Cleaning..."
     # clean
-    python ./DiscountEvaluation/src_py/prepare.py > "$LOG_PATH/1_prepare.log"
-    python ./DiscountEvaluation/src_py/clean.py > "$LOG_PATH/2_clean.log"
+    python -m pre-process.prepare > "$LOG_PATH/1_prepare.log"
+    python -m pre-process.clean > "$LOG_PATH/2_clean.log"
 fi
 
 if $transform; then
     echo "Transforming..."
     # transform
-    python ./DiscountEvaluation/src_py/transform_sentence.py > "$LOG_PATH/3_sentence.log"
-    python ./DiscountEvaluation/src_py/generate_subset.py
-    python ./DiscountEvaluation/src_py/transform_keystroke.py
-    python ./DiscountEvaluation/src_py/transform_dyad.py
-    python ./DiscountEvaluation/src_py/stats_corpus.py > "$LOG_PATH/4_stats.log"
+    python -m transform.sentence > "$LOG_PATH/3_sentence.log"
+    python -m transform.subset
+    python -m transform.keystroke
+    python -m transform.dyad
 fi
 
 if $score; then
     echo "Scoring..."
     # score
-    python ./DiscountEvaluation/src_py/distance_sentence.py
-    python ./DiscountEvaluation/src_py/score_monad.py
-    python ./DiscountEvaluation/src_py/score_dyad.py
-    python ./DiscountEvaluation/src_py/score_sentence.py
+    python -m score.monad
+    python -m score.dyad
+    python -m score.sentence
 fi
+
+echo "Analysis..."
+python -m analysis.stats_corpus > "$LOG_PATH/4_stats.log"
+# python -m analysis.distance

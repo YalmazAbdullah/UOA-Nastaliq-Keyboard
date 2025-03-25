@@ -22,10 +22,12 @@
 
         // start timer
         const handleFocus = (e) =>{
-            setStart(true)
             setFocus(true)
-            setBoxColor("bg-white")
-            setBgColor("bg-gray")
+            if (start === false){
+                setStart(true)
+                setBoxColor("bg-white")
+                setBgColor("bg-gray")
+            }
         }
 
         const handleKeyDown = (e) => {

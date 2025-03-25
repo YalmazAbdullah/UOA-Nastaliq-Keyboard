@@ -3,7 +3,6 @@ from tqdm import tqdm
 
 # Vendor
 import pandas as pd
-from nltk import edit_distance
 
 # Custom
 from util import read_tsv, write_tsv
@@ -23,7 +22,7 @@ def transform(native, mapping):
         transformed (list): list of senteces transformed into keystrokes
     '''
     transformed = []
-    for i in range(len(native)):
+    for i in tqdm(range(len(native)), desc="Transforming to Keystrokes"):
         transformed_line = ''
         for char in native[i]:
             transformed_line = transformed_line + mapping[char]
@@ -57,14 +56,14 @@ def transform_keystrokes(dataset_name):
 ##################
 def main():
     # Dataset: Dakshina
-    print("Keystroke Transformation: dakshina")
+    print("Dataset: Dakshina".center(100, "="))
     transform_keystrokes("dakshina_dataset")
     # Dataset: Roman Urdu Parl
-    print("Keystroke Transformation: roUrParl")
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     transform_keystrokes("roUrParl_dataset")
     # Dataset: Combined
-    print("Keystroke Transformation: roUrParl")
-    transform_keystrokes("combined_dataset")
+    print("Dataset: Combined Subset".center(100, "="))
+    transform_keystrokes("combined_subset")
 
 if __name__ == "__main__":
     main()

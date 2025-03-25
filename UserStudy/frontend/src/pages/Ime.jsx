@@ -61,16 +61,16 @@ export default function Ime() {
 
             {/* Instructions */}
             <p>
-                In this condtion we will be Input Method Editor (IME) tool for Urdu. This tool takens in Roman Urdu as input and converts it to Urdu script. For example if you start typing "salam" then the system will show you a drop down menu with potential Urdu transliterations such as <span className="text-lg font-ur-sans">"سلام"</span> and <span className="text-lg font-ur-sans">"سلم"</span>. You can select between these using the up and down arrow keys. To confirm your selection press <b>Enter</b> or <b>Space</b>.
+                In this condition we will use the Input Method Editor (IME) tool for Urdu. This tool takes in Roman Urdu as input and converts it to Urdu script. For example if you start typing "salam" then the system will show you a drop down menu with potential Urdu transliterations such as <span className="text-lg font-ur-sans">"سلام"</span> and <span className="text-lg font-ur-sans">"سلم"</span>. You can select between these using the up and down arrow keys. To confirm your selection press <b>Enter</b> or <b>Space</b>.
             </p>
             <p>
-                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin. 
+                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
             </p>
 
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
                 <div className="flex justify-center">
-                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim}/{stimuli.length}</div>
+                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim+1}/{stimuli.length}</div>
                 </div>
                 <InputIme targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>
                 <KeyboardVis layout={QWERTY_LAYOUT}/>

@@ -64,10 +64,10 @@ export default function Windows() {
 
             {/* Instructions */}
             <p>
-                In this condtion we will be evaluating the WINDOWS keyboard layout. This is a frequency based keyboard layout, meaning that the most frequently occuring Urdu letters are mapped to the most easily accessible keys. For example <span className="text-lg font-ur-sans">"ن"</span> is mapped to "f" because <span className="text-lg font-ur-sans">"ن"</span> is one of the most frequently occuring letters in Urdu and "f" is one of the most easily accessible keys on the keyboard. Typing the uppercase "F" will input <span className="text-lg font-ur-sans">"ں"</span>. We can confirm this by examining a visualization of the layout shown below. 
+                In this condition we will be evaluating the WINDOWS keyboard layout. This is a frequency based keyboard layout, meaning that the most frequently occuring Urdu letters are mapped to the most easily accessible keys. For example <span className="text-lg font-ur-sans">"ن"</span> is mapped to "f" because <span className="text-lg font-ur-sans">"ن"</span> is one of the most frequently occurring letters in Urdu and "f" is one of the most easily accessible keys on the keyboard. Typing the uppercase "F" will input <span className="text-lg font-ur-sans">"ں"</span>. We can confirm this by examining a visualization of the layout shown below. 
             </p>
             <p>
-                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin. 
+                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
             </p>
 
             {/* Input */}

@@ -45,8 +45,9 @@ def get_db():
 # cached variables
 stimuli_bins = []
 baseline_stims = [
-    "this is a test input for the baseline 1",
-    "this is a test input for the baseline 2",
+    "this is a test input for pilot 1",
+    "this is a test input for pilot 2",
+    "this is a test input for pilot 3",
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key

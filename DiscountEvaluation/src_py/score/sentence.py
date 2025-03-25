@@ -5,11 +5,9 @@ from tqdm import tqdm
 import pandas as pd
 
 # CUSTOM
-from transform_keystroke import transform
 from util import evaluate_dyad
 from util import read_tsv
-from util import CRULP_MAPPTING, WINDOWS_MAPPING
-import pprint
+
 def score_sentence(sentence):
     # handle start of sentence
     sentence_total = evaluate_dyad("<s>",sentence[0])
@@ -25,12 +23,13 @@ def score_sentence(sentence):
     return sentence_total
 
 def score(dataset_name):
-    native,roman = read_tsv("transformed/sentences/"+dataset_name)
+    _,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)
+    
     # calculate sentence scores
     inputs = {
-        "CRULP":transform(native, CRULP_MAPPTING),
+        "CRULP":read_tsv("transformed/keystroke_CRULP/"+dataset_name)[0],
         "IME":roman,
-        "WINDOWS":transform(native, WINDOWS_MAPPING),
+        "WINDOWS":read_tsv("transformed/keystroke_Windows/"+dataset_name)[0],
     }
 
     # Score each sentence
@@ -46,19 +45,18 @@ def score(dataset_name):
         output = pd.concat([output, pd.DataFrame(full_results)], ignore_index=True)
     
     # Write results
-    output.to_csv("./DiscountEvaluation/data/sentence/score/"+dataset_name+".csv", index=True)
+    output.to_csv("../data/sentence/score/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##
 ##################
 def main():
-    print("Sentence")
-    print("=============Dataset: Dakshina=============")
+    print("Dataset: Dakshina".center(100, "="))
     score("dakshina_dataset")
-    print("=============Dataset: Roman Urdu Parl=============")
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     score("roUrParl_dataset")
-    print("=============Dataset: Combined=============")
-    score("combined_dataset")
+    print("Dataset: Combined Subset".center(100, "="))
+    score("combined_subset")
 
 if __name__ == "__main__":
     main()

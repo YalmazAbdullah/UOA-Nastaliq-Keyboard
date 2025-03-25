@@ -12,10 +12,10 @@ export default function Withdraw(){
             {/*  */}
 
             <p>
-                As noted in the consent form, your data will be destroyed. To recive remuneration please make sure to complete the google form below. We need this information to transfer your honorarium. It will be stored seperately from the study data. 
+                As noted in the consent form, your data will be destroyed. To receive remuneration please make sure to complete the google form below. We need this information to transfer your honorarium. It will be stored separately from the study data. 
             </p>
             <p>
-                Please save a copy of your unique ID it will be needed if you have any questions in the future.
+                Please save a copy of your unique code. It will be needed if you have any questions in the future.
             </p>
             <p className="mb-5 text-2xl font-bold">Your Uniqe Code is: <span className="font-normal underline">{localStorage.getItem("code")}</span></p>
 

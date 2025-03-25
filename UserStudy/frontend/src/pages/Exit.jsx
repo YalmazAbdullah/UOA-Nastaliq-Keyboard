@@ -12,10 +12,10 @@ export default function Exit() {
             <h3 className=" px-3 bg-black text-white text-2xl">The study is now complete! Thank you for participating.</h3>
 
             <p>
-                To recive remuneration please make sure to complete the google form below. We need this information to transfer your honorarium. It will be stored seperately from the study data. 
+                To receive remuneration please make sure to complete the google form below. We need this information to transfer your honorarium. It will be stored separately from the study data.
             </p>
             <p>
-                Also please make sure to save a copy of your unique code it will be needed if you have any questions or would like to withdraw in the future.
+                Also please make sure to save a copy of your code. It will be needed if you have any questions or would like to withdraw in the future.
             </p>
             <p className="mb-5 text-2xl font-bold">Your Uniqe Code is: <span className="font-normal underline">{localStorage.getItem("code")}</span></p>
 

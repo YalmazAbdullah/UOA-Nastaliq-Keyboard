@@ -9,17 +9,8 @@ import Exit from "./pages/Exit";
 import Withdraw from "./pages/Withdraw";
 
 
-import TextWithCaret from "./pages/text";
 import Repeat from "./pages/Repeat";
 import End from "./pages/End";
-
-function Test() {
-  return (
-    <div>
-      hi
-    </div>
-  );
-}
 
 function App() {
   return (
@@ -36,7 +27,6 @@ function App() {
             <Route path="/withdraw" element={<Withdraw />} />
             <Route path="/repeat" element={<Repeat />} />
             <Route path="/end" element={<End />} />
-            <Route path="/test" element={<TextWithCaret />} />
         </Routes>
     </Router>
   );

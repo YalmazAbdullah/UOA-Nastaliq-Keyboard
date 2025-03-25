@@ -1,10 +1,10 @@
 # STL
 import re
+from tqdm import tqdm
 
 # Custom
 from util import eval
 from util import write_tsv
-
 
 def prep_roman_ur_parl(native_file_path, roman_file_path):
     '''
@@ -35,7 +35,7 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
         print("Warning: datasets do not match.")
 
     # re formant the data
-    for i in range(len(native_data)):
+    for i in tqdm(range(len(native_data)),desc="Preparing Roman-Ur-Parl"):
         # standardize spaces
         native_data[i] =   re.sub(r'\s+', ' ', native_data[i])
         
@@ -62,7 +62,7 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
     # write to headless .tsv
     # write_tsv(native_out, roman_out, 'prepared/roUrParl_dataset')
     # print loss evaluation
-    print("=============Dataset: Roman Urdu Parl=============")
+    print("="*100)
     eval(raw_count,valid_count)
 
 
@@ -70,13 +70,9 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
 ##     MAIN     ##
 ##################
 def main(
-        native_file_path = './DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
-        roman_file_path = './DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
+        native_file_path = '../corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
+        roman_file_path = '../corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
     ):
-    print("###############################################")
-    print("====================PREPARE====================")
-    print("###############################################")
-    print()
     prep_roman_ur_parl(native_file_path, roman_file_path)
 
 if __name__ == "__main__":

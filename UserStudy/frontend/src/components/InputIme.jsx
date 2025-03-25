@@ -59,9 +59,9 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
     
     // start timer
     const handleFocus = (e) =>{
+        setFocus(true)
         if (start === false){
             setStart(true);
-            setFocus(true)
             setBoxColor("bg-white")
             setBgColor("bg-gray")
         }
@@ -157,18 +157,6 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         }
     }, [showSuggestions]);
 
-    useEffect (() => {
-        if (isEmpty){
-            console.log("called")
-            const rect = inputAreaRef.current.getBoundingClientRect();
-            // setCaretPosition({ top: rect.top + window.scrollY, left: rect.right + window.scrollX });
-        }else if(inputTextRef.current) {
-            console.log("called2")
-            const rect = inputTextRef.current.getBoundingClientRect();
-            // setCaretPosition({ top: rect.top + window.scrollY, left: rect.left + window.scrollX });
-        }
-    }, [isFocused,input]);
-
     // stimulus completed. Write to server and prepare for next
     useEffect(() => {
         if (end==true){
@@ -199,6 +187,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             setStartTime(null)
             setCurrentStim((prev) => prev + 1)
             setInput("")
+            setIsEmpty(true)
             setKeyLog([])
             setErrorLog([])
             setEnd(false)
@@ -306,6 +295,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
+                onBlur={() => setFocus(false)}
                 value={current_word}
             />
         </div>

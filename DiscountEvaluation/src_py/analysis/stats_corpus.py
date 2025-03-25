@@ -2,10 +2,10 @@ from util import read_tsv
 import math
 from statistics import median
 
-'''
-Gets the summary stats for roman-urdu-parl
-'''
 def get_stats(data):
+    '''
+    Gets the summary stats for roman-urdu-parl
+    '''
     lines = len(data)
     tokens = 0
     min = math.inf
@@ -28,10 +28,10 @@ def get_stats(data):
     print ("Min Tokens per Line: ", min)
     print ("Max Tokens per Line: ", max)
 
-'''
-Gets the summary stats for dakshina
-'''
 def get_stats2(data):
+    '''
+    Gets the summary stats for dakshina
+    '''
     lines = 0
     tokens = 0
     tokens_in_line = 0
@@ -64,47 +64,53 @@ def get_stats2(data):
 ##     MAIN     ##
 ##################
 def main():
-    print("###############################################")
-    print("===================RAW STATS===================")
-    print("###############################################")
-    print("=============Dataset: Roman Urdu Parl=============")
-    print("-------------Urdu-------------")
-    file = open('./DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
-    data = file.readlines()
-    get_stats(data)
-    print("-------------Roman-------------")
-    file = open('./DiscountEvaluation/corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
-    data = file.readlines()
-    get_stats(data)
-    print("=============Dataset: Dakshina=============")
+    print("#"*100)
+    print("RAW Stats".center(100, "+"))
+    print("#"*100)
+    
+    print("Dataset: Dakshina".center(100, "="))
     native, roman = read_tsv("raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned")
-    print("-------------Urdu-------------")
+    print("Urdu".center(100, "-"))
     get_stats2(native)
-    print("-------------Roman-------------")
+    print("Roman".center(100, "-"))
     get_stats2(roman)
     print()
 
+    print("Dataset: Roman Urdu Parl".center(100, "="))
+    print("Urdu".center(100, "-"))
+    file = open('../corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
+    data = file.readlines()
+    get_stats(data)
+    print("Roman".center(100, "-"))
+    file = open('../corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
+    data = file.readlines()
+    get_stats(data)
 
-    print("###############################################")
-    print("================PROCESSED STATS================")
-    print("###############################################")
-    print("=============Dataset: Roman Urdu Parl=============")
-    native, roman = read_tsv("transformed/sentences/roUrParl_dataset")
-    print("-------------Urdu-------------")
-    get_stats(native)
-    print("-------------Roman-------------")
-    get_stats(roman)
-    print("=============Dataset: Dakshina=============")
+
+    print("#"*100)
+    print("PROCESSED Stats".center(100, "+"))
+    print("#"*100)
+
+    print("Dataset: Dakshina".center(100, "="))
     native, roman = read_tsv("transformed/sentences/dakshina_dataset")
-    print("-------------Urdu-------------")
+    print("Urdu".center(100, "-"))
     get_stats(native)
-    print("-------------Roman-------------")
+    print("Roman".center(100, "-"))
     get_stats(roman)
-    print("=============Dataset: Combined=============")
-    native, roman = read_tsv("transformed/sentences/combined_dataset")
-    print("-------------Urdu-------------")
+    
+    print("Dataset: Roman Urdu Parl".center(100, "="))
+    native, roman = read_tsv("transformed/sentences/roUrParl_dataset")
+    print("Urdu".center(100, "-"))
     get_stats(native)
-    print("-------------Roman-------------")
+    print("Roman".center(100, "-"))
+    get_stats(roman)
+    
+    
+    print("Dataset: Combined Subset".center(100, "="))
+    native, roman = read_tsv("transformed/sentences/combined_subset")
+    print("Urdu".center(100, "-"))
+    get_stats(native)
+    print("Roman".center(100, "-"))
     get_stats(roman)
     
 if __name__ == "__main__":

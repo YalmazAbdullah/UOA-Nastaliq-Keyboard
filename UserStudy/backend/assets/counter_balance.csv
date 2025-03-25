@@ -1,10 +1,10 @@
 id,Condition 1,Bin 1,Condition 2,Bin 2,Condition 3,Bin 3,State
-0,IME,0,WINDOWS,0,CRULP,0,inprogress
-1,WINDOWS,0,CRULP,0,IME,1,inprogress
-2,CRULP,0,WINDOWS,1,IME,2,inprogress
-3,WINDOWS,1,IME,1,CRULP,0,inprogress
-4,CRULP,1,IME,2,WINDOWS,1,inprogress
-5,WINDOWS,1,CRULP,2,IME,2,inprogress
-6,IME,2,WINDOWS,0,CRULP,0,inprogress
-7,CRULP,2,WINDOWS,1,IME,1,inprogress
-8,IME,2,WINDOWS,2,CRULP,2,inprogress
+0,IME,0,WINDOWS,1,CRULP,2,inprogress
+1,WINDOWS,2,CRULP,1,IME,0,inprogress
+2,CRULP,1,WINDOWS,2,IME,0,inprogress
+3,WINDOWS,1,IME,0,CRULP,2,inprogress
+4,CRULP,0,IME,2,WINDOWS,1,inprogress
+5,WINDOWS,2,CRULP,0,IME,1,inprogress
+6,IME,0,WINDOWS,1,CRULP,2,inprogress
+7,CRULP,2,WINDOWS,1,IME,0,inprogress
+8,IME,0,WINDOWS,2,CRULP,1,inprogress

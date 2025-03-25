@@ -1,6 +1,7 @@
 # STL
 import pandas as pd
 import math
+from tqdm import tqdm
 
 # CUSTOM
 from util import read_tsv
@@ -25,7 +26,8 @@ def calculate_freq(data):
     freq["r_shift"] = int(0)
 
     # for each sentence in data
-    for line in data:
+    for i in tqdm(range(len(data)), desc="Count Frequency"):
+        line = data[i]
         # for each char in sentence
         for char in line:
             # skip spaces
@@ -61,7 +63,7 @@ def score(dataset_name):
     travel_dist = dict.fromkeys(KEY_SET)
 
     # for each key
-    for key in finger_assign.keys():
+    for key in tqdm(finger_assign.keys(), desc="Calculating Distance"):
         # find assigned finger
         finger_assign[key] = KEY_2_FINGER[key]
         # find travel distance from home
@@ -93,15 +95,17 @@ def score(dataset_name):
     
     # output results
     output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
-    output.to_csv("./DiscountEvaluation/data/monad/"+dataset_name+".csv", index=True)
+    output.to_csv("../data/monad/"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##
 ##################
 def main():
-    print("Monad")
+    print("Dataset: Dakshina".center(100, "="))
     score("dakshina_dataset")
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     score("roUrParl_dataset")
+    print("Dataset: Combined Subset".center(100, "="))
     score("combined_dataset")
 
 if __name__ == "__main__":

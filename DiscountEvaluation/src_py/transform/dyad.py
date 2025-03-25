@@ -1,6 +1,9 @@
+# STL
+from tqdm import tqdm
+import json
+
 # Custom
 from util import read_tsv
-import json
 
 def generate_dyads(text):
     '''
@@ -22,7 +25,8 @@ def generate_dyads(text):
         transformed (string): all dyads for the setnece in a list
     '''
     transformed = []
-    for line in text:
+    for i in tqdm(range(len(text)), desc="Transform into dyad data"):
+        line = text[i]
         line = line.replace(" ", "") 
         dyads = ["<s>"+line[0]]
         dyads = dyads + [line[i:i+2] for i in range(len(line) - 1)]
@@ -43,7 +47,7 @@ def write_dyads(native1,native2,roman,path):
     Returns:
         None
     '''
-    with open("./DiscountEvaluation/corpus/"+path+".json", "w") as file:
+    with open("../corpus/"+path+".json", "w") as file:
         json.dump([native1,native2,roman], file, indent=4)
 
 def transform(dataset_name,write = False):
@@ -72,11 +76,14 @@ def transform(dataset_name,write = False):
 ##     MAIN     ##
 ##################
 def main():
-    print("Dyad Transformation: dakshina")
+    # Dataset: Dakshina
+    print("Dataset: Dakshina".center(100, "="))
     transform("dakshina_dataset",True)
-    print("Dyad Transformation: roUrParl")
+    # Dataset: Roman Urdu Parl
+    print("Dataset: Roman Urdu Parl".center(100, "="))
     transform("roUrParl_dataset",True)
-    print("Dyad Transformation: combined")
+    # Dataset: Combined
+    print("Dataset: Combined Subset".center(100, "="))
     transform("combined_dataset",True)
     
 

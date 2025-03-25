@@ -23,9 +23,9 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
 
     // start timer
     const handleFocus = (e) =>{
+        setFocus(true)
         if (start === false){
             setStart(true);
-            setFocus(true)
             setBoxColor("bg-white")
             setBgColor("bg-gray")
         }
@@ -57,6 +57,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
     const handleInputChange = (e) => {        
         // handle string clearing.
         var raw_string = e.target.value
+        
         if(raw_string<=0){
             setInput("")
             setIsEmpty(true)
@@ -161,6 +162,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
             setStartTime(null)
             setCurrentStim((prev) => prev + 1)
             setInput("")
+            setIsEmpty(true)
             setKeyLog([])
             setErrorLog([])
             setEnd(false)
@@ -249,6 +251,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 onFocus={handleFocus}
+                onBlur={() => setFocus(false)}
                 value={input}
             />
         </div>
