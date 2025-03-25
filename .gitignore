@@ -388,3 +388,4 @@ dist-ssr
 *.sw?
 
 .env
+*.db
