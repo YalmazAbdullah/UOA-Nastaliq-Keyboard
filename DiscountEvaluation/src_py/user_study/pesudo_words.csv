@@ -1,0 +1,401 @@
+N Value,Pseudoword,ARPAbet_Pronunciation,Aligned_Token_with_ARPAbet_Pronunciation,IPA_Transcription,Rationale for Removal
+2,os,"['ao1', 's']","['o_ao1', 's_s']","['ɔ', 's']",
+2,fi,"['f', 'ay1']","['f_f', 'i_ay1']","['f', 'aɪ']",
+3,im,"['ih1', 'm']","['i_ih1', 'm_m']","['ɪ', 'm']",Affix
+3,vis,"['v', 'ih1', 'z']","['v_v', 'i_ih1', 's_z']","['v', 'ɪ', 'z']",Word
+2,wim,"['w', 'ih1', 'm']","['w_w', 'i_ih1', 'm_m']","['w', 'ɪ', 'm']",
+3,ent,"['eh1', 'n', 't']","['e_eh1', 'n_n', 't_t']","['ɛ', 'n', 't']",Affix
+3,ity,"['ih1', 't', 'iy0']","['i_ih1', 't_t', 'y_iy0']","['ɪ', 't', 'i']",Affix
+2,ume,"['ah1', 'm', 'iy1']","['u_ah1', 'm_m', 'e_iy1']","['ʌ', 'm', 'i']",Questionable pronunciation
+3,ust,"['ah1', 's', 't']","['u_ah1', 's_s', 't_t']","['ʌ', 's', 't']",
+2,gon,"['g', 'aa1', 'n']","['g_g', 'o_aa1', 'n_n']","['ɡ', 'ɑ', 'n']",
+2,ped,"['p', 'eh1', 'd']","['p_p', 'e_eh1', 'd_d']","['p', 'ɛ', 'd']",Affix
+3,ond,"['aa1', 'n', 'd']","['o_aa1', 'n_n', 'd_d']","['ɑ', 'n', 'd']",
+3,jus,"['jh', 'ah1', 's']","['j_jh', 'u_ah1', 's_s']","['dʒ', 'ʌ', 's']",
+2,wis,"['w', 'ih1', 'z']","['w_w', 'i_ih1', 's_z']","['w', 'ɪ', 'z']",
+4,nat,"['n', 'ae1', 't']","['n_n', 'a_ae1', 't_t']","['n', 'æ', 't']",
+4,liv,"['l', 'ih1', 'v']","['l_l', 'i_ih1', 'v_v']","['l', 'ɪ', 'v']",
+2,fip,"['f', 'ih1', 'p']","['f_f', 'i_ih1', 'p_p']","['f', 'ɪ', 'p']",
+3,lun,"['l', 'ah1', 'n']","['l_l', 'u_ah1', 'n_n']","['l', 'ʌ', 'n']",
+3,unt,"['ah0', 'n', 't']","['u_ah0', 'n_n', 't_t']","['ə', 'n', 't']",
+2,ing,"['ih1', 'ng']","['i_ih1', 'ng_ng']","['ɪ', 'ŋ']",Affix
+2,ome,"['ah1', 'm']","['o_ah1', 'me_m']","['ʌ', 'm']",
+2,oun,"['aw1', 'n']","['ou_aw1', 'n_n']","['aʊ', 'n']",Questionable pronunciation
+2,ked,"['k', 't']","['k_k', 'ed_t']","['k', 't']",Questionable pronunciation
+2,iff,"['ih1', 'f']","['i_ih1', 'ff_f']","['ɪ', 'f']",
+2,kis,"['k', 'ih1', 'z']","['k_k', 'i_ih1', 's_z']","['k', 'ɪ', 'z']",
+3,san,"['s', 'ae1', 'n']","['s_s', 'a_ae1', 'n_n']","['s', 'æ', 'n']",
+4,tex,"['t', 'eh1', 'ks']","['t_t', 'e_eh1', 'x_ks']","['t', 'ɛ', 'ks']",
+4,kat,"['k', 'ae1', 't']","['k_k', 'a_ae1', 't_t']","['k', 'æ', 't']",
+2,las,"['l', 'ae1', 'z']","['l_l', 'a_ae1', 's_z']","['l', 'æ', 'z']",
+2,ack,"['ae1', 'k']","['a_ae1', 'ck_k']","['æ', 'k']",
+4,nile,"['n', 'ay1', 'l']","['n_n', 'i_ay1', 'le_l']","['n', 'aɪ', 'l']",Word
+2,spis,"['s', 'p', 'ih1', 'z']","['s_s', 'p_p', 'i_ih1', 's_z']","['s', 'p', 'ɪ', 'z']",
+4,nats,"['n', 'ae1', 't', 's']","['n_n', 'a_ae1', 't_t', 's_s']","['n', 'æ', 't', 's']",
+2,ound,"['aw1', 'n', 'd']","['ou_aw1', 'n_n', 'd_d']","['aʊ', 'n', 'd']",1 letter off from a real word
+3,spet,"['s', 'p', 'eh1', 't']","['s_s', 'p_p', 'e_eh1', 't_t']","['s', 'p', 'ɛ', 't']",
+4,sist,"['s', 'ih1', 's', 't']","['s_s', 'i_ih1', 's_s', 't_t']","['s', 'ɪ', 's', 't']",
+2,behe,"['b', 'ih0', 'hh', 'iy1']","['b_b', 'e_ih0', 'h_hh', 'e_iy1']","['b', 'ɨ', 'h', 'i']",Questionable pronunciation
+2,stes,"['s', 't', 'eh1', 's']","['s_s', 't_t', 'e_eh1', 's_s']","['s', 't', 'ɛ', 's']",
+2,fong,"['f', 'ao1', 'ng']","['f_f', 'o_ao1', 'ng_ng']","['f', 'ɔ', 'ŋ']",
+2,wido,"['w', 'ih1', 'd', 'uw1']","['w_w', 'i_ih1', 'd_d', 'o_uw1']","['w', 'ɪ', 'd', 'u']",
+4,ovel,"['ah1', 'v', 'ah0', 'l']","['o_ah1', 'v_v', 'e_ah0', 'l_l']","['ʌ', 'v', 'ə', 'l']",Questionable pronunciation
+4,hend,"['hh', 'eh1', 'n', 'd']","['h_hh', 'e_eh1', 'n_n', 'd_d']","['h', 'ɛ', 'n', 'd']",
+2,stis,"['s', 't', 'ih1', 'z']","['s_s', 't_t', 'i_ih1', 's_z']","['s', 't', 'ɪ', 'z']",
+4,cort,"['k', 'ao0', 'r', 't']","['c_k', 'o_ao0', 'r_r', 't_t']","['k', 'ɔ', 'ɹ', 't']",
+3,sunt,"['s', 'ah0', 'n', 't']","['s_s', 'u_ah0', 'n_n', 't_t']","['s', 'ə', 'n', 't']",
+2,tren,"['t', 'r', 'eh1', 'n']","['t_t', 'r_r', 'e_eh1', 'n_n']","['t', 'ɹ', 'ɛ', 'n']",
+2,mand,"['m', 'ae1', 'n', 'd']","['m_m', 'a_ae1', 'n_n', 'd_d']","['m', 'æ', 'n', 'd']",
+2,idde,"['ih1', 'd', 'ah0']","['i_ih1', 'dd_d', 'e_ah0']","['ɪ', 'd', 'ə']",Questionable pronunciation
+2,mife,"['m', 'ay1', 'f']","['m_m', 'i_ay1', 'fe_f']","['m', 'aɪ', 'f']",
+4,tast,"['t', 'ae1', 's', 't']","['t_t', 'a_ae1', 's_s', 't_t']","['t', 'æ', 's', 't']",
+4,knox,"['n', 'aa1', 'ks']","['kn_n', 'o_aa1', 'x_ks']","['n', 'ɑ', 'ks']",Word
+4,rept,"['r', 'eh1', 'p', 't']","['r_r', 'e_eh1', 'p_p', 't_t']","['ɹ', 'ɛ', 'p', 't']",
+4,nome,"['n', 'ow1', 'm']","['n_n', 'o_ow1', 'me_m']","['n', 'oʊ', 'm']",
+2,ouse,"['aw1', 's']","['ou_aw1', 'se_s']","['aʊ', 's']",1 letter off from a real word
+2,ashe,"['aa1', 'sh', 'iy1']","['a_aa1', 'sh_sh', 'e_iy1']","['ɑ', 'ʃ', 'i']",Questionable pronunciation
+2,bere,"['b', 'eh1', 'r']","['b_b', 'e_eh1', 're_r']","['b', 'ɛ', 'ɹ']",Questionable pronunciation
+3,beld,"['b', 'eh1', 'l', 'd']","['b_b', 'e_eh1', 'l_l', 'd_d']","['b', 'ɛ', 'l', 'd']",
+4,kims,"['k', 'ih1', 'm', 'z']","['k_k', 'i_ih1', 'm_m', 's_z']","['k', 'ɪ', 'm', 'z']",
+2,thix,"['dh', 'ih1', 'ks']","['th_dh', 'i_ih1', 'x_ks']","['ð', 'ɪ', 'ks']",Questionable pronunciation
+4,sams,"['s', 'ae1', 'm', 'z']","['s_s', 'a_ae1', 'm_m', 's_z']","['s', 'æ', 'm', 'z']",Name
+4,ints,"['ih1', 'n', 't', 's']","['i_ih1', 'n_n', 't_t', 's_s']","['ɪ', 'n', 't', 's']",
+3,wiss,"['w', 'ih1', 's']","['w_w', 'i_ih1', 'ss_s']","['w', 'ɪ', 's']",
+2,frus,"['f', 'r', 'ah1', 's']","['f_f', 'r_r', 'u_ah1', 's_s']","['f', 'ɹ', 'ʌ', 's']",
+4,whoo,"['w', 'uw1']","['wh_w', 'oo_uw1']","['w', 'u']",Onomatopoeia
+2,icke,"['ih1', 'k', 'ah0']","['i_ih1', 'ck_k', 'e_ah0']","['ɪ', 'k', 'ə']",Questionable pronunciation
+2,juch,"['jh', 'ah1', 'ch']","['j_jh', 'u_ah1', 'ch_ch']","['dʒ', 'ʌ', 'tʃ']",
+4,zags,"['z', 'ae1', 'g', 'z']","['z_z', 'a_ae1', 'g_g', 's_z']","['z', 'æ', 'ɡ', 'z']",
+4,pand,"['p', 'ae1', 'n', 'd']","['p_p', 'a_ae1', 'n_n', 'd_d']","['p', 'æ', 'n', 'd']",1 letter off from a real word
+2,gome,"['g', 'ah1', 'm']","['g_g', 'o_ah1', 'me_m']","['ɡ', 'ʌ', 'm']",Questionable pronunciation
+3,habs,"['hh', 'ae1', 'b', 'z']","['h_hh', 'a_ae1', 'b_b', 's_z']","['h', 'æ', 'b', 'z']",Name
+3,sked,"['s', 'k', 't']","['s_s', 'k_k', 'ed_t']","['s', 'k', 't']",1 letter off from a real word
+4,gunt,"['g', 'ah1', 'n', 't']","['g_g', 'u_ah1', 'n_n', 't_t']","['ɡ', 'ʌ', 'n', 't']",
+3,cand,"['k', 'ae1', 'n', 'd']","['c_k', 'a_ae1', 'n_n', 'd_d']","['k', 'æ', 'n', 'd']",
+3,cali,"['k', 'aa1', 'l', 'iy0']","['c_k', 'a_aa1', 'l_l', 'i_iy0']","['k', 'ɑ', 'l', 'i']",Name
+3,ifth,"['ih1', 'f', 'th']","['i_ih1', 'f_f', 'th_th']","['ɪ', 'f', 'θ']",
+3,wint,"['w', 'ih1', 'n', 't']","['w_w', 'i_ih1', 'n_n', 't_t']","['w', 'ɪ', 'n', 't']",
+3,neps,"['n', 'eh1', 'p', 's']","['n_n', 'e_eh1', 'p_p', 's_s']","['n', 'ɛ', 'p', 's']",
+3,liff,"['l', 'ih1', 'f']","['l_l', 'i_ih1', 'ff_f']","['l', 'ɪ', 'f']",
+2,cack,"['k', 'ae1', 'k']","['c_k', 'a_ae1', 'ck_k']","['k', 'æ', 'k']",
+3,ands,"['ah0', 'n', 'd', 'z']","['a_ah0', 'n_n', 'd_d', 's_z']","['ə', 'n', 'd', 'z']",Word
+2,thed,"['dh', 'ah0', 'd']","['th_dh', 'e_ah0', 'd_d']","['ð', 'ə', 'd']",Questionable pronunciation
+3,taby,"['t', 'ey1', 'b', 'iy0']","['t_t', 'a_ey1', 'b_b', 'y_iy0']","['t', 'eɪ', 'b', 'i']",
+3,gast,"['g', 'ae1', 's', 't']","['g_g', 'a_ae1', 's_s', 't_t']","['ɡ', 'æ', 's', 't']",
+3,dids,"['d', 'ih1', 'd', 'z']","['d_d', 'i_ih1', 'd_d', 's_z']","['d', 'ɪ', 'd', 'z']",
+3,stic,"['s', 't', 'ih0', 'k']","['s_s', 't_t', 'i_ih0', 'c_k']","['s', 't', 'ɨ', 'k']",
+3,dwen,"['d', 'w', 'eh1', 'n']","['d_d', 'w_w', 'e_eh1', 'n_n']","['d', 'w', 'ɛ', 'n']",
+3,padd,"['p', 'ae1', 'd']","['p_p', 'a_ae1', 'dd_d']","['p', 'æ', 'd']",
+3,rond,"['r', 'aa1', 'n', 'd']","['r_r', 'o_aa1', 'n_n', 'd_d']","['ɹ', 'ɑ', 'n', 'd']",
+2,ubas,"['ah1', 'b', 'ae1', 'z']","['u_ah1', 'b_b', 'a_ae1', 's_z']","['ʌ', 'b', 'æ', 'z']",
+2,cale,"['k', 'ey1', 'l']","['c_k', 'a_ey1', 'le_l']","['k', 'eɪ', 'l']",
+3,himp,"['hh', 'ih1', 'm', 'p']","['h_hh', 'i_ih1', 'm_m', 'p_p']","['h', 'ɪ', 'm', 'p']",
+3,tate,"['t', 'ey1', 't']","['t_t', 'a_ey1', 'te_t']","['t', 'eɪ', 't']",Name
+3,dand,"['d', 'ae1', 'n', 'd']","['d_d', 'a_ae1', 'n_n', 'd_d']","['d', 'æ', 'n', 'd']",
+3,stor,"['s', 't', 'ao1', 'r']","['s_s', 't_t', 'o_ao1', 'r_r']","['s', 't', 'ɔ', 'ɹ']",
+3,kays,"['k', 'ey1', 'z']","['k_k', 'ay_ey1', 's_z']","['k', 'eɪ', 'z']",
+3,licy,"['l', 'ay1', 's', 'iy0']","['l_l', 'i_ay1', 'c_s', 'y_iy0']","['l', 'aɪ', 's', 'i']",Questionable pronunciation
+3,resh,"['r', 'eh1', 'sh']","['r_r', 'e_eh1', 'sh_sh']","['ɹ', 'ɛ', 'ʃ']",
+3,twim,"['t', 'w', 'ih1', 'm']","['t_t', 'w_w', 'i_ih1', 'm_m']","['t', 'w', 'ɪ', 'm']",
+3,gots,"['g', 'aa1', 't', 's']","['g_g', 'o_aa1', 't_t', 's_s']","['ɡ', 'ɑ', 't', 's']",
+3,brin,"['b', 'r', 'ih1', 'n']","['b_b', 'r_r', 'i_ih1', 'n_n']","['b', 'ɹ', 'ɪ', 'n']",
+3,dest,"['d', 'eh1', 's', 't']","['d_d', 'e_eh1', 's_s', 't_t']","['d', 'ɛ', 's', 't']",
+3,stom,"['s', 't', 'aa1', 'm']","['s_s', 't_t', 'o_aa1', 'm_m']","['s', 't', 'ɑ', 'm']",
+3,leep,"['l', 'iy1', 'p']","['l_l', 'ee_iy1', 'p_p']","['l', 'i', 'p']",
+3,mant,"['m', 'ae1', 'n', 't']","['m_m', 'a_ae1', 'n_n', 't_t']","['m', 'æ', 'n', 't']",
+3,tuff,"['t', 'ah1', 'f']","['t_t', 'u_ah1', 'ff_f']","['t', 'ʌ', 'f']",
+3,snat,"['s', 'n', 'ae1', 't']","['s_s', 'n_n', 'a_ae1', 't_t']","['s', 'n', 'æ', 't']",
+3,runk,"['r', 'ah1', 'ng', 'k']","['r_r', 'u_ah1', 'n_ng', 'k_k']","['ɹ', 'ʌ', 'ŋ', 'k']",
+3,thro,"['th', 'r', 'ow0']","['th_th', 'r_r', 'o_ow0']","['θ', 'ɹ', 'oʊ']",
+3,nump,"['n', 'ah1', 'm', 'p']","['n_n', 'u_ah1', 'm_m', 'p_p']","['n', 'ʌ', 'm', 'p']",
+3,gred,"['g', 'r', 'eh1', 'd']","['g_g', 'r_r', 'e_eh1', 'd_d']","['ɡ', 'ɹ', 'ɛ', 'd']",
+3,elow,"['ih0', 'l', 'ow1']","['e_ih0', 'l_l', 'ow_ow1']","['ɨ', 'l', 'oʊ']",
+3,chil,"['ch', 'ih1', 'l']","['ch_ch', 'i_ih1', 'l_l']","['tʃ', 'ɪ', 'l']",
+3,funt,"['f', 'ah1', 'n', 't']","['f_f', 'u_ah1', 'n_n', 't_t']","['f', 'ʌ', 'n', 't']",
+3,hant,"['hh', 'ae1', 'n', 't']","['h_hh', 'a_ae1', 'n_n', 't_t']","['h', 'æ', 'n', 't']",
+3,pells,"['p', 'eh1', 'l', 'z']","['p_p', 'e_eh1', 'll_l', 's_z']","['p', 'ɛ', 'l', 'z']",
+3,untop,"['ah0', 'n', 't', 'aa1', 'p']","['u_ah0', 'n_n', 't_t', 'o_aa1', 'p_p']","['ə', 'n', 't', 'ɑ', 'p']",
+3,clann,"['k', 'l', 'ae1', 'n']","['c_k', 'l_l', 'a_ae1', 'nn_n']","['k', 'l', 'æ', 'n']",
+2,yearo,"['y', 'ih1', 'r', 'ow1']","['y_y', 'ea_ih1', 'r_r', 'o_ow1']","['j', 'ɪ', 'ɹ', 'oʊ']",
+3,brate,"['b', 'r', 'ey2', 't']","['b_b', 'r_r', 'a_ey2', 'te_t']","['b', 'ɹ', 'eɪ', 't']",
+2,wheto,"['w', 'eh1', 't', 'uw1']","['wh_w', 'e_eh1', 't_t', 'o_uw1']","['w', 'ɛ', 't', 'u']",Questionable pronunciation
+3,smind,"['s', 'm', 'ay1', 'n', 'd']","['s_s', 'm_m', 'i_ay1', 'n_n', 'd_d']","['s', 'm', 'aɪ', 'n', 'd']",
+3,splan,"['s', 'p', 'l', 'ae1', 'n']","['s_s', 'p_p', 'l_l', 'a_ae1', 'n_n']","['s', 'p', 'l', 'æ', 'n']",
+2,theli,"['dh', 'eh1', 'l', 'ay1']","['th_dh', 'e_eh1', 'l_l', 'i_ay1']","['ð', 'ɛ', 'l', 'aɪ']",
+3,odded,"['aa1', 'd', 'ah0', 'd']","['o_aa1', 'dd_d', 'e_ah0', 'd_d']","['ɑ', 'd', 'ə', 'd']",
+3,thist,"['dh', 'ih1', 's', 't']","['th_dh', 'i_ih1', 's_s', 't_t']","['ð', 'ɪ', 's', 't']",
+2,lalue,"['l', 'ah0', 'l', 'uw1']","['l_l', 'a_ah0', 'l_l', 'ue_uw1']","['l', 'ə', 'l', 'u']",
+2,anter,"['ah0', 'n', 't', 'er0']","['a_ah0', 'n_n', 't_t', 'er_er0']","['ə', 'n', 't', 'ɚ']",
+2,bouto,"['b', 'aw1', 't', 'uw1']","['b_b', 'ou_aw1', 't_t', 'o_uw1']","['b', 'aʊ', 't', 'u']",
+2,andat,"['ah0', 'n', 'd', 'ae1', 't']","['a_ah0', 'n_n', 'd_d', 'a_ae1', 't_t']","['ə', 'n', 'd', 'æ', 't']",
+2,troxt,"['t', 'r', 'aa1', 'ks', 't']","['t_t', 'r_r', 'o_aa1', 'x_ks', 't_t']","['t', 'ɹ', 'ɑ', 'ks', 't']",
+4,shelt,"['sh', 'eh1', 'l', 't']","['sh_sh', 'e_eh1', 'l_l', 't_t']","['ʃ', 'ɛ', 'l', 't']",
+2,thapr,"['dh', 'ae1', 'p', 'r']","['th_dh', 'a_ae1', 'p_p', 'r_r']","['ð', 'æ', 'p', 'ɹ']",Weird consonant cluster
+2,yourt,"['y', 'ao1', 'r', 't']","['y_y', 'ou_ao1', 'r_r', 't_t']","['j', 'ɔ', 'ɹ', 't']",
+2,canth,"['k', 'ae1', 'n', 'th']","['c_k', 'a_ae1', 'n_n', 'th_th']","['k', 'æ', 'n', 'θ']",
+3,sunch,"['s', 'ah1', 'n', 'ch']","['s_s', 'u_ah1', 'n_n', 'ch_ch']","['s', 'ʌ', 'n', 'tʃ']",
+3,flass,"['f', 'l', 'ae1', 's']","['f_f', 'l_l', 'a_ae1', 'ss_s']","['f', 'l', 'æ', 's']",
+2,tanin,"['t', 'ah0', 'n', 'ih0', 'n']","['t_t', 'a_ah0', 'n_n', 'i_ih0', 'n_n']","['t', 'ə', 'n', 'ɨ', 'n']",
+2,devit,"['d', 'eh1', 'v', 'ih1', 't']","['d_d', 'e_eh1', 'v_v', 'i_ih1', 't_t']","['d', 'ɛ', 'v', 'ɪ', 't']",
+3,fasks,"['f', 'ae1', 's', 'k', 's']","['f_f', 'a_ae1', 's_s', 'k_k', 's_s']","['f', 'æ', 's', 'k', 's']",
+2,thedo,"['dh', 'ah0', 'd', 'uw1']","['th_dh', 'e_ah0', 'd_d', 'o_uw1']","['ð', 'ə', 'd', 'u']",
+2,itter,"['ih1', 't', 'er0']","['i_ih1', 'tt_t', 'er_er0']","['ɪ', 't', 'ɚ']",
+3,storn,"['s', 't', 'ao2', 'r', 'n']","['s_s', 't_t', 'o_ao2', 'r_r', 'n_n']","['s', 't', 'ɔ', 'ɹ', 'n']",
+2,kskid,"['k', 's', 'k', 'ih1', 'd']","['k_k', 's_s', 'k_k', 'i_ih1', 'd_d']","['k', 's', 'k', 'ɪ', 'd']",Weird consonant cluster
+2,thell,"['dh', 'eh1', 'l']","['th_dh', 'e_eh1', 'll_l']","['ð', 'ɛ', 'l']",
+2,aleam,"['ah0', 'l', 'iy1', 'm']","['a_ah0', 'l_l', 'ea_iy1', 'm_m']","['ə', 'l', 'i', 'm']",
+2,wrose,"['r', 'ow1', 's']","['wr_r', 'o_ow1', 'se_s']","['ɹ', 'oʊ', 's']",
+2,warop,"['w', 'aa1', 'r', 'aa1', 'p']","['w_w', 'a_aa1', 'r_r', 'o_aa1', 'p_p']","['w', 'ɑ', 'ɹ', 'ɑ', 'p']",
+2,feant,"['f', 'iy1', 'n', 't']","['f_f', 'ea_iy1', 'n_n', 't_t']","['f', 'i', 'n', 't']",
+2,lenew,"['l', 'eh1', 'n', 'uw1']","['l_l', 'e_eh1', 'n_n', 'ew_uw1']","['l', 'ɛ', 'n', 'u']",
+2,thend,"['dh', 'ah0', 'n', 'd']","['th_dh', 'e_ah0', 'n_n', 'd_d']","['ð', 'ə', 'n', 'd']",
+2,tsing,"['t', 's', 'ih0', 'ng']","['t_t', 's_s', 'i_ih0', 'ng_ng']","['t', 's', 'ɨ', 'ŋ']",Name
+3,tecon,"['t', 'eh1', 'k', 'ah0', 'n']","['t_t', 'e_eh1', 'c_k', 'o_ah0', 'n_n']","['t', 'ɛ', 'k', 'ə', 'n']",
+3,awaii,"['ah0', 'w', 'ay1', 'iy2']","['a_ah0', 'w_w', 'ai_ay1', 'i_iy2']","['ə', 'w', 'aɪ', 'i']",1 letter off from a real word
+2,shood,"['sh', 'uh1', 'd']","['sh_sh', 'oo_uh1', 'd_d']","['ʃ', 'ʊ', 'd']",
+3,swith,"['s', 'w', 'ih1', 'dh']","['s_s', 'w_w', 'i_ih1', 'th_dh']","['s', 'w', 'ɪ', 'ð']",
+4,lants,"['l', 'ae1', 'n', 't', 's']","['l_l', 'a_ae1', 'n_n', 't_t', 's_s']","['l', 'æ', 'n', 't', 's']",
+3,summy,"['s', 'ah1', 'm', 'iy0']","['s_s', 'u_ah1', 'mm_m', 'y_iy0']","['s', 'ʌ', 'm', 'i']",
+3,thand,"['dh', 'ae1', 'n', 'd']","['th_dh', 'a_ae1', 'n_n', 'd_d']","['ð', 'æ', 'n', 'd']",
+3,trong,"['t', 'r', 'ao1', 'ng']","['t_t', 'r_r', 'o_ao1', 'ng_ng']","['t', 'ɹ', 'ɔ', 'ŋ']",
+4,gomez,"['g', 'ow1', 'm', 'eh0', 'z']","['g_g', 'o_ow1', 'm_m', 'e_eh0', 'z_z']","['ɡ', 'oʊ', 'm', 'ɛ', 'z']",Name
+4,sanch,"['s', 'ae1', 'n', 'ch']","['s_s', 'a_ae1', 'n_n', 'ch_ch']","['s', 'æ', 'n', 'tʃ']",
+4,mands,"['m', 'ae1', 'n', 'd', 'z']","['m_m', 'a_ae1', 'n_n', 'd_d', 's_z']","['m', 'æ', 'n', 'd', 'z']",
+3,twind,"['t', 'w', 'ay1', 'n', 'd']","['t_t', 'w_w', 'i_ay1', 'n_n', 'd_d']","['t', 'w', 'aɪ', 'n', 'd']",
+4,paren,"['p', 'eh1', 'r', 'ah0', 'n']","['p_p', 'a_eh1', 'r_r', 'e_ah0', 'n_n']","['p', 'ɛ', 'ɹ', 'ə', 'n']",
+4,steph,"['s', 't', 'eh1', 'f']","['s_s', 't_t', 'e_eh1', 'ph_f']","['s', 't', 'ɛ', 'f']",Name
+3,groud,"['g', 'r', 'aw1', 'd']","['g_g', 'r_r', 'ou_aw1', 'd_d']","['ɡ', 'ɹ', 'aʊ', 'd']",
+4,sprin,"['s', 'p', 'r', 'ih1', 'n']","['s_s', 'p_p', 'r_r', 'i_ih1', 'n_n']","['s', 'p', 'ɹ', 'ɪ', 'n']",
+4,twent,"['t', 'w', 'eh1', 'n', 't']","['t_t', 'w_w', 'e_eh1', 'n_n', 't_t']","['t', 'w', 'ɛ', 'n', 't']",
+4,tates,"['t', 'ey1', 't', 's']","['t_t', 'a_ey1', 'te_t', 's_s']","['t', 'eɪ', 't', 's']",Name
+3,chind,"['ch', 'ay1', 'n', 'd']","['ch_ch', 'i_ay1', 'n_n', 'd_d']","['tʃ', 'aɪ', 'n', 'd']",
+4,miled,"['m', 'ay1', 'l', 'd']","['m_m', 'i_ay1', 'l_l', 'ed_d']","['m', 'aɪ', 'l', 'd']",
+3,lasky,"['l', 'ae1', 's', 'k', 'ay1']","['l_l', 'a_ae1', 's_s', 'k_k', 'y_ay1']","['l', 'æ', 's', 'k', 'aɪ']",
+4,ovent,"['ah1', 'v', 'ah0', 'n', 't']","['o_ah1', 'v_v', 'e_ah0', 'n_n', 't_t']","['ʌ', 'v', 'ə', 'n', 't']",
+4,stree,"['s', 't', 'r', 'iy1']","['s_s', 't_t', 'r_r', 'ee_iy1']","['s', 't', 'ɹ', 'i']",
+3,vaple,"['v', 'ey1', 'p', 'ah0l']","['v_v', 'a_ey1', 'p_p', 'le_ah0l']","['v', 'eɪ', 'p', 'əl̩']",
+3,treef,"['t', 'r', 'iy1', 'f']","['t_t', 'r_r', 'ee_iy1', 'f_f']","['t', 'ɹ', 'i', 'f']",
+3,rands,"['r', 'ae1', 'n', 'd', 'z']","['r_r', 'a_ae1', 'n_n', 'd_d', 's_z']","['ɹ', 'æ', 'n', 'd', 'z']",
+4,quant,"['k', 'w', 'aa1', 'n', 't']","['q_k', 'u_w', 'a_aa1', 'n_n', 't_t']","['k', 'w', 'ɑ', 'n', 't']",
+3,carks,"['k', 'aa1', 'r', 'k', 's']","['c_k', 'a_aa1', 'r_r', 'k_k', 's_s']","['k', 'ɑ', 'ɹ', 'k', 's']",
+3,tooks,"['t', 'uh1', 'k', 's']","['t_t', 'oo_uh1', 'k_k', 's_s']","['t', 'ʊ', 'k', 's']",
+4,scrab,"['s', 'k', 'r', 'ae1', 'b']","['s_s', 'c_k', 'r_r', 'a_ae1', 'b_b']","['s', 'k', 'ɹ', 'æ', 'b']",
+3,alled,"['ao1', 'l', 'd']","['a_ao1', 'll_l', 'ed_d']","['ɔ', 'l', 'd']",
+4,savid,"['s', 'ey1', 'v', 'ih0', 'd']","['s_s', 'a_ey1', 'v_v', 'i_ih0', 'd_d']","['s', 'eɪ', 'v', 'ɨ', 'd']",
+3,greak,"['g', 'r', 'ey1', 'k']","['g_g', 'r_r', 'ea_ey1', 'k_k']","['ɡ', 'ɹ', 'eɪ', 'k']",
+4,trimp,"['t', 'r', 'ih1', 'm', 'p']","['t_t', 'r_r', 'i_ih1', 'm_m', 'p_p']","['t', 'ɹ', 'ɪ', 'm', 'p']",
+4,pland,"['p', 'l', 'ae1', 'n', 'd']","['p_p', 'l_l', 'a_ae1', 'n_n', 'd_d']","['p', 'l', 'æ', 'n', 'd']",
+3,nakes,"['n', 'ey1', 'k', 's']","['n_n', 'a_ey1', 'ke_k', 's_s']","['n', 'eɪ', 'k', 's']",
+3,hiric,"['hh', 'ay1', 'r', 'ih0', 'k']","['h_hh', 'i_ay1', 'r_r', 'i_ih0', 'c_k']","['h', 'aɪ', 'ɹ', 'ɨ', 'k']",
+4,inven,"['ih2', 'n', 'v', 'ah0', 'n']","['i_ih2', 'n_n', 'v_v', 'e_ah0', 'n_n']","['ɪ', 'n', 'v', 'ə', 'n']",
+3,glash,"['g', 'l', 'ae1', 'sh']","['g_g', 'l_l', 'a_ae1', 'sh_sh']","['ɡ', 'l', 'æ', 'ʃ']",
+4,winto,"['w', 'ih1', 'n', 't', 'uw0']","['w_w', 'i_ih1', 'n_n', 't_t', 'o_uw0']","['w', 'ɪ', 'n', 't', 'u']",
+4,truns,"['t', 'r', 'ah1', 'n', 'z']","['t_t', 'r_r', 'u_ah1', 'n_n', 's_z']","['t', 'ɹ', 'ʌ', 'n', 'z']",
+4,conto,"['k', 'aa1', 'n', 't', 'uw0']","['c_k', 'o_aa1', 'n_n', 't_t', 'o_uw0']","['k', 'ɑ', 'n', 't', 'u']",
+3,funts,"['f', 'ah1', 'n', 't', 's']","['f_f', 'u_ah1', 'n_n', 't_t', 's_s']","['f', 'ʌ', 'n', 't', 's']",
+3,mance,"['m', 'ae1', 'n', 's']","['m_m', 'a_ae1', 'n_n', 'ce_s']","['m', 'æ', 'n', 's']",
+3,twire,"['t', 'w', 'ay1', 'er0']","['t_t', 'w_w', 'i_ay1', 're_er0']","['t', 'w', 'aɪ', 'ɚ']",
+3,anded,"['ah0', 'n', 'd', 'ih0', 'd']","['a_ah0', 'n_n', 'd_d', 'e_ih0', 'd_d']","['ə', 'n', 'd', 'ɨ', 'd']",
+3,shooks,"['sh', 'uh1', 'k', 's']","['sh_sh', 'oo_uh1', 'k_k', 's_s']","['ʃ', 'ʊ', 'k', 's']",Word
+2,latune,"['l', 'ey1', 'ch', 'uw0', 'n']","['l_l', 'a_ey1', 't_ch', 'u_uw0', 'ne_n']","['l', 'eɪ', 'tʃ', 'u', 'n']",
+2,thunde,"['th', 'ah1', 'n', 'd', 'ah0']","['th_th', 'u_ah1', 'n_n', 'd_d', 'e_ah0']","['θ', 'ʌ', 'n', 'd', 'ə']",Questionable pronunciation
+3,breats,"['b', 'r', 'iy1', 't', 's']","['b_b', 'r_r', 'ea_iy1', 't_t', 's_s']","['b', 'ɹ', 'i', 't', 's']",
+3,splace,"['s', 'p', 'l', 'ey1', 's']","['s_s', 'p_p', 'l_l', 'a_ey1', 'ce_s']","['s', 'p', 'l', 'eɪ', 's']",
+3,forten,"['f', 'ao1', 'r', 't', 'eh1', 'n']","['f_f', 'o_ao1', 'r_r', 't_t', 'e_eh1', 'n_n']","['f', 'ɔ', 'ɹ', 't', 'ɛ', 'n']",
+3,lorick,"['l', 'aa1', 'r', 'ih0', 'k']","['l_l', 'o_aa1', 'r_r', 'i_ih0', 'ck_k']","['l', 'ɑ', 'ɹ', 'ɨ', 'k']",
+3,forist,"['f', 'ao1', 'r', 'ih0', 's', 't']","['f_f', 'o_ao1', 'r_r', 'i_ih0', 's_s', 't_t']","['f', 'ɔ', 'ɹ', 'ɨ', 's', 't']",
+4,tandit,"['t', 'ae1', 'n', 'd', 'ah0', 't']","['t_t', 'a_ae1', 'n_n', 'd_d', 'i_ah0', 't_t']","['t', 'æ', 'n', 'd', 'ə', 't']",
+3,covery,"['k', 'ah1', 'v', 'er0', 'iy0']","['c_k', 'o_ah1', 'v_v', 'er_er0', 'y_iy0']","['k', 'ʌ', 'v', 'ɚ', 'i']",
+3,harted,"['hh', 'aa1', 'r', 't', 'ih0', 'd']","['h_hh', 'a_aa1', 'r_r', 't_t', 'e_ih0', 'd_d']","['h', 'ɑ', 'ɹ', 't', 'ɨ', 'd']",
+3,numple,"['n', 'ah1', 'm', 'p', 'ah0l']","['n_n', 'u_ah1', 'm_m', 'p_p', 'le_ah0l']","['n', 'ʌ', 'm', 'p', 'əl̩']",
+3,stoday,"['s', 't', 'ah0', 'd', 'ey1']","['s_s', 't_t', 'o_ah0', 'd_d', 'ay_ey1']","['s', 't', 'ə', 'd', 'eɪ']",
+4,jethro,"['jh', 'eh1', 'th', 'r', 'ow0']","['j_jh', 'e_eh1', 'th_th', 'r_r', 'o_ow0']","['dʒ', 'ɛ', 'θ', 'ɹ', 'oʊ']",Name
+3,yousef,"['y', 'uw1', 's', 'eh0', 'f']","['y_y', 'ou_uw1', 's_s', 'e_eh0', 'f_f']","['j', 'u', 's', 'ɛ', 'f']",Name
+3,feelem,"['f', 'iy1', 'l', 'ah0', 'm']","['f_f', 'ee_iy1', 'l_l', 'e_ah0', 'm_m']","['f', 'i', 'l', 'ə', 'm']",
+3,eacher,"['iy1', 'ch', 'er0']","['ea_iy1', 'ch_ch', 'er_er0']","['i', 'tʃ', 'ɚ']",1 letter off from a real word
+4,packal,"['p', 'ae1', 'k', 'ah0', 'l']","['p_p', 'a_ae1', 'ck_k', 'a_ah0', 'l_l']","['p', 'æ', 'k', 'ə', 'l']",
+4,ecliff,"['ih0', 'k', 'l', 'ih1', 'f']","['e_ih0', 'c_k', 'l_l', 'i_ih1', 'ff_f']","['ɨ', 'k', 'l', 'ɪ', 'f']",Questionable pronunciation
+4,sprins,"['s', 'p', 'r', 'ih1', 'n', 'z']","['s_s', 'p_p', 'r_r', 'i_ih1', 'n_n', 's_z']","['s', 'p', 'ɹ', 'ɪ', 'n', 'z']",
+4,scient,"['s', 'ay1', 'ah0', 'n', 't']","['sc_s', 'i_ay1', 'e_ah0', 'n_n', 't_t']","['s', 'aɪ', 'ə', 'n', 't']",Word
+4,bunder,"['b', 'ah1', 'n', 'd', 'er0']","['b_b', 'u_ah1', 'n_n', 'd_d', 'er_er0']","['b', 'ʌ', 'n', 'd', 'ɚ']",
+3,granas,"['g', 'r', 'ae1', 'n', 'ah0', 'z']","['g_g', 'r_r', 'a_ae1', 'n_n', 'a_ah0', 's_z']","['ɡ', 'ɹ', 'æ', 'n', 'ə', 'z']",
+3,anding,"['ah0', 'n', 'd', 'ih0', 'ng']","['a_ah0', 'n_n', 'd_d', 'i_ih0', 'ng_ng']","['ə', 'n', 'd', 'ɨ', 'ŋ']",
+3,peller,"['p', 'eh1', 'l', 'er0']","['p_p', 'e_eh1', 'll_l', 'er_er0']","['p', 'ɛ', 'l', 'ɚ']",
+4,pencer,"['p', 'eh1', 'n', 's', 'er0']","['p_p', 'e_eh1', 'n_n', 'c_s', 'er_er0']","['p', 'ɛ', 'n', 's', 'ɚ']",
+4,kitter,"['k', 'ih1', 't', 'er0']","['k_k', 'i_ih1', 'tt_t', 'er_er0']","['k', 'ɪ', 't', 'ɚ']",
+4,bready,"['b', 'r', 'eh1', 'd', 'iy0']","['b_b', 'r_r', 'ea_eh1', 'd_d', 'y_iy0']","['b', 'ɹ', 'ɛ', 'd', 'i']",Word
+4,dorant,"['d', 'ao1', 'r', 'ah0', 'n', 't']","['d_d', 'o_ao1', 'r_r', 'a_ah0', 'n_n', 't_t']","['d', 'ɔ', 'ɹ', 'ə', 'n', 't']",
+3,crings,"['k', 'r', 'ih1', 'ng', 'z']","['c_k', 'r_r', 'i_ih1', 'ng_ng', 's_z']","['k', 'ɹ', 'ɪ', 'ŋ', 'z']",
+4,folden,"['f', 'ow1', 'l', 'd', 'ah0', 'n']","['f_f', 'o_ow1', 'l_l', 'd_d', 'e_ah0', 'n_n']","['f', 'oʊ', 'l', 'd', 'ə', 'n']",
+3,petumn,"['p', 'iy1', 't', 'ah0', 'm']","['p_p', 'e_iy1', 't_t', 'u_ah0', 'mn_m']","['p', 'i', 't', 'ə', 'm']",
+4,boston,"['b', 'aa1', 's', 't', 'ah0', 'n']","['b_b', 'o_aa1', 's_s', 't_t', 'o_ah0', 'n_n']","['b', 'ɑ', 's', 't', 'ə', 'n']",Word
+4,wenter,"['w', 'eh1', 'n', 't', 'er0']","['w_w', 'e_eh1', 'n_n', 't_t', 'er_er0']","['w', 'ɛ', 'n', 't', 'ɚ']",
+4,askets,"['ae1', 's', 'k', 'ah0', 't', 's']","['a_ae1', 's_s', 'k_k', 'e_ah0', 't_t', 's_s']","['æ', 's', 'k', 'ə', 't', 's']",
+2,veseen,"['v', 'ih0', 's', 'iy1', 'n']","['v_v', 'e_ih0', 's_s', 'ee_iy1', 'n_n']","['v', 'ɨ', 's', 'i', 'n']",
+4,bester,"['b', 'eh1', 's', 't', 'er0']","['b_b', 'e_eh1', 's_s', 't_t', 'er_er0']","['b', 'ɛ', 's', 't', 'ɚ']",
+3,zacker,"['z', 'ae1', 'k', 'er0']","['z_z', 'a_ae1', 'ck_k', 'er_er0']","['z', 'æ', 'k', 'ɚ']",
+2,bankit,"['b', 'ae1', 'ng', 'k', 'ih1', 't']","['b_b', 'a_ae1', 'n_ng', 'k_k', 'i_ih1', 't_t']","['b', 'æ', 'ŋ', 'k', 'ɪ', 't']",
+4,splast,"['s', 'p', 'l', 'ae1', 's', 't']","['s_s', 'p_p', 'l_l', 'a_ae1', 's_s', 't_t']","['s', 'p', 'l', 'æ', 's', 't']",
+4,prings,"['p', 'r', 'ih1', 'ng', 'z']","['p_p', 'r_r', 'i_ih1', 'ng_ng', 's_z']","['p', 'ɹ', 'ɪ', 'ŋ', 'z']",
+4,mexico,"['m', 'eh1', 'ks', 'ah0', 'k', 'ow2']","['m_m', 'e_eh1', 'x_ks', 'i_ah0', 'c_k', 'o_ow2']","['m', 'ɛ', 'ks', 'ə', 'k', 'oʊ']",Word
+2,shonis,"['sh', 'aa1', 'n', 'ih1', 'z']","['sh_sh', 'o_aa1', 'n_n', 'i_ih1', 's_z']","['ʃ', 'ɑ', 'n', 'ɪ', 'z']",
+4,barket,"['b', 'aa1', 'r', 'k', 'ah0', 't']","['b_b', 'a_aa1', 'r_r', 'k_k', 'e_ah0', 't_t']","['b', 'ɑ', 'ɹ', 'k', 'ə', 't']",
+4,magine,"['m', 'ae1', 'jh', 'ah0', 'n']","['m_m', 'a_ae1', 'g_jh', 'i_ah0', 'ne_n']","['m', 'æ', 'dʒ', 'ə', 'n']",
+3,trings,"['t', 'r', 'ih1', 'ng', 'z']","['t_t', 'r_r', 'i_ih1', 'ng_ng', 's_z']","['t', 'ɹ', 'ɪ', 'ŋ', 'z']",
+4,amound,"['ah0', 'm', 'aw1', 'n', 'd']","['a_ah0', 'm_m', 'ou_aw1', 'n_n', 'd_d']","['ə', 'm', 'aʊ', 'n', 'd']",
+4,strees,"['s', 't', 'r', 'iy1', 'z']","['s_s', 't_t', 'r_r', 'ee_iy1', 's_z']","['s', 't', 'ɹ', 'i', 'z']",
+4,reedom,"['r', 'iy1', 'd', 'ah0', 'm']","['r_r', 'ee_iy1', 'd_d', 'o_ah0', 'm_m']","['ɹ', 'i', 'd', 'ə', 'm']",1 letter off from a real word
+2,henind,"['hh', 'eh1', 'n', 'ih0', 'n', 'd']","['h_hh', 'e_eh1', 'n_n', 'i_ih0', 'n_n', 'd_d']","['h', 'ɛ', 'n', 'ɨ', 'n', 'd']",
+4,creech,"['k', 'r', 'iy1', 'ch']","['c_k', 'r_r', 'ee_iy1', 'ch_ch']","['k', 'ɹ', 'i', 'tʃ']",
+4,ambers,"['ae1', 'm', 'b', 'er0', 'z']","['a_ae1', 'm_m', 'b_b', 'er_er0', 's_z']","['æ', 'm', 'b', 'ɚ', 'z']",
+3,jarged,"['jh', 'aa1', 'r', 'jh', 'd']","['j_jh', 'a_aa1', 'r_r', 'ge_jh', 'd_d']","['dʒ', 'ɑ', 'ɹ', 'dʒ', 'd']",
+2,shiter,"['sh', 'ih1', 't', 'er0']","['sh_sh', 'i_ih1', 't_t', 'er_er0']","['ʃ', 'ɪ', 't', 'ɚ']",Cuss Word (or close to one)
+4,towarm,"['t', 'ah0', 'w', 'ao1', 'r', 'm']","['t_t', 'o_ah0', 'w_w', 'a_ao1', 'r_r', 'm_m']","['t', 'ə', 'w', 'ɔ', 'ɹ', 'm']",
+4,squick,"['s', 'k', 'w', 'ih1', 'k']","['s_s', 'q_k', 'u_w', 'i_ih1', 'ck_k']","['s', 'k', 'w', 'ɪ', 'k']",
+4,yarded,"['y', 'aa1', 'r', 'd', 'ih0', 'd']","['y_y', 'a_aa1', 'r_r', 'd_d', 'e_ih0', 'd_d']","['j', 'ɑ', 'ɹ', 'd', 'ɨ', 'd']",
+4,ontest,"['aa1', 'n', 't', 'eh0', 's', 't']","['o_aa1', 'n_n', 't_t', 'e_eh0', 's_s', 't_t']","['ɑ', 'n', 't', 'ɛ', 's', 't']",Compound word
+4,sevent,"['s', 'eh1', 'v', 'ah0', 'n', 't']","['s_s', 'e_eh1', 'v_v', 'e_ah0', 'n_n', 't_t']","['s', 'ɛ', 'v', 'ə', 'n', 't']",
+4,handit,"['hh', 'ae1', 'n', 'd', 'ah0', 't']","['h_hh', 'a_ae1', 'n_n', 'd_d', 'i_ah0', 't_t']","['h', 'æ', 'n', 'd', 'ə', 't']",
+4,windex,"['w', 'ih1', 'n', 'd', 'eh0', 'ks']","['w_w', 'i_ih1', 'n_n', 'd_d', 'e_eh0', 'x_ks']","['w', 'ɪ', 'n', 'd', 'ɛ', 'ks']",Word
+2,saidaw,"['s', 'eh1', 'd', 'ao1']","['s_s', 'ai_eh1', 'd_d', 'aw_ao1']","['s', 'ɛ', 'd', 'ɔ']",
+4,rester,"['r', 'eh1', 's', 't', 'er0']","['r_r', 'e_eh1', 's_s', 't_t', 'er_er0']","['ɹ', 'ɛ', 's', 't', 'ɚ']",
+4,parter,"['p', 'aa1', 'r', 't', 'er0']","['p_p', 'a_aa1', 'r_r', 't_t', 'er_er0']","['p', 'ɑ', 'ɹ', 't', 'ɚ']",
+2,cotsto,"['k', 'aa1', 't', 's', 't', 'uw1']","['c_k', 'o_aa1', 't_t', 's_s', 't_t', 'o_uw1']","['k', 'ɑ', 't', 's', 't', 'u']",
+4,hister,"['hh', 'ih1', 's', 't', 'er0']","['h_hh', 'i_ih1', 's_s', 't_t', 'er_er0']","['h', 'ɪ', 's', 't', 'ɚ']",
+4,strick,"['s', 't', 'r', 'ih1', 'k']","['s_s', 't_t', 'r_r', 'i_ih1', 'ck_k']","['s', 't', 'ɹ', 'ɪ', 'k']",
+4,franny,"['f', 'r', 'ae1', 'n', 'iy0']","['f_f', 'r_r', 'a_ae1', 'nn_n', 'y_iy0']","['f', 'ɹ', 'æ', 'n', 'i']",Name
+4,melter,"['m', 'eh1', 'l', 't', 'er0']","['m_m', 'e_eh1', 'l_l', 't_t', 'er_er0']","['m', 'ɛ', 'l', 't', 'ɚ']",Word
+4,regist,"['r', 'eh1', 'jh', 'ih0', 's', 't']","['r_r', 'e_eh1', 'g_jh', 'i_ih0', 's_s', 't_t']","['ɹ', 'ɛ', 'dʒ', 'ɨ', 's', 't']",
+2,gepped,"['g', 'eh1', 'p', 't']","['g_g', 'e_eh1', 'pp_p', 'ed_t']","['ɡ', 'ɛ', 'p', 't']",
+4,yarden,"['y', 'aa1', 'r', 'd', 'ah0', 'n']","['y_y', 'a_aa1', 'r_r', 'd_d', 'e_ah0', 'n_n']","['j', 'ɑ', 'ɹ', 'd', 'ə', 'n']",
+4,aftern,"['ae1', 'f', 't', 'er0', 'n']","['a_ae1', 'f_f', 't_t', 'er_er0', 'n_n']","['æ', 'f', 't', 'ɚ', 'n']",1 letter off from a real word
+4,wentor,"['w', 'eh1', 'n', 't', 'er0']","['w_w', 'e_eh1', 'n_n', 't_t', 'or_er0']","['w', 'ɛ', 'n', 't', 'ɚ']",
+2,fteaker,"['f', 't', 'iy1', 'k', 'er0']","['f_f', 't_t', 'ea_iy1', 'k_k', 'er_er0']","['f', 't', 'i', 'k', 'ɚ']",Weird consonant cluster
+3,dollege,"['d', 'aa1', 'l', 'ih0', 'jh']","['d_d', 'o_aa1', 'll_l', 'e_ih0', 'ge_jh']","['d', 'ɑ', 'l', 'ɨ', 'dʒ']",
+3,upcoren,"['ah1', 'p', 'k', 'ao2', 'r', 'ah0', 'n']","['u_ah1', 'p_p', 'c_k', 'o_ao2', 'r_r', 'e_ah0', 'n_n']","['ʌ', 'p', 'k', 'ɔ', 'ɹ', 'ə', 'n']",
+3,cancake,"['k', 'ae1', 'n', 'k', 'ey2', 'k']","['c_k', 'a_ae1', 'n_n', 'c_k', 'a_ey2', 'ke_k']","['k', 'æ', 'n', 'k', 'eɪ', 'k']",
+3,unicely,"['yuw0', 'n', 'ay1', 's', 'l', 'iy0']","['u_yuw0', 'n_n', 'i_ay1', 'ce_s', 'l_l', 'y_iy0']","['ju', 'n', 'aɪ', 's', 'l', 'i']",
+4,alaster,"['ah0', 'l', 'ae1', 's', 't', 'er0']","['a_ah0', 'l_l', 'a_ae1', 's_s', 't_t', 'er_er0']","['ə', 'l', 'æ', 's', 't', 'ɚ']",
+3,clocake,"['k', 'l', 'ow1', 'k', 'ey2', 'k']","['c_k', 'l_l', 'o_ow1', 'c_k', 'a_ey2', 'ke_k']","['k', 'l', 'oʊ', 'k', 'eɪ', 'k']",
+3,wencers,"['w', 'eh1', 'n', 's', 'er0', 'z']","['w_w', 'e_eh1', 'n_n', 'c_s', 'er_er0', 's_z']","['w', 'ɛ', 'n', 's', 'ɚ', 'z']",
+3,fremont,"['f', 'r', 'iy1', 'm', 'aa0', 'n', 't']","['f_f', 'r_r', 'e_iy1', 'm_m', 'o_aa0', 'n_n', 't_t']","['f', 'ɹ', 'i', 'm', 'ɑ', 'n', 't']",1 letter off from a real word
+2,gandoff,"['g', 'ey1', 'n', 'd', 'ao1', 'f']","['g_g', 'a_ey1', 'n_n', 'd_d', 'o_ao1', 'ff_f']","['ɡ', 'eɪ', 'n', 'd', 'ɔ', 'f']",
+3,astings,"['ae1', 's', 't', 'ih1', 'ng', 'z']","['a_ae1', 's_s', 't_t', 'i_ih1', 'ng_ng', 's_z']","['æ', 's', 't', 'ɪ', 'ŋ', 'z']",
+3,goldren,"['g', 'ow1', 'l', 'd', 'r', 'ah0', 'n']","['g_g', 'o_ow1', 'l_l', 'd_d', 'r_r', 'e_ah0', 'n_n']","['ɡ', 'oʊ', 'l', 'd', 'ɹ', 'ə', 'n']",
+3,hersell,"['hh', 'er0', 's', 'eh1', 'l']","['h_hh', 'er_er0', 's_s', 'e_eh1', 'll_l']","['h', 'ɚ', 's', 'ɛ', 'l']",
+3,dollest,"['d', 'aa1', 'l', 'ih0', 's', 't']","['d_d', 'o_aa1', 'll_l', 'e_ih0', 's_s', 't_t']","['d', 'ɑ', 'l', 'ɨ', 's', 't']",
+3,fruises,"['f', 'r', 'uw1', 'z', 'ah0', 'z']","['f_f', 'r_r', 'ui_uw1', 's_z', 'e_ah0', 's_z']","['f', 'ɹ', 'u', 'z', 'ə', 'z']",
+2,abasees,"['ey1', 'b', 'ae1', 's', 'iy1', 'z']","['a_ey1', 'b_b', 'a_ae1', 's_s', 'ee_iy1', 's_z']","['eɪ', 'b', 'æ', 's', 'i', 'z']",
+2,thelack,"['dh', 'ah0', 'l', 'ae1', 'k']","['th_dh', 'e_ah0', 'l_l', 'a_ae1', 'ck_k']","['ð', 'ə', 'l', 'æ', 'k']",
+2,themike,"['dh', 'ah0', 'm', 'ay1', 'k']","['th_dh', 'e_ah0', 'm_m', 'i_ay1', 'ke_k']","['ð', 'ə', 'm', 'aɪ', 'k']",
+4,sanchez,"['s', 'ae1', 'n', 'ch', 'eh0', 'z']","['s_s', 'a_ae1', 'n_n', 'ch_ch', 'e_eh0', 'z_z']","['s', 'æ', 'n', 'tʃ', 'ɛ', 'z']",Name
+4,marvest,"['m', 'aa1', 'r', 'v', 'ah0', 's', 't']","['m_m', 'a_aa1', 'r_r', 'v_v', 'e_ah0', 's_s', 't_t']","['m', 'ɑ', 'ɹ', 'v', 'ə', 's', 't']",
+4,outruck,"['aw0', 't', 'r', 'ah1', 'k']","['ou_aw0', 't_t', 'r_r', 'u_ah1', 'ck_k']","['aʊ', 't', 'ɹ', 'ʌ', 'k']",
+3,fortist,"['f', 'ao1', 'r', 't', 'ah0', 's', 't']","['f_f', 'o_ao1', 'r_r', 't_t', 'i_ah0', 's_s', 't_t']","['f', 'ɔ', 'ɹ', 't', 'ə', 's', 't']",
+3,chicker,"['ch', 'ih1', 'k', 'er0']","['ch_ch', 'i_ih1', 'ck_k', 'er_er0']","['tʃ', 'ɪ', 'k', 'ɚ']",
+3,justoss,"['jh', 'ah1', 's', 't', 'ao1', 's']","['j_jh', 'u_ah1', 's_s', 't_t', 'o_ao1', 'ss_s']","['dʒ', 'ʌ', 's', 't', 'ɔ', 's']",
+3,explean,"['ih0', 'ks', 'p', 'l', 'iy1', 'n']","['e_ih0', 'x_ks', 'p_p', 'l_l', 'ea_iy1', 'n_n']","['ɨ', 'ks', 'p', 'l', 'i', 'n']",
+3,fieldid,"['f', 'iy1', 'l', 'd', 'ih0', 'd']","['f_f', 'ie_iy1', 'l_l', 'd_d', 'i_ih0', 'd_d']","['f', 'i', 'l', 'd', 'ɨ', 'd']",
+4,liftest,"['l', 'ih1', 'f', 't', 'ah0', 's', 't']","['l_l', 'i_ih1', 'f_f', 't_t', 'e_ah0', 's_s', 't_t']","['l', 'ɪ', 'f', 't', 'ə', 's', 't']",
+3,thenter,"['dh', 'eh1', 'n', 't', 'er0']","['th_dh', 'e_eh1', 'n_n', 't_t', 'er_er0']","['ð', 'ɛ', 'n', 't', 'ɚ']",
+4,hanklin,"['hh', 'ae1', 'ng', 'k', 'l', 'ih0', 'n']","['h_hh', 'a_ae1', 'n_ng', 'k_k', 'l_l', 'i_ih0', 'n_n']","['h', 'æ', 'ŋ', 'k', 'l', 'ɨ', 'n']",
+2,cishake,"['s', 'ih0', 'sh', 'ey1', 'k']","['c_s', 'i_ih0', 'sh_sh', 'a_ey1', 'ke_k']","['s', 'ɨ', 'ʃ', 'eɪ', 'k']",
+3,abouted,"['ah0', 'b', 'aw1', 't', 'ih0', 'd']","['a_ah0', 'b_b', 'ou_aw1', 't_t', 'e_ih0', 'd_d']","['ə', 'b', 'aʊ', 't', 'ɨ', 'd']",
+3,blasket,"['b', 'l', 'ae1', 's', 'k', 'ah0', 't']","['b_b', 'l_l', 'a_ae1', 's_s', 'k_k', 'e_ah0', 't_t']","['b', 'l', 'æ', 's', 'k', 'ə', 't']",
+2,mploodo,"['m', 'p', 'l', 'uh1', 'd', 'uw1']","['m_m', 'p_p', 'l_l', 'oo_uh1', 'd_d', 'o_uw1']","['m', 'p', 'l', 'ʊ', 'd', 'u']",Weird consonant cluster
+3,splakes,"['s', 'p', 'l', 'ey1', 'k', 's']","['s_s', 'p_p', 'l_l', 'a_ey1', 'ke_k', 's_s']","['s', 'p', 'l', 'eɪ', 'k', 's']",
+4,fredder,"['f', 'r', 'eh1', 'd', 'er0']","['f_f', 'r_r', 'e_eh1', 'dd_d', 'er_er0']","['f', 'ɹ', 'ɛ', 'd', 'ɚ']",
+2,sostale,"['s', 'ow1', 's', 't', 'ey1', 'l']","['s_s', 'o_ow1', 's_s', 't_t', 'a_ey1', 'le_l']","['s', 'oʊ', 's', 't', 'eɪ', 'l']",
+4,outrash,"['aw0', 't', 'r', 'ae1', 'sh']","['ou_aw0', 't_t', 'r_r', 'a_ae1', 'sh_sh']","['aʊ', 't', 'ɹ', 'æ', 'ʃ']",
+4,plandle,"['p', 'l', 'ae1', 'n', 'd', 'ah0l']","['p_p', 'l_l', 'a_ae1', 'n_n', 'd_d', 'le_ah0l']","['p', 'l', 'æ', 'n', 'd', 'əl̩']",
+4,splants,"['s', 'p', 'l', 'ae1', 'n', 't', 's']","['s_s', 'p_p', 'l_l', 'a_ae1', 'n_n', 't_t', 's_s']","['s', 'p', 'l', 'æ', 'n', 't', 's']",
+4,sprinto,"['s', 'p', 'r', 'ih1', 'n', 't', 'uw0']","['s_s', 'p_p', 'r_r', 'i_ih1', 'n_n', 't_t', 'o_uw0']","['s', 'p', 'ɹ', 'ɪ', 'n', 't', 'u']",
+4,oldener,"['ow1', 'l', 'd', 'ah0', 'n', 'er0']","['o_ow1', 'l_l', 'd_d', 'e_ah0', 'n_n', 'er_er0']","['oʊ', 'l', 'd', 'ə', 'n', 'ɚ']",
+4,british,"['b', 'r', 'ih1', 't', 'ih0', 'sh']","['b_b', 'r_r', 'i_ih1', 't_t', 'i_ih0', 'sh_sh']","['b', 'ɹ', 'ɪ', 't', 'ɨ', 'ʃ']",Word
+4,weddish,"['w', 'eh1', 'd', 'ih0', 'sh']","['w_w', 'e_eh1', 'dd_d', 'i_ih0', 'sh_sh']","['w', 'ɛ', 'd', 'ɨ', 'ʃ']",Could be derived using existing English morphemes
+4,partist,"['p', 'aa1', 'r', 't', 'ah0', 's', 't']","['p_p', 'a_aa1', 'r_r', 't_t', 'i_ah0', 's_s', 't_t']","['p', 'ɑ', 'ɹ', 't', 'ə', 's', 't']",
+4,mexican,"['m', 'eh1', 'ks', 'ih0', 'k', 'ah0', 'n']","['m_m', 'e_eh1', 'x_ks', 'i_ih0', 'c_k', 'a_ah0', 'n_n']","['m', 'ɛ', 'ks', 'ɨ', 'k', 'ə', 'n']",Word
+2,unkithe,"['ah1', 'ng', 'k', 'ih1', 'dh', 'ah0']","['u_ah1', 'n_ng', 'k_k', 'i_ih1', 'th_dh', 'e_ah0']","['ʌ', 'ŋ', 'k', 'ɪ', 'ð', 'ə']",Questionable pronunciation
+4,soundid,"['s', 'aw1', 'n', 'd', 'ih0', 'd']","['s_s', 'ou_aw1', 'n_n', 'd_d', 'i_ih0', 'd_d']","['s', 'aʊ', 'n', 'd', 'ɨ', 'd']",
+4,clively,"['k', 'l', 'ay1', 'v', 'l', 'iy0']","['c_k', 'l_l', 'i_ay1', 've_v', 'l_l', 'y_iy0']","['k', 'l', 'aɪ', 'v', 'l', 'i']",
+4,bedrill,"['b', 'eh1', 'd', 'r', 'ih0', 'l']","['b_b', 'e_eh1', 'd_d', 'r_r', 'i_ih0', 'll_l']","['b', 'ɛ', 'd', 'ɹ', 'ɨ', 'l']",
+4,vibrave,"['v', 'ay0', 'b', 'r', 'ey1', 'v']","['v_v', 'i_ay0', 'b_b', 'r_r', 'a_ey1', 've_v']","['v', 'aɪ', 'b', 'ɹ', 'eɪ', 'v']",
+4,sortant,"['s', 'ao1', 'r', 't', 'ah0', 'n', 't']","['s_s', 'o_ao1', 'r_r', 't_t', 'a_ah0', 'n_n', 't_t']","['s', 'ɔ', 'ɹ', 't', 'ə', 'n', 't']",
+4,woments,"['w', 'ih1', 'm', 'ah0', 'n', 't', 's']","['w_w', 'o_ih1', 'm_m', 'e_ah0', 'n_n', 't_t', 's_s']","['w', 'ɪ', 'm', 'ə', 'n', 't', 's']",
+3,famping,"['f', 'ae1', 'm', 'p', 'ih0', 'ng']","['f_f', 'a_ae1', 'm_m', 'p_p', 'i_ih0', 'ng_ng']","['f', 'æ', 'm', 'p', 'ɨ', 'ŋ']",
+2,thegaid,"['dh', 'eh1', 'g', 'eh1', 'd']","['th_dh', 'e_eh1', 'g_g', 'ai_eh1', 'd_d']","['ð', 'ɛ', 'ɡ', 'ɛ', 'd']",Questionable pronunciation
+4,besters,"['b', 'eh1', 's', 't', 'er0', 'z']","['b_b', 'e_eh1', 's_s', 't_t', 'er_er0', 's_z']","['b', 'ɛ', 's', 't', 'ɚ', 'z']",
+4,yanklin,"['y', 'ae1', 'ng', 'k', 'l', 'ih0', 'n']","['y_y', 'a_ae1', 'n_ng', 'k_k', 'l_l', 'i_ih0', 'n_n']","['j', 'æ', 'ŋ', 'k', 'l', 'ɨ', 'n']",
+4,clevery,"['k', 'l', 'eh1', 'v', 'er0', 'iy0']","['c_k', 'l_l', 'e_eh1', 'v_v', 'er_er0', 'y_iy0']","['k', 'l', 'ɛ', 'v', 'ɚ', 'i']",
+3,belents,"['b', 'ih0', 'l', 'eh1', 'n', 't', 's']","['b_b', 'e_ih0', 'l_l', 'e_eh1', 'n_n', 't_t', 's_s']","['b', 'ɨ', 'l', 'ɛ', 'n', 't', 's']",
+2,hadiste,"['hh', 'ae1', 'd', 'ih1', 's', 'ah0']","['h_hh', 'a_ae1', 'd_d', 'i_ih1', 'st_s', 'e_ah0']","['h', 'æ', 'd', 'ɪ', 's', 'ə']",
+4,spunter,"['s', 'p', 'ah1', 'n', 't', 'er0']","['s_s', 'p_p', 'u_ah1', 'n_n', 't_t', 'er_er0']","['s', 'p', 'ʌ', 'n', 't', 'ɚ']",
+4,travity,"['t', 'r', 'ae1', 'v', 'ah0', 't', 'iy0']","['t_t', 'r_r', 'a_ae1', 'v_v', 'i_ah0', 't_t', 'y_iy0']","['t', 'ɹ', 'æ', 'v', 'ə', 't', 'i']",
+4,possils,"['p', 'aa1', 's', 'ah0', 'l', 'z']","['p_p', 'o_aa1', 'ss_s', 'i_ah0', 'l_l', 's_z']","['p', 'ɑ', 's', 'ə', 'l', 'z']",
+4,starget,"['s', 't', 'aa1', 'r', 'g', 'ah0', 't']","['s_s', 't_t', 'a_aa1', 'r_r', 'g_g', 'e_ah0', 't_t']","['s', 't', 'ɑ', 'ɹ', 'ɡ', 'ə', 't']",
+4,wentors,"['w', 'eh1', 'n', 't', 'er0', 'z']","['w_w', 'e_eh1', 'n_n', 't_t', 'or_er0', 's_z']","['w', 'ɛ', 'n', 't', 'ɚ', 'z']",
+4,patrich,"['p', 'ae1', 't', 'r', 'ih0', 'ch']","['p_p', 'a_ae1', 't_t', 'r_r', 'i_ih0', 'ch_ch']","['p', 'æ', 't', 'ɹ', 'ɨ', 'tʃ']",
+4,momently,"['m', 'ow1', 'm', 'ah0', 'n', 't', 'l', 'iy0']","['m_m', 'o_ow1', 'm_m', 'e_ah0', 'n_n', 't_t', 'l_l', 'y_iy0']","['m', 'oʊ', 'm', 'ə', 'n', 't', 'l', 'i']",Word
+3,differen,"['d', 'ih1', 'f', 'er0', 'ah0', 'n']","['d_d', 'i_ih1', 'ff_f', 'er_er0', 'e_ah0', 'n_n']","['d', 'ɪ', 'f', 'ɚ', 'ə', 'n']",1 letter off from a real word
+4,covernor,"['k', 'ah1', 'v', 'er0', 'n', 'er0']","['c_k', 'o_ah1', 'v_v', 'er_er0', 'n_n', 'or_er0']","['k', 'ʌ', 'v', 'ɚ', 'n', 'ɚ']",
+3,fromeone,"['f', 'r', 'ah1', 'm', 'w', 'ah2', 'n']","['f_f', 'r_r', 'o_ah1', 'm_m', 'e_w', 'o_ah2', 'ne_n']","['f', 'ɹ', 'ʌ', 'm', 'w', 'ʌ', 'n']",Compound word
+4,surprize,"['s', 'er0', 'p', 'r', 'ay1', 'z']","['s_s', 'ur_er0', 'p_p', 'r_r', 'i_ay1', 'ze_z']","['s', 'ɚ', 'p', 'ɹ', 'aɪ', 'z']",1 letter off from a real word
+4,spencers,"['s', 'p', 'eh1', 'n', 's', 'er0', 'z']","['s_s', 'p_p', 'e_eh1', 'n_n', 'c_s', 'er_er0', 's_z']","['s', 'p', 'ɛ', 'n', 's', 'ɚ', 'z']",Name
+3,fatimand,"['f', 'ae1', 'th', 'ih0', 'm', 'ah0', 'n', 'd']","['f_f', 'a_ae1', 't_th', 'i_ih0', 'm_m', 'a_ah0', 'n_n', 'd_d']","['f', 'æ', 'θ', 'ɨ', 'm', 'ə', 'n', 'd']",
+2,clightwo,"['k', 'l', 'ay1', 't', 'uw1']","['c_k', 'l_l', 'igh_ay1', 't_t', 'wo_uw1']","['k', 'l', 'aɪ', 't', 'u']",
+2,hanchoin,"['hh', 'eh1', 'n', 'ch', 'oy1', 'n']","['h_hh', 'a_eh1', 'n_n', 'ch_ch', 'oi_oy1', 'n_n']","['h', 'ɛ', 'n', 'tʃ', 'ɔɪ', 'n']",
+4,shiftest,"['sh', 'ih1', 'f', 't', 'ah0', 's', 't']","['sh_sh', 'i_ih1', 'f_f', 't_t', 'e_ah0', 's_s', 't_t']","['ʃ', 'ɪ', 'f', 't', 'ə', 's', 't']",
+4,lastream,"['l', 'ae1', 's', 't', 'r', 'iy1', 'm']","['l_l', 'a_ae1', 's_s', 't_t', 'r_r', 'ea_iy1', 'm_m']","['l', 'æ', 's', 't', 'ɹ', 'i', 'm']",Could be derived using existing English morphemes
+4,sadlands,"['s', 'ae1', 'd', 'l', 'ae2', 'n', 'd', 'z']","['s_s', 'a_ae1', 'd_d', 'l_l', 'a_ae2', 'n_n', 'd_d', 's_z']","['s', 'æ', 'd', 'l', 'æ', 'n', 'd', 'z']",Compound word
+4,spancake,"['s', 'p', 'ae1', 'n', 'k', 'ey2', 'k']","['s_s', 'p_p', 'a_ae1', 'n_n', 'c_k', 'a_ey2', 'ke_k']","['s', 'p', 'æ', 'n', 'k', 'eɪ', 'k']",
+3,inchroom,"['ih1', 'n', 'ch', 'r', 'uw2', 'm']","['i_ih1', 'n_n', 'ch_ch', 'r_r', 'oo_uw2', 'm_m']","['ɪ', 'n', 'tʃ', 'ɹ', 'u', 'm']",Could be derived using existing English morphemes
+4,underful,"['ah1', 'n', 'd', 'er0', 'f', 'ah0', 'l']","['u_ah1', 'n_n', 'd_d', 'er_er0', 'f_f', 'u_ah0', 'l_l']","['ʌ', 'n', 'd', 'ɚ', 'f', 'ə', 'l']",Could be derived using existing English morphemes
+2,wheswome,"['w', 'eh1', 's', 'w', 'ah1', 'm']","['wh_w', 'e_eh1', 's_s', 'w_w', 'o_ah1', 'me_m']","['w', 'ɛ', 's', 'w', 'ʌ', 'm']",Questionable pronunciation
+2,itharres,"['ih1', 'dh', 'ae1', 'r', 'ih0', 'z']","['i_ih1', 'th_dh', 'a_ae1', 'rr_r', 'e_ih0', 's_z']","['ɪ', 'ð', 'æ', 'ɹ', 'ɨ', 'z']",Questionable pronunciation
+4,culpture,"['k', 'ah1', 'l', 'p', 'ch', 'er0']","['c_k', 'u_ah1', 'l_l', 'p_p', 't_ch', 'ure_er0']","['k', 'ʌ', 'l', 'p', 'tʃ', 'ɚ']",1 letter off from a real word
+3,sethrees,"['s', 'eh1', 'th', 'r', 'iy1', 'z']","['s_s', 'e_eh1', 'th_th', 'r_r', 'ee_iy1', 's_z']","['s', 'ɛ', 'θ', 'ɹ', 'i', 'z']",
+4,ruggling,"['r', 'ah1', 'g', 'ah0', 'l', 'ih0', 'ng']","['r_r', 'u_ah1', 'g_g', 'g_ah0', 'l_l', 'i_ih0', 'ng_ng']","['ɹ', 'ʌ', 'ɡ', 'ə', 'l', 'ɨ', 'ŋ']",
+3,raintest,"['r', 'ey1', 'n', 't', 'eh0', 's', 't']","['r_r', 'ai_ey1', 'n_n', 't_t', 'e_eh0', 's_s', 't_t']","['ɹ', 'eɪ', 'n', 't', 'ɛ', 's', 't']",Compound word
+4,markness,"['m', 'aa1', 'r', 'k', 'n', 'ah0', 's']","['m_m', 'a_aa1', 'r_r', 'k_k', 'n_n', 'e_ah0', 'ss_s']","['m', 'ɑ', 'ɹ', 'k', 'n', 'ə', 's']",Could be derived using existing English morphemes
+4,spandpas,"['s', 'p', 'ae1', 'n', 'd', 'p', 'aa2', 'z']","['s_s', 'p_p', 'a_ae1', 'n_n', 'd_d', 'p_p', 'a_aa2', 's_z']","['s', 'p', 'æ', 'n', 'd', 'p', 'ɑ', 'z']",
+4,acrossed,"['ah0', 'k', 'r', 'ao1', 's', 't']","['a_ah0', 'c_k', 'r_r', 'o_ao1', 'ss_s', 'ed_t']","['ə', 'k', 'ɹ', 'ɔ', 's', 't']",1 letter off from a real word
+4,countain,"['k', 'aw1', 'n', 't', 'ah0', 'n']","['c_k', 'ou_aw1', 'n_n', 't_t', 'ai_ah0', 'n_n']","['k', 'aʊ', 'n', 't', 'ə', 'n']",
+3,ranimals,"['r', 'ae1', 'n', 'ah0', 'm', 'ah0', 'l', 'z']","['r_r', 'a_ae1', 'n_n', 'i_ah0', 'm_m', 'a_ah0', 'l_l', 's_z']","['ɹ', 'æ', 'n', 'ə', 'm', 'ə', 'l', 'z']",1 letter off from a real word
+4,abdoment,"['ae0', 'b', 'd', 'ow1', 'm', 'ah0', 'n', 't']","['a_ae0', 'b_b', 'd_d', 'o_ow1', 'm_m', 'e_ah0', 'n_n', 't_t']","['æ', 'b', 'd', 'oʊ', 'm', 'ə', 'n', 't']",
+4,amounter,"['ah0', 'm', 'aw1', 'n', 't', 'er0']","['a_ah0', 'm_m', 'ou_aw1', 'n_n', 't_t', 'er_er0']","['ə', 'm', 'aʊ', 'n', 't', 'ɚ']",Could be derived using existing English morphemes
+4,handmarks,"['hh', 'ae1', 'n', 'd', 'm', 'aa2', 'r', 'k', 's']","['h_hh', 'a_ae1', 'n_n', 'd_d', 'm_m', 'a_aa2', 'r_r', 'k_k', 's_s']","['h', 'æ', 'n', 'd', 'm', 'ɑ', 'ɹ', 'k', 's']",Compound word
+2,punlforse,"['p', 'ah1', 'n', 'l', 'f', 'ao1', 'r', 's']","['p_p', 'u_ah1', 'n_n', 'l_l', 'f_f', 'o_ao1', 'r_r', 'se_s']","['p', 'ʌ', 'n', 'l', 'f', 'ɔ', 'ɹ', 's']",Weird consonant cluster
+3,jobjector,"['jh', 'aa1', 'b', 'jh', 'eh0', 'k', 't', 'er0']","['j_jh', 'o_aa1', 'b_b', 'j_jh', 'e_eh0', 'c_k', 't_t', 'or_er0']","['dʒ', 'ɑ', 'b', 'dʒ', 'ɛ', 'k', 't', 'ɚ']",
+3,togetting,"['t', 'ah0', 'g', 'eh1', 't', 'ih0', 'ng']","['t_t', 'o_ah0', 'g_g', 'e_eh1', 'tt_t', 'i_ih0', 'ng_ng']","['t', 'ə', 'ɡ', 'ɛ', 't', 'ɨ', 'ŋ']",
+4,streetops,"['s', 't', 'r', 'iy1', 't', 'ao2', 'p', 's']","['s_s', 't_t', 'r_r', 'ee_iy1', 't_t', 'o_ao2', 'p_p', 's_s']","['s', 't', 'ɹ', 'i', 't', 'ɔ', 'p', 's']",Compound word
+2,aweguncen,"['ah0', 'w', 'eh1', 'g', 'ah1', 'n', 's', 'ah0', 'n']","['a_ah0', 'w_w', 'e_eh1', 'g_g', 'u_ah1', 'n_n', 'c_s', 'e_ah0', 'n_n']","['ə', 'w', 'ɛ', 'ɡ', 'ʌ', 'n', 's', 'ə', 'n']",
+3,oldrummer,"['ow1', 'l', 'd', 'r', 'ah1', 'm', 'er0']","['o_ow1', 'l_l', 'd_d', 'r_r', 'u_ah1', 'mm_m', 'er_er0']","['oʊ', 'l', 'd', 'ɹ', 'ʌ', 'm', 'ɚ']",
+4,skyscreek,"['s', 'k', 'ay1', 's', 'k', 'r', 'iy1', 'k']","['s_s', 'k_k', 'y_ay1', 's_s', 'c_k', 'r_r', 'ee_iy1', 'k_k']","['s', 'k', 'aɪ', 's', 'k', 'ɹ', 'i', 'k']",Compound word
+4,depencers,"['d', 'ih0', 'p', 'eh1', 'n', 's', 'er0', 'z']","['d_d', 'e_ih0', 'p_p', 'e_eh1', 'n_n', 'c_s', 'er_er0', 's_z']","['d', 'ɨ', 'p', 'ɛ', 'n', 's', 'ɚ', 'z']",
+2,thebemmer,"['dh', 'ah0', 'b', 'eh1', 'm', 'er0']","['th_dh', 'e_ah0', 'b_b', 'e_eh1', 'mm_m', 'er_er0']","['ð', 'ə', 'b', 'ɛ', 'm', 'ɚ']",
+4,sweptiles,"['s', 'w', 'eh1', 'p', 't', 'ay0', 'l', 'z']","['s_s', 'w_w', 'e_eh1', 'p_p', 't_t', 'i_ay0', 'l_l', 'es_z']","['s', 'w', 'ɛ', 'p', 't', 'aɪ', 'l', 'z']",
+2,rthrusame,"['r', 'th', 'r', 'ah1', 's', 'ey1', 'm']","['r_r', 'th_th', 'r_r', 'u_ah1', 's_s', 'a_ey1', 'me_m']","['ɹ', 'θ', 'ɹ', 'ʌ', 's', 'eɪ', 'm']",Weird consonant cluster
+2,psaireatl,"['p', 's', 'eh1', 'r', 'ey1', 't', 'l']","['p_p', 's_s', 'ai_eh1', 'r_r', 'ea_ey1', 't_t', 'l_l']","['p', 's', 'ɛ', 'ɹ', 'eɪ', 't', 'l']",Weird consonant cluster
+4,celephone,"['s', 'eh1', 'l', 'ah0', 'f', 'ow2', 'n']","['c_s', 'e_eh1', 'l_l', 'e_ah0', 'ph_f', 'o_ow2', 'ne_n']","['s', 'ɛ', 'l', 'ə', 'f', 'oʊ', 'n']",Could be derived using existing English morphemes
+2,kickspeck,"['k', 'ih1', 'k', 's', 'p', 'eh1', 'k']","['k_k', 'i_ih1', 'ck_k', 's_s', 'p_p', 'e_eh1', 'ck_k']","['k', 'ɪ', 'k', 's', 'p', 'ɛ', 'k']",
+3,quirrelet,"['k', 'w', 'er1', 'ah0', 'l', 'eh1', 't']","['q_k', 'u_w', 'irr_er1', 'e_ah0', 'l_l', 'e_eh1', 't_t']","['k', 'w', 'ɝ', 'ə', 'l', 'ɛ', 't']",
+4,exceptune,"['eh0', 'k', 's', 'eh1', 'p', 't', 'uw0', 'n']","['e_eh0', 'x_k', 'c_s', 'e_eh1', 'p_p', 't_t', 'u_uw0', 'ne_n']","['ɛ', 'k', 's', 'ɛ', 'p', 't', 'u', 'n']",
+3,kifferent,"['k', 'ih1', 'f', 'er0', 'ah0', 'n', 't']","['k_k', 'i_ih1', 'ff_f', 'er_er0', 'e_ah0', 'n_n', 't_t']","['k', 'ɪ', 'f', 'ɚ', 'ə', 'n', 't']",
+3,happentry,"['hh', 'ae1', 'p', 'ah0', 'n', 't', 'r', 'ay1']","['h_hh', 'a_ae1', 'pp_p', 'e_ah0', 'n_n', 't_t', 'r_r', 'y_ay1']","['h', 'æ', 'p', 'ə', 'n', 't', 'ɹ', 'aɪ']",
+3,restowalk,"['r', 'ah0', 's', 't', 'ah0', 'w', 'ao1', 'k']","['r_r', 'e_ah0', 's_s', 't_t', 'o_ah0', 'w_w', 'a_ao1', 'lk_k']","['ɹ', 'ə', 's', 't', 'ə', 'w', 'ɔ', 'k']",Could be derived using existing English morphemes
+4,catforest,"['k', 'ae1', 't', 'f', 'ao2', 'r', 'ah0', 's', 't']","['c_k', 'a_ae1', 't_t', 'f_f', 'o_ao2', 'r_r', 'e_ah0', 's_s', 't_t']","['k', 'æ', 't', 'f', 'ɔ', 'ɹ', 'ə', 's', 't']",Compound word
+4,covernment,"['k', 'ah1', 'v', 'er0', 'm', 'ah0', 'n', 't']","['c_k', 'o_ah1', 'v_v', 'er_er0', 'nm_m', 'e_ah0', 'n_n', 't_t']","['k', 'ʌ', 'v', 'ɚ', 'm', 'ə', 'n', 't']",1 letter off from a real word
+4,perfective,"['p', 'er0', 'f', 'eh1', 'k', 't', 'ih0', 'v']","['p_p', 'er_er0', 'f_f', 'e_eh1', 'c_k', 't_t', 'i_ih0', 've_v']","['p', 'ɚ', 'f', 'ɛ', 'k', 't', 'ɨ', 'v']",Word
+4,supermarks,"['s', 'uw1', 'p', 'er0', 'm', 'aa2', 'r', 'k', 's']","['s_s', 'u_uw1', 'p_p', 'er_er0', 'm_m', 'a_aa2', 'r_r', 'k_k', 's_s']","['s', 'u', 'p', 'ɚ', 'm', 'ɑ', 'ɹ', 'k', 's']",Compound word
+3,cationside,"['k', 'ey1', 'sh', 'ah0', 'n', 's', 'ay1', 'd']","['c_k', 'a_ey1', 'ti_sh', 'o_ah0', 'n_n', 's_s', 'i_ay1', 'de_d']","['k', 'eɪ', 'ʃ', 'ə', 'n', 's', 'aɪ', 'd']",
+4,automorrow,"['ao1', 't', 'ah0', 'm', 'aa1', 'r', 'ow2']","['au_ao1', 't_t', 'o_ah0', 'm_m', 'o_aa1', 'rr_r', 'ow_ow2']","['ɔ', 't', 'ə', 'm', 'ɑ', 'ɹ', 'oʊ']",
+4,differents,"['d', 'ih1', 'f', 'er0', 'ah0', 'n', 't', 's']","['d_d', 'i_ih1', 'ff_f', 'er_er0', 'e_ah0', 'n_n', 't_t', 's_s']","['d', 'ɪ', 'f', 'ɚ', 'ə', 'n', 't', 's']",1 letter off from a real word
+4,bandmother,"['b', 'ae1', 'n', 'd', 'm', 'ah2', 'dh', 'er0']","['b_b', 'a_ae1', 'n_n', 'd_d', 'm_m', 'o_ah2', 'th_dh', 'er_er0']","['b', 'æ', 'n', 'd', 'm', 'ʌ', 'ð', 'ɚ']",Compound word
+3,yeardering,"['y', 'ih1', 'r', 'd', 'er0', 'ih0', 'ng']","['y_y', 'ea_ih1', 'r_r', 'd_d', 'er_er0', 'i_ih0', 'ng_ng']","['j', 'ɪ', 'ɹ', 'd', 'ɚ', 'ɨ', 'ŋ']",
+4,classengers,"['k', 'l', 'ae1', 's', 'ah0', 'n', 'jh', 'er0', 'z']","['c_k', 'l_l', 'a_ae1', 'ss_s', 'e_ah0', 'n_n', 'g_jh', 'er_er0', 's_z']","['k', 'l', 'æ', 's', 'ə', 'n', 'dʒ', 'ɚ', 'z']",
+2,oleadossing,"['ah1', 'l', 'iy1', 'd', 'ao1', 's', 'ih0', 'ng']","['o_ah1', 'l_l', 'ea_iy1', 'd_d', 'o_ao1', 'ss_s', 'i_ih0', 'ng_ng']","['ʌ', 'l', 'i', 'd', 'ɔ', 's', 'ɨ', 'ŋ']",
+4,differenting,"['d', 'ih1', 'f', 'er0', 'ah0', 'n', 't', 'ih0', 'ng']","['d_d', 'i_ih1', 'ff_f', 'er_er0', 'e_ah0', 'n_n', 't_t', 'i_ih0', 'ng_ng']","['d', 'ɪ', 'f', 'ɚ', 'ə', 'n', 't', 'ɨ', 'ŋ']",Word (very close to one)
+2,bocksteenock,"['b', 'aa1', 'k', 's', 't', 'ih1', 'n', 'aa1', 'k']","['b_b', 'o_aa1', 'ck_k', 's_s', 't_t', 'ee_ih1', 'n_n', 'o_aa1', 'ck_k']","['b', 'ɑ', 'k', 's', 't', 'ɪ', 'n', 'ɑ', 'k']",
+2,hannicatrace,"['hh', 'ae1', 'n', 'ih0', 'k', 'ae1', 't', 'r', 'ey1', 's']","['h_hh', 'a_ae1', 'nn_n', 'i_ih0', 'c_k', 'a_ae1', 't_t', 'r_r', 'a_ey1', 'ce_s']","['h', 'æ', 'n', 'ɨ', 'k', 'æ', 't', 'ɹ', 'eɪ', 's']",
+2,omarmanokurtare,"['aa1', 'm', 'aa1', 'r', 'm', 'ae1', 'n', 'ow1', 'k', 'er1', 't', 'aa1', 'r']","['o_aa1', 'm_m', 'a_aa1', 'r_r', 'm_m', 'a_ae1', 'n_n', 'o_ow1', 'k_k', 'ur_er1', 't_t', 'a_aa1', 're_r']","['ɑ', 'm', 'ɑ', 'ɹ', 'm', 'æ', 'n', 'oʊ', 'k', 'ɝ', 't', 'ɑ', 'ɹ']",
+2,whetikesaidrkit,"['w', 'eh1', 't', 'ay1', 'k', 's', 'eh1', 'd', 'r', 'k', 'ih1', 't']","['wh_w', 'e_eh1', 't_t', 'i_ay1', 'ke_k', 's_s', 'ai_eh1', 'd_d', 'r_r', 'k_k', 'i_ih1', 't_t']","['w', 'ɛ', 't', 'aɪ', 'k', 's', 'ɛ', 'd', 'ɹ', 'k', 'ɪ', 't']",Weird consonant cluster

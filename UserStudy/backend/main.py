@@ -44,10 +44,20 @@ def get_db():
 
 # cached variables
 stimuli_bins = []
+
 baseline_stims = [
-    "this is a test input for pilot 1",
-    "this is a test input for pilot 2",
-    "this is a test input for pilot 3",
+    'oleadossing gon lorick pells.'
+    'forten thebemmer wentor sunch fatimand starget.'
+    '"kickspeck kifferent pells fi, ints anding fi hanchoin jus resh."'
+    '"sevent ruggling happentry rept, tex saidaw lasky upcoren nakes."'
+    '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."'
+    'savid hannicatrace gred sprin belents gandoff?'
+    'crings fi fi paren.'
+    '"soundid togetting lenew squick, a cancake gred ruggling gon kims."'
+    'folden fi gast sunch tren hanchoin hanchoin?'
+    '"tast os askets classengers, jobjector tanin fi, besters gast."'
+    '"shood hannicatrace nat os twent kickspeck, thebemmer clively sprin hanchoin."'
+    '"stor oleadossing gunt a hant oldrummer, os trings smind regist."'
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key
