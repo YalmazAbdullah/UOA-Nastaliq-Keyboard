@@ -4,7 +4,7 @@ import random
 from tqdm import tqdm
 
 # load in pesudo words
-pesudowords = pd.read_csv("pesudo_words.csv")
+pesudowords = pd.read_csv("./user_study/pesudo_words.csv")
 pesudowords = pesudowords[pesudowords['Rationale for Removal'].isna()]
 print(len(pesudowords))
 
@@ -18,7 +18,7 @@ for word in pesudowords["Pseudoword"]:
 
 # load in lorem ipsum
 lorem_ipsum = None
-with open('lorem ipsum.txt', 'r', encoding='utf-8') as file:
+with open('./user_study/lorem_ipsum.txt', 'r', encoding='utf-8') as file:
     lorem_ipsum = file.read()
 
 # split sentences
@@ -58,8 +58,8 @@ print(len(pesudo_sentences))
 print(pesudo_sentences)
 
 df = pd.DataFrame({"Stim":pesudo_sentences})
-df.to_csv("results/pesudo_sentences.csv")
+df.to_csv("./user_study/results/pesudo_sentences.csv")
 df = pd.DataFrame({"Stim":random.sample(pesudo_sentences,12)})
-df.to_csv("results/baseline.csv")
+df.to_csv("./user_study/results/baseline.csv")
 
 
