@@ -33,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/api/test")
 def read_root():
     return {"message": "CORS enabled!"}
 
@@ -68,7 +68,7 @@ def generate_code(num):
     return base64.urlsafe_b64encode(hash_bytes)[:6].decode() 
 
 
-@app.post("/start_session")
+@app.post("/api/start_session")
 async def start_session():
     con, cursor = get_db()
     try:
@@ -133,7 +133,7 @@ async def start_session():
         con.close()
 
 
-@app.post("/result", status_code=201)
+@app.post("/api/result", status_code=201)
 async def create_user(measure:schemas.Measure):
     con, cursor = get_db()
     try:
@@ -152,7 +152,7 @@ async def create_user(measure:schemas.Measure):
 
 
 # test ping: http://XYZ/withdraw?uid=1
-@app.put("/withdraw", status_code=201)
+@app.put("/api/withdraw", status_code=201)
 async def withdraw(uid: int = Query(-1)):
     con, cursor = get_db()
     try:
@@ -166,7 +166,7 @@ async def withdraw(uid: int = Query(-1)):
     finally:
         con.close()
     
-@app.post("/submit")
+@app.post("/api/submit")
 def submit_data(data: schemas.QuestionData, uid: int = Query(-1)):
     con, cursor = get_db()
     try:
