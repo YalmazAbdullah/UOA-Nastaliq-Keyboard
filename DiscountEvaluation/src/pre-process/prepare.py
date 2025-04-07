@@ -70,8 +70,8 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
 ##     MAIN     ##
 ##################
 def main(
-        native_file_path = '../raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
-        roman_file_path = '../raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
+        native_file_path = '../_raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
+        roman_file_path = '../_raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
     ):
     prep_roman_ur_parl(native_file_path, roman_file_path)
 

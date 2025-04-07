@@ -182,7 +182,7 @@ def main():
     print(union.difference(native_set))
 
     # clean the data
-    dakshina_path = "raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned"
+    dakshina_path = "_raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned"
     roman_path = "interim/prepared/roUrParl_dataset"
     print("Dataset: Dakshina".center(100, "="))
     clean("dakshina_dataset",dakshina_path,native_set,roman_set)
