@@ -52,12 +52,7 @@ baseline_stims = [
     'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
     '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."',
     'savid hannicatrace gred sprin belents gandoff?',
-    'crings fi fi paren.',
-    '"soundid togetting lenew squick, a cancake gred ruggling gon kims."',
     'folden fi gast sunch tren hanchoin hanchoin?',
-    '"tast os askets classengers, jobjector tanin fi, besters gast."',
-    'shood hannicatrace nat os twent kickspeck, thebemmer clively sprin hanchoin.',
-    'stor oleadossing gunt a hant oldrummer, os trings smind regist.',
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key
