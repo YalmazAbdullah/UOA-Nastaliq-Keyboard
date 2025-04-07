@@ -163,12 +163,12 @@ cython_debug/
 
 DiscountEvaluation/corpus/cleaned/*
 DiscountEvaluation/corpus/prepared/*
-DiscountEvaluation/corpus/transformed/keystroke_CRULP/*
-DiscountEvaluation/corpus/transformed/keystroke_Windows/*
-DiscountEvaluation/corpus/transformed/sentences/*
-DiscountEvaluation/corpus/transformed/triad_CRULP/*
-DiscountEvaluation/corpus/transformed/triad_Windows/*
-DiscountEvaluation/corpus/transformed/dyads/*
+DiscountEvaluation/interim/transformed/keystroke_CRULP/*
+DiscountEvaluation/interim/transformed/keystroke_Windows/*
+DiscountEvaluation/interim/transformed/sentences/*
+DiscountEvaluation/interim/transformed/triad_CRULP/*
+DiscountEvaluation/interim/transformed/triad_Windows/*
+DiscountEvaluation/interim/transformed/dyads/*
 DiscountEvaluation/data/sentence/distance/*
 DiscountEvaluation/data/sentence/score/*
 DiscountEvaluation/data/levinsteine/*
@@ -364,6 +364,7 @@ dist
 
 # Logs
 logs
+_logs
 *.log
 npm-debug.log*
 yarn-debug.log*
