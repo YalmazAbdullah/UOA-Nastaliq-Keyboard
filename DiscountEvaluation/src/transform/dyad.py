@@ -47,7 +47,7 @@ def write_dyads(native1,native2,roman,path):
     Returns:
         None
     '''
-    with open("../corpus/"+path+".json", "w") as file:
+    with open("../"+path+".json", "w") as file:
         json.dump([native1,native2,roman], file, indent=4)
 
 def transform(dataset_name,write = False):
@@ -63,13 +63,13 @@ def transform(dataset_name,write = False):
         windows_dyads (list):  list of lists which hold all dyads in sentence
         roman_dyads (list):  list of lists which hold all dyads in sentence
     '''
-    crulp,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)
-    windows,roman = read_tsv("transformed/keystroke_Windows/"+dataset_name)
+    crulp,roman = read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)
+    windows,roman = read_tsv("interim/transformed/keystroke_Windows/"+dataset_name)
     roman_dyads = generate_dyads(roman)
     crulp_dyads = generate_dyads(crulp)
     windows_dyads = generate_dyads(windows)
     if(write):
-        write_dyads(crulp_dyads,windows_dyads,roman_dyads,"transformed/dyads/"+dataset_name)
+        write_dyads(crulp_dyads,windows_dyads,roman_dyads,"interim/transformed/dyads/"+dataset_name)
     return crulp_dyads,windows_dyads,roman_dyads
 
 ##################
@@ -84,7 +84,7 @@ def main():
     transform("roUrParl_dataset",True)
     # Dataset: Combined
     print("Dataset: Combined Subset".center(100, "="))
-    transform("combined_dataset",True)
+    transform("combined_subset",True)
     
 
 if __name__ == "__main__":

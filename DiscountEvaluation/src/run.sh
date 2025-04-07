@@ -41,8 +41,8 @@ if ! $clean && ! $transform && ! $score; then
     usage
 fi
 
-mkdir ../logs/$(date +'%Y%m%d_%H%M%S')
-LOG_PATH="../logs/$(date +'%Y%m%d_%H%M%S')"
+mkdir ../_logs/$(date +'%Y%m%d_%H%M%S')
+LOG_PATH="../_logs/$(date +'%Y%m%d_%H%M%S')"
 
 # Main logic
 if $clean; then

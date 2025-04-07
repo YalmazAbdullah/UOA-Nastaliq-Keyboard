@@ -6,9 +6,9 @@ from tqdm import tqdm
 # CUSTOM
 from util import read_tsv
 from util import key_distance
-from util import KEY_SET,KEY_COORD
+from util import KEY_SET
 from util import KEY_2_FINGER,KEY_2_HAND,KEY_2_HOME,CHAR_2_KEY
-from util import PRESS_DEPTH,SCALE_FACTOR,RIGHT_MOD,LEFT_MOD
+from util import PRESS_DEPTH,RIGHT_MOD,LEFT_MOD
 
 
 def calculate_freq(data):
@@ -76,8 +76,8 @@ def score(dataset_name):
     travel_dist["r_shift"] = RIGHT_MOD + PRESS_DEPTH
 
     # read data
-    crulp,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)
-    windows,roman = read_tsv("transformed/keystroke_Windows/"+dataset_name)
+    crulp,roman = read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)
+    windows,roman = read_tsv("interim/transformed/keystroke_Windows/"+dataset_name)
     data_sets = {"CRULP":crulp,"WINDOWS":windows,"IME":roman}
 
     # for each dataset
@@ -106,7 +106,7 @@ def main():
     print("Dataset: Roman Urdu Parl".center(100, "="))
     score("roUrParl_dataset")
     print("Dataset: Combined Subset".center(100, "="))
-    score("combined_dataset")
+    score("combined_subset")
 
 if __name__ == "__main__":
     main()

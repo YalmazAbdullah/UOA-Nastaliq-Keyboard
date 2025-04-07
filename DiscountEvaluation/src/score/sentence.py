@@ -9,6 +9,8 @@ from util import evaluate_dyad
 from util import read_tsv
 
 def score_sentence(sentence):
+    # ignore white space we dotn consider it when calculating distance
+    sentence = sentence.replace(" ", "")
     # handle start of sentence
     sentence_total = evaluate_dyad("<s>",sentence[0])
     # make sure to add sentnece index
@@ -23,13 +25,13 @@ def score_sentence(sentence):
     return sentence_total
 
 def score(dataset_name):
-    _,roman = read_tsv("transformed/keystroke_CRULP/"+dataset_name)
+    _,roman = read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)
     
     # calculate sentence scores
     inputs = {
-        "CRULP":read_tsv("transformed/keystroke_CRULP/"+dataset_name)[0],
+        "CRULP":read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)[0],
         "IME":roman,
-        "WINDOWS":read_tsv("transformed/keystroke_Windows/"+dataset_name)[0],
+        "WINDOWS":read_tsv("interim/transformed/keystroke_Windows/"+dataset_name)[0],
     }
 
     # Score each sentence

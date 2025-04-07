@@ -78,11 +78,11 @@ def main():
 
     print("Dataset: Roman Urdu Parl".center(100, "="))
     print("Urdu".center(100, "-"))
-    file = open('../corpus/raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
+    file = open('../raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
     data = file.readlines()
     get_stats(data)
     print("Roman".center(100, "-"))
-    file = open('../corpus/raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
+    file = open('../raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
     data = file.readlines()
     get_stats(data)
 
@@ -92,14 +92,14 @@ def main():
     print("#"*100)
 
     print("Dataset: Dakshina".center(100, "="))
-    native, roman = read_tsv("transformed/sentences/dakshina_dataset")
+    native, roman = read_tsv("interim/transformed/sentences/dakshina_dataset")
     print("Urdu".center(100, "-"))
     get_stats(native)
     print("Roman".center(100, "-"))
     get_stats(roman)
     
     print("Dataset: Roman Urdu Parl".center(100, "="))
-    native, roman = read_tsv("transformed/sentences/roUrParl_dataset")
+    native, roman = read_tsv("interim/transformed/sentences/roUrParl_dataset")
     print("Urdu".center(100, "-"))
     get_stats(native)
     print("Roman".center(100, "-"))
@@ -107,7 +107,7 @@ def main():
     
     
     print("Dataset: Combined Subset".center(100, "="))
-    native, roman = read_tsv("transformed/sentences/combined_subset")
+    native, roman = read_tsv("interim/transformed/sentences/combined_subset")
     print("Urdu".center(100, "-"))
     get_stats(native)
     print("Roman".center(100, "-"))

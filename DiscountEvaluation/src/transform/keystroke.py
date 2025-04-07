@@ -42,13 +42,13 @@ def transform_keystrokes(dataset_name):
         None
     '''
     # read data
-    native,roman = read_tsv("transformed/sentences/"+dataset_name)
+    native,roman = read_tsv("interim/transformed/sentences/"+dataset_name)
     # transform for each keyboard layout
     transformed_CRULP = transform(native, CRULP_MAPPTING)
     transformed_Windows = transform(native, WINDOWS_MAPPING)
     # write results
-    write_tsv(transformed_CRULP,roman,"transformed/keystroke_CRULP/"+dataset_name)
-    write_tsv(transformed_Windows,roman,"transformed/keystroke_Windows/"+dataset_name)
+    write_tsv(transformed_CRULP,roman,"interim/transformed/keystroke_CRULP/"+dataset_name)
+    write_tsv(transformed_Windows,roman,"interim/transformed/keystroke_Windows/"+dataset_name)
 
 
 ##################

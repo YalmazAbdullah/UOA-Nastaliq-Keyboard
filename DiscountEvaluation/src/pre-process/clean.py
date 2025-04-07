@@ -4,7 +4,8 @@ from pprint import pprint
 from tqdm import tqdm
 
 # Vendor
-from urduhack.preprocessing import remove_accents
+from urduhack import preprocessing
+from urduhack import normalization
 
 # Custom
 from util import eval
@@ -20,12 +21,12 @@ STANDARD_SUBSTITUTIONS = {
     "‘":"'", "’":"'", "–":"-",
     "٬":"،","…":"...",
 
-    # Same but different
-    "ى ":"ی",
-    "ي":"ی",
-    "ى":"ی",
-    "ه":"ہ",
-    "ك":"ک"
+    # # Same but different
+    # "ى ":"ی",
+    # "ي":"ی",
+    # "ى":"ی",
+    # "ه":"ہ",
+    # "ك":"ک"
 }
 
 
@@ -51,13 +52,10 @@ def standardize(native, roman):
             continue
 
         # Remove diacritcs
-        native[i] = remove_accents(native[i])
-
-        # standardize punctuation
-        native[i] = remove_accents(native[i])
+        native[i] = preprocessing.remove_accents(native[i])
+        native[i] = preprocessing.normalize_whitespace(native[i])
+        native[i] = normalization.normalize_characters(native[i])
         native[i] = pattern.sub(lambda match: STANDARD_SUBSTITUTIONS[match.group(0)], native[i])
-        # fix whitespace errors
-        native[i] = native[i].replace(" ", "")
     return native,roman
 
 
@@ -165,7 +163,7 @@ def clean(name,path,native_set,roman_set):
     roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
-    write_tsv(native_cleaned,roman_cleaned,"cleaned/"+name)
+    write_tsv(native_cleaned,roman_cleaned,"interim/cleaned/"+name)
 
 
 ##################
@@ -185,7 +183,7 @@ def main():
 
     # clean the data
     dakshina_path = "raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned"
-    roman_path = "prepared/roUrParl_dataset"
+    roman_path = "interim/prepared/roUrParl_dataset"
     print("Dataset: Dakshina".center(100, "="))
     clean("dakshina_dataset",dakshina_path,native_set,roman_set)
     print("Dataset: Roman Urdu Parl".center(100, "="))

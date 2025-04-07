@@ -66,10 +66,10 @@ def sentence_transform(dataset_name):
     Args:
         dataset_name (string): name of the dataset. Must be in cleaned/
     '''
-    native,roman = read_tsv("cleaned/"+dataset_name)
+    native,roman = read_tsv("interim/cleaned/"+dataset_name)
     native_sentences,roman_sentences,lost_count = transform(native,roman)
     eval(len(native),len(native)-lost_count)
-    write_tsv(native_sentences,roman_sentences,"transformed/sentences/"+dataset_name)
+    write_tsv(native_sentences,roman_sentences,"interim/transformed/sentences/"+dataset_name)
 
 
 ##################

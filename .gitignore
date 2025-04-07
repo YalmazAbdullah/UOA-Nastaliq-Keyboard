@@ -161,18 +161,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-DiscountEvaluation/corpus/cleaned/*
-DiscountEvaluation/corpus/prepared/*
-DiscountEvaluation/interim/transformed/keystroke_CRULP/*
-DiscountEvaluation/interim/transformed/keystroke_Windows/*
-DiscountEvaluation/interim/transformed/sentences/*
-DiscountEvaluation/interim/transformed/triad_CRULP/*
-DiscountEvaluation/interim/transformed/triad_Windows/*
-DiscountEvaluation/interim/transformed/dyads/*
-DiscountEvaluation/data/sentence/distance/*
-DiscountEvaluation/data/sentence/score/*
-DiscountEvaluation/data/levinsteine/*
-DiscountEvaluation/output/sentence/*
+DiscountEvaluation/interim/cleaned/*
+DiscountEvaluation/interim/prepared/*
+DiscountEvaluation/interim/transformed/*
+DiscountEvaluation/output/sentence/distance/*
+DiscountEvaluation/data/*
 
 # History files
 .Rhistory

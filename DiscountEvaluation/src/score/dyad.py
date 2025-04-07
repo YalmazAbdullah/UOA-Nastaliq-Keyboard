@@ -45,16 +45,16 @@ def score(dataset_name):
     dyad_data = dyad_data.set_index("dyad")
 
     # Retrive data for each keyboard dyad frequency counting
-    crulp,windows,roman = read_json("corpus/transformed/dyads/"+dataset_name)
+    crulp,windows,roman = read_json("interim/transformed/dyads/"+dataset_name)
     data_sets = {"CRULP":crulp,"WINDOWS":windows,"IME":roman}
 
     output = pd.DataFrame()
     
     # tally frequency of dyad
-    for keyboard in tqdm(data_sets.keys(), desc="Count Frequency"):
+    for keyboard in data_sets.keys():
         dyad_counts = {key: 0 for key in dyad_data.index.tolist()}
         data_set = data_sets[keyboard]
-        for sentence in data_set:
+        for sentence in tqdm(data_set, desc="Count Frequency"):
             for i in range(len(sentence)):
                 dyad = sentence[i]
                 dyad_counts[dyad] +=1
@@ -75,7 +75,7 @@ def main():
     print("Dataset: Roman Urdu Parl".center(100, "="))
     score("roUrParl_dataset")
     print("Dataset: Combined Subset".center(100, "="))
-    score("combined_dataset")
+    score("combined_subset")
 
 if __name__ == "__main__":
     main()

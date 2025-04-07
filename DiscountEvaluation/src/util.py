@@ -8,7 +8,7 @@ Read .tsv file, seperate into native and roman.
 '''
 def read_tsv(file_name):
     # Read the .tsv file
-    with open('../corpus/'+file_name+'.tsv', 'r', encoding='utf-8') as file:
+    with open('../'+file_name+'.tsv', 'r', encoding='utf-8') as file:
         native = []
         roman = []
 
@@ -25,24 +25,24 @@ def read_tsv(file_name):
     return native,roman
 
 '''
-Read .tsv file, seperate into native and roman.
+Write the arrays as .tsv file
+'''
+def write_tsv(native, roman, file_name):
+    # write to headless .tsv
+    with open('../'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
+        writer = csv.writer(tsvfile, delimiter='\t')
+    
+        for val1, val2 in zip(native, roman):
+            writer.writerow([val1, val2])
+
+'''
+Read .json file, seperate into native and roman.
 '''
 def read_json(adress):
     file = open("../"+adress+".json")
     data = json.load(file)
     file.close()
     return data
-
-'''
-Write the arrays as .tsv file
-'''
-def write_tsv(native, roman, file_name):
-    # write to headless .tsv
-    with open('../corpus/'+ file_name +'.tsv', 'w', newline='', encoding='utf-8') as tsvfile:
-        writer = csv.writer(tsvfile, delimiter='\t')
-    
-        for val1, val2 in zip(native, roman):
-            writer.writerow([val1, val2])
 
 '''
 Simple evaluation function that returns percentage of tokens removed from dataset.
@@ -52,7 +52,7 @@ def eval(input_size, output_size):
     print("Loss:    "+str(round((1-ratio) *100,6))+"%")
 
 '''
-Preparing data fro layouts
+Preparing data for layouts
 '''
 CRULP_MAPPTING = read_json("keyboards/mappings/CRULP")
 WINDOWS_MAPPING = read_json("keyboards/mappings/Windows")
@@ -79,7 +79,7 @@ def key_distance(a,b):
     return math.dist(KEY_COORD[a],KEY_COORD[b]) * SCALE_FACTOR
 
 '''
-Caclualte distances and characterize stroke of dyad
+Caclualte distances and characterize stroke given dyad
 '''
 def evaluate_dyad(a,b):
     # Get keys for each char in dyad
@@ -144,8 +144,12 @@ def evaluate_dyad(a,b):
     if same_finger:
         # distance + release + press
         f2s = key_distance(f_key, s_key) + PRESS_DEPTH + PRESS_DEPTH
-        output["Dist_"+s_finger] += f2s
-        output["Press_"+s_finger] += 1
+        try:
+            output["Dist_"+s_finger] += f2s
+            output["Press_"+s_finger] += 1
+        except:
+            print("a: "+a)
+            print(b)
     else:
         # distance of first->home + Press Depth because releasing still requires motion
         f2home = key_distance(f_key, f_home) + PRESS_DEPTH
@@ -195,6 +199,10 @@ def evaluate_dyad(a,b):
             output["Press_R_Little"] += 1
     return output
 
+
+
+
+# Testing code #
 from pprint import pprint
 def main():
     pprint(evaluate_dyad("a","A"))
