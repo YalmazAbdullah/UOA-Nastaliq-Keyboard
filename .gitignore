@@ -170,7 +170,7 @@ DiscountEvaluation/data/sentence/score
 
 DiscountEvaluation/interim/cleaned/
 DiscountEvaluation/interim/prepared/
-DiscountEvaluation/interim/transformed/dyad
+DiscountEvaluation/interim/transformed/dyads
 DiscountEvaluation/interim/transformed/keystroke_CRULP
 DiscountEvaluation/interim/transformed/keystroke_Windows
 DiscountEvaluation/interim/transformed/sentences

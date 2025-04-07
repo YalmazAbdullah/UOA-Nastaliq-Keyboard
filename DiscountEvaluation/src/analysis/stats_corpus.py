@@ -69,7 +69,7 @@ def main():
     print("#"*100)
     
     print("Dataset: Dakshina".center(100, "="))
-    native, roman = read_tsv("raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned")
+    native, roman = read_tsv("_raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned")
     print("Urdu".center(100, "-"))
     get_stats2(native)
     print("Roman".center(100, "-"))
@@ -78,11 +78,11 @@ def main():
 
     print("Dataset: Roman Urdu Parl".center(100, "="))
     print("Urdu".center(100, "-"))
-    file = open('../raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
+    file = open('../_raw/uncompressed/Roman-Urdu-Parl/Urdu.txt')
     data = file.readlines()
     get_stats(data)
     print("Roman".center(100, "-"))
-    file = open('../raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
+    file = open('../_raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt')
     data = file.readlines()
     get_stats(data)
 
