@@ -31,6 +31,24 @@ function compare_safe(text,target){
     }
 }
 
+const punctuationMap = {
+    '.': '۔',  // Full stop
+    ',': '،',  // Comma
+    '?': '؟',  // Question mark
+    '!': '!',  // Exclamation mark (same in Urdu)
+    ':': '،',  // Colon (same as comma in Urdu)
+    ';': '؛',  // Semicolon
+    "'": '’',  // Apostrophe
+    '"': '“',  // Opening quote
+    '`': '‘',  // Backtick
+    '-': '۔',  // Dash (could be used as full stop in Urdu)
+    '(': '(',  // Parenthesis
+    ')': ')',  // Parenthesis
+    '[': '‘',  // Square bracket open
+    ']': '’',  // Square bracket close
+    '{': '‘',  // Curly brace open
+    '}': '’',  // Curly brace close
+};
 export default function InputIme({targetText = "", setCurrentStim, setBoxColor, setBgColor }){
     const [input, setInput] = useState("");
     const [keyLog, setKeyLog] = useState([]);
@@ -103,24 +121,42 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         } else if (e.key === "Enter" || (e.key === " " && showSuggestions === true)) {
             // option Selected. Apply.
             new_input = new_input + suggestions[selectedIndex]
-            setSelectedIndex(0)
-
-            // apply the selected word
-            setInput(new_input+" ");
-            setShowSuggestions(false);
-            e.preventDefault();
+            if (e.key === "Enter"){
+                setInput(new_input+"");
+            }
+            else{
+                setInput(new_input+"\u00A0");
+            }
             setCurrentWord("")
+            setSelectedIndex(0)
+            setSuggestions([])
+            setShowSuggestions(false);
         } else if (e.key === " " && showSuggestions === false){
             // handle spaces. For confirmed text.
             new_input = new_input + "\u00A0"
             setInput(new_input)
-            e.preventDefault();
             setCurrentWord("")
         }else if (e.key === "Backspace" && showSuggestions===false){
             // handle charachter deleting for confirmed text
             new_input = new_input.slice(0,-1)
             setInput(new_input)
+        }else if (punctuationMap[e.key]) {
+            // confirm currently selected
+            e.preventDefault();
+            if(showSuggestions){
+                new_input = new_input + suggestions[selectedIndex]
+                setSelectedIndex(0)
+                setCurrentWord("")
+                setSelectedIndex(0)
+                setShowSuggestions(false);
+            }
+            const urduPunctuation = punctuationMap[e.key];
+            new_input = new_input + urduPunctuation
+            setInput(new_input)
         }
+        // else if key in punctuation
+        // set as urdu input
+        // add to punctuation
 
         // handle empty string as input
         if(new_input.length<1){setIsEmpty(true)}
