@@ -162,6 +162,19 @@ cython_debug/
 #.idea/
 
 
+DiscountEvaluation/data/dyad
+DiscountEvaluation/data/monad
+DiscountEvaluation/data/sentence
+DiscountEvaluation/data/sentence/distance
+DiscountEvaluation/data/sentence/score
+
+DiscountEvaluation/interim/cleaned/
+DiscountEvaluation/interim/prepared/
+DiscountEvaluation/interim/transformed/dyad
+DiscountEvaluation/interim/transformed/keystroke_CRULP
+DiscountEvaluation/interim/transformed/keystroke_Windows
+DiscountEvaluation/interim/transformed/sentences
+
 
 # History files
 .Rhistory
