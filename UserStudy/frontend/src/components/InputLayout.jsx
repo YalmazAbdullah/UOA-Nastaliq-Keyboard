@@ -222,7 +222,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
             </div>
 
             {/* Rendered Input Field */}
-            <div className="pt-7">
+            <div className="pt-7 pb-4">
             <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 <span>{renderText()}</span>
                 {!isEmpty && (

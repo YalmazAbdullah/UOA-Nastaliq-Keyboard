@@ -65,7 +65,7 @@ export default function Baseline() {
             </p>
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-3 pb-6">
                     <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim+1}/{stimuli.length}</div>
                 </div>
                 <InputBaseline targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>

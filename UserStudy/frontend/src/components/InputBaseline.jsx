@@ -203,7 +203,7 @@
             </div>
 
             {/* Rendered Input Field */}
-            <div className="text-3xl pt-7 font-mono relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div className="text-3xl pt-7 pb-4 font-mono relative cursor-text" onClick={() => inputRef.current.focus()}>
                 <span>{renderText()}</span>
                 <span
                     className={`absolute w-[5px] h-[1.2em] bg-black z-20 transition-all duration-100 animate-[blink_0.7s_step-start_infinite] ${

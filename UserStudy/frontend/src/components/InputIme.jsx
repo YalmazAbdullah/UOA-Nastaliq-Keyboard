@@ -237,7 +237,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         for (let i = 0; i < input.length; i++){
             if (compare_safe(input[i],targetText[i])) {
                 result.push(
-                    <span key={i} className="bg-correct">
+                    <span key={i} className=" bg-correct">
                         {input[i]}
                     </span>
                 );
@@ -277,7 +277,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             </div>
 
             {/* Rendered Input Field */}
-            <div className="pt-7">
+            <div className="pt-7 pb-4">
             <div ref = {inputAreaRef} className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
                 <span ref={inputTextRef}>{renderText()}</span>
                 {!isEmpty && (
@@ -314,7 +314,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                 </li>
                 <hr></hr>
                 {suggestions.map((suggestion, index) => (
-                    <li key={index} className={`font-ur-sans p-1 cursor-pointer ${
+                    <li key={index} className={`font-ur-sans p-1 pt-2 cursor-pointer ${
                         selectedIndex === index ? "bg-select text-black" : ""
                     }`}>
                     {suggestion}

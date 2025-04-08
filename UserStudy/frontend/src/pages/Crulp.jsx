@@ -71,7 +71,7 @@ export default function Crulp() {
 
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-3 pb-6">
                     <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim}/{stimuli.length}</div>
                 </div>
                 <InputLayout condition = {"crulp"} qwerty_ur = {QWERTY_TO_CRULP} ur_qwerty = {CRULP_TO_QWERTY}  targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>
