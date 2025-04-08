@@ -4,6 +4,15 @@ import { useState, useRef, useEffect } from "react";
 import {ADJACENCY} from "../assets/error_data"
 import { endpoint_live } from "../api";
 
+// Comparison function for chars that treates different spaces as the same
+function compare_safe(text,target){
+    if (text=== "\u00A0" && target === " "){
+        return true;
+    }else {
+        return text === target;
+    }
+}
+
 export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targetText = "", setCurrentStim, setBoxColor, setBgColor }){
     const [input, setInput] = useState("");
     const [keyLog, setKeyLog] = useState([]);
@@ -172,34 +181,34 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
     // Function for rendering the text input by a user. Provides highlighting.
     const renderText = () => {
         let result = [];
-        
-        // loop over each charachter
+        let status = true
+        let current_stack = []
+
+        const convertSpaces = (text) =>
+            text.replace(/ /g, '\u00A0');
+
         for (let i = 0; i < input.length; i++){
-            // highlight based on whether it is correct or incorrect
-            if (input[i] === targetText[i]) {
-                // correct
+            let new_status = compare_safe(input[i],targetText[i]);
+            if(status!=new_status){
                 result.push(
-                    <span key={i} className=" bg-correct">
-                        {input[i]}
+                    <span key={i} className={status ? "bg-correct" : "bg-error"}>
+                        {convertSpaces(current_stack.join(''))}
                     </span>
                 );
-            }else if(input[i] == " "){
-                // accounts for multiple space charachters
-                result.push(
-                    <span key={i} className=" bg-error">
-                        &nbsp;
-                    </span>
-                );
-            }else{
-                // incorrect
-                result.push(
-                    <span key={i} className=" bg-error">
-                        {input[i]}
-                    </span>
-                );
+                status = new_status;
+                current_stack = []
             }
+            current_stack.push(input[i])
         }
-        return result 
+        if (current_stack.length>0){
+            result.push(
+                <span key="end" className={status ? "bg-correct" : "bg-error"}>
+                    {convertSpaces(current_stack.join(''))}
+                </span>
+            );
+        }
+        console.log(result)
+        return result;
     }
 
     // render remaining text

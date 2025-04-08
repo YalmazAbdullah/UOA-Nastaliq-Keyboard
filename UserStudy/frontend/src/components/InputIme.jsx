@@ -233,27 +233,31 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
     // render transliterated text
     const renderText = () => {
         let result = [];
-        
+        let status = true
+        let current_stack = []
+
+        const convertSpaces = (text) =>
+            text.replace(/ /g, '\u00A0');
+
         for (let i = 0; i < input.length; i++){
-            if (compare_safe(input[i],targetText[i])) {
+            let new_status = compare_safe(input[i],targetText[i]);
+            if(status!=new_status){
                 result.push(
-                    <span key={i} className=" bg-correct">
-                        {input[i]}
+                    <span key={i} className={status ? "bg-correct" : "bg-error"}>
+                        {convertSpaces(current_stack.join(''))}
                     </span>
                 );
-            }else if(input[i] == " "){
-                result.push(
-                    <span key={i} className=" bg-error">
-                        &nbsp;
-                    </span>
-                );
-            }else{
-                result.push(
-                    <span key={i} className="bg-error">
-                        {input[i]}
-                    </span>
-                );
+                status = new_status;
+                current_stack = []
             }
+            current_stack.push(input[i])
+        }
+        if (current_stack.length>0){
+            result.push(
+                <span key="end" className={status ? "bg-correct" : "bg-error"}>
+                    {convertSpaces(current_stack.join(''))}
+                </span>
+            );
         }
         return result;
     }
