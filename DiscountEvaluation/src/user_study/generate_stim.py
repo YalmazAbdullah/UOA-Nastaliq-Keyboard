@@ -10,7 +10,7 @@ DATA_DIR = 'interim/transformed/sentences'
 DAKSHINA_PATH = os.path.join(DATA_DIR, 'dakshina_dataset')
 ROURPARL_PATH = os.path.join(DATA_DIR, 'roUrParl_dataset')
 SUBSET_PATH = os.path.join(DATA_DIR, 'combined_subset') # Sentences to score
-OUTPUT_CSV_PATH = "scored_sentences.csv" # Where to save the results
+OUTPUT_CSV_PATH = "results/scored_sentences.csv" # Where to save the results
 
 N_GRAM_ORDER = 3
 KENLM_BUILD_BIN_RAW = "~/Temp/kenlm/build/bin"
@@ -139,9 +139,13 @@ if __name__ == "__main__":
         for sentence in tqdm(sentences_to_score, desc="Scoring sentences"):
             tokenized_sentence = tokenize_urdu(sentence)
             num_tokens = len(tokenized_sentence.split())
+
             if num_tokens < 8 or num_tokens > 11:
                 continue 
             
+            if any(char.isdigit() for char in sentence):
+                continue
+
             # Handle cases where tokenization might result in an empty string
             if not tokenized_sentence:
                 print(f"Warning: Skipping sentence that became empty after tokenization: '{sentence}'")
