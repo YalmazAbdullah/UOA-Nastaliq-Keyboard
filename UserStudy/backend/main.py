@@ -47,7 +47,7 @@ stimuli_bins = []
 
 baseline_stims = [
     'oleadossing gon lorick pells.',
-    'forten thebemmer wentor sunch fatimand starget.',
+    'forten depencers wentor sunch fatimand starget.',
     '"kickspeck kifferent pells fi, ints anding fi hanchoin jus resh."',
     'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
     '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."',

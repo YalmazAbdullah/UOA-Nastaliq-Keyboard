@@ -162,6 +162,7 @@ cython_debug/
 #.idea/
 
 DiscountEvaluation/src/run.sh
+DiscountEvaluation/src/user_study/lm/
 DiscountEvaluation/data/dyad
 DiscountEvaluation/data/monad
 DiscountEvaluation/data/sentence
