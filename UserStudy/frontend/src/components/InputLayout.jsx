@@ -78,7 +78,12 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
         for (let index = 0; index < raw_string.length; index++) {
             const element = raw_string[index];
             if(element in qwerty_ur){
-                new_string += qwerty_ur[element]
+                if(element==" "){
+                    new_string += "\u00A0"
+                }
+                else{
+                    new_string += qwerty_ur[element].trim()
+                }
             }
             else{
                 new_string += element
