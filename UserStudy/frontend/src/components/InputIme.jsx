@@ -118,9 +118,10 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             setSelectedIndex((prev) => 
                 prev > 0 ? prev - 1 : prev
             );
-        } else if (e.key === "Enter" || (e.key === " " && showSuggestions === true)) {
+        } else if ((e.key === "Enter" || e.key === " ") && showSuggestions === true) {
             // option Selected. Apply.
             new_input = new_input + suggestions[selectedIndex]
+            console.log("called")
             if (e.key === "Enter"){
                 setInput(new_input+"");
             }
