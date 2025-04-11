@@ -92,7 +92,7 @@ export default function Questionnaire() {
         {/* Ranking Question */}
         <div>
           <label className="block mb-2">
-            <span className="font-bold text-xl bg-black text-white px-1">Q1:</span> Please rank the three Urdu text input systems in order of preference, with top being your most preferred and bottom being your least preferred.
+            <span className="font-bold text-xl bg-black text-white px-1">Q1:</span> Please drag the the three Urdu keyboards below to rank them in order of preference, with top being your most preferred and bottom being your least preferred.
           </label>
           <Reorder.Group values={boards} onReorder={onDragEnd}>
             {boards.map((board)=>(
