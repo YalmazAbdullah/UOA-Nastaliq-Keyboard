@@ -46,7 +46,7 @@ export default function Baseline() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`h-screen ${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center`}>
+        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center`}>
             {/* Page title */}
             <div>
                 <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
@@ -65,7 +65,7 @@ export default function Baseline() {
             </p>
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
-                <div className="flex justify-center pt-3 pb-6">
+                <div className="flex justify-center pb-6">
                     <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim+1}/{stimuli.length}</div>
                 </div>
                 <InputBaseline targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>
