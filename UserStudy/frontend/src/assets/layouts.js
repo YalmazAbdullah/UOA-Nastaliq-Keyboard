@@ -97,7 +97,7 @@ export const CRULP_LAYOUT = [
 {en_upper : "X", ur_upper:"ژ", en_lower: "x",  ur_lower:"ش"}, 
 {en_upper : "C", ur_upper:"ث", en_lower: "c",  ur_lower:"چ"},
 {en_upper : "V", ur_upper:"ظ", en_lower: "v",  ur_lower:"ط"},
-{en_upper : "B", ur_upper:"غ", en_lower: "b",  ur_lower:"ب"},
+{en_upper : "B", ur_upper:" ", en_lower: "b",  ur_lower:"ب"},
 {en_upper : "N", ur_upper:"ں", en_lower: "n",  ur_lower:"ن"},
 {en_upper : "M", ur_upper:"٘ ", en_lower: "m",  ur_lower:"م"},
 {en_upper : "<", ur_upper:"٫", en_lower: ",",  ur_lower:"،"},
