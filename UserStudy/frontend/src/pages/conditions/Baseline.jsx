@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import KeyboardVis from "../components/KeyboardVis";
-import InputBaseline from "../components/InputBaseline";
-import {QWERTY_LAYOUT} from "../assets/layouts"
-import ButtonWithdraw from "../components/ButtonWithdraw";
+import KeyboardVis from "../../components/KeyboardVis";
+import InputBaseline from "../../components/InputBaseline";
+import {QWERTY_LAYOUT} from "../../assets/layouts"
+import ButtonWithdraw from "../../components/ButtonWithdraw";
 
 // Baseline condition to get measure typing speed of the user.
 export default function Baseline() {
@@ -22,7 +22,7 @@ export default function Baseline() {
             console.log("condition already completed")
             let conditions = localStorage.getItem("conditions");
             let restore = JSON.parse(conditions)[cached_currentCondition].toLowerCase();
-            navigate("/"+restore);
+            navigate("/"+restore+"_inst");
         }
 
         // set user values
@@ -38,7 +38,7 @@ export default function Baseline() {
             localStorage.setItem("current_stim", 0);
             const conditions = localStorage.getItem("conditions");
             const next = JSON.parse(conditions)[1].toLowerCase();
-            navigate("/" + next);
+            navigate("/" + next+"_inst");
         }else if(currentStim> 0){
             // update to stimulus index
             localStorage.setItem("current_stim", currentStim);
@@ -58,10 +58,7 @@ export default function Baseline() {
             </h3>
             {/* Instructions */}
             <p>
-                To get an idea of how fast you type, we would like you to please type out the text samples below. These are pseudo sentences that use words which sound similar to English but have no actual meaning. As you type, correct input will be highlighted in <span className="bg-correct border-1">green</span>, and any mistakes will show up highlighted in <span className="bg-error border-1">red</span>. 
-            </p>
-            <p>
-                The first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
+                When you feel ready please click on the text in the box below to begin. The first two sentences are just to help you understand the input system. 
             </p>
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>

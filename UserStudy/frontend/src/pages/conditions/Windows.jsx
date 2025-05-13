@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import InputLayout from "../components/InputLayout";
-import KeyboardVis from "../components/KeyboardVis";
-import {WINDOWS_LAYOUT} from "../assets/layouts"
-import {QWERTY_TO_WINDOWS} from "../assets/layouts"
-import {WINDOWS_TO_QWERTY} from "../assets/layouts"
-import ButtonWithdraw from "../components/ButtonWithdraw";
+import InputLayout from "../../components/InputLayout";
+import KeyboardVis from "../../components/KeyboardVis";
+import {WINDOWS_LAYOUT} from "../../assets/layouts"
+import {QWERTY_TO_WINDOWS} from "../../assets/layouts"
+import {WINDOWS_TO_QWERTY} from "../../assets/layouts"
+import ButtonWithdraw from "../../components/ButtonWithdraw";
 
 export default function Windows() {
     const [currentStim, setCurrentStim] = useState(0);
@@ -23,9 +23,9 @@ export default function Windows() {
             let currentCondition = conditions[conditionIndex];
             console.log(conditions)
             currentCondition = currentCondition.toLowerCase();
-            if (currentCondition !== "ime"){
+            if (currentCondition !== "windows"){
                 console.log("condition already completed")
-                navigate("/"+currentCondition);
+                navigate("/"+currentCondition+"_inst");
             }
     
             // set user values
@@ -42,7 +42,7 @@ export default function Windows() {
             localStorage.setItem("current_stim", 0);
             const conditions = localStorage.getItem("conditions");
             const next = JSON.parse(conditions)[conditionIndex].toLowerCase();
-            navigate("/" + next);
+            navigate("/" + next+"_inst");
         }else if(currentStim> 0){
             // update to stimulus index
             localStorage.setItem("current_stim", currentStim)
@@ -50,30 +50,25 @@ export default function Windows() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
+        <div className={`${bg_color} text-balck p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
             {/* Page title */}
             <div>
-                <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
-                <h3 className="text-2xl font-bold">WINDOWS</h3>
+                <h1 className="text-balck text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
+                <h3 className="text-balck text-2xl font-bold">WINDOWS</h3>
             </div>
-            
             {/* Subtitle */}
             <h3 className="px-3 bg-black text-white text-2xl">
                 In this condition we evaluate the WINDOWS Urdu Layout keyboard.
             </h3>
-
             {/* Instructions */}
-            {/* <p>
-                In this condition we will be evaluating the WINDOWS keyboard layout. This is a frequency based keyboard layout, meaning that the most frequently occuring Urdu letters are mapped to the most easily accessible keys. For example <span className="text-lg font-ur-sans">"ن"</span> is mapped to "f" because <span className="text-lg font-ur-sans">"ن"</span> is one of the most frequently occurring letters in Urdu and "f" is one of the most easily accessible keys on the keyboard. Typing the uppercase "F" will input <span className="text-lg font-ur-sans">"ں"</span>. We can confirm this by examining a visualization of the layout shown below. 
-            </p> */}
             <p>
-                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
+                When you feel ready please click on the text in the box below to begin. As before the first two sentences are just to help you understand the input system. 
             </p>
 
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
                 <div className="flex justify-center pb-6">
-                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim}/{stimuli.length}</div>
+                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim+1}/{stimuli.length}</div>
                 </div>
                 <InputLayout condition = {"windows"} qwerty_ur = {QWERTY_TO_WINDOWS} ur_qwerty = {WINDOWS_TO_QWERTY} targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>
                 <KeyboardVis layout={WINDOWS_LAYOUT}/>

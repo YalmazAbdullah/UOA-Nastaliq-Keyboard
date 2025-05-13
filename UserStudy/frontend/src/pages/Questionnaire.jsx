@@ -13,6 +13,11 @@ import { endpoint_live } from "../api";
 const schema = z.object({
   ranking: z.array(z.string()).length(3, "Please rank all three input systems"),
   rankingReason: z.string().min(1, "This field is required"),
+  priorUse: z.object({
+    CRULP: z.boolean().optional(),
+    WINDOWS: z.boolean().optional(),
+    IME: z.boolean().optional(),
+  }).optional(),
   romanUrduUsage: z.string().min(1, "Please select an option"),
   urduScriptUsage: z.string().min(1, "Please select an option"),
   urduContexts: z.string().min(1, "This field is required"),
@@ -43,7 +48,7 @@ export default function Questionnaire() {
     formState: { errors},
     } = useForm({
         resolver: zodResolver(schema),
-        defaultValues: { ranking: ranking },
+        defaultValues: { ranking: urduSystems },
     });
 
     const [boards,setBoards] = useState([
@@ -59,7 +64,8 @@ export default function Questionnaire() {
     }
   
     const onSubmit = async (data) => {
-      
+      console.log("Ranking submitted:", data.ranking);
+      console.log("Priors submitted:", data.priorUse);
       console.log("Survey Data:", data);
       try {
         const uid = localStorage.getItem("uid")
@@ -113,10 +119,37 @@ export default function Questionnaire() {
           {errors.rankingReason && <p className="text-error font-bold text-sm">{errors.rankingReason.message}</p>}
         </div>
 
+        {/* Prior use */}
+        <div>
+        <label className="block font-medium pb-1">
+          <span className="font-bold text-xl bg-black text-white px-1">Q3:</span> Please select the Urdu keyboards you have used before.
+        </label>
+        <div className="flex flex-col space-y-2 ml-8">
+          {["WINDOWS", "CRULP", "IME"].map((keyboard) => (
+            <label key={keyboard} className="inline-flex items-center space-x-2">
+              <Controller
+                name={`priorUse.${keyboard}`}
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <input
+                    type="checkbox"
+                    {...field}
+                    checked={field.value}
+                    className="mr-2"
+                  />
+                )}
+              />
+              <span>{keyboard}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
         {/* Urdu Input */}
         {[
-          { id:"3", name: "romanUrduUsage", label: " How often do you type in Roman Urdu?" },
-          { id:"4",name: "urduScriptUsage", label: " How often do you type in Urdu using the Urdu script (nastaliq, nakhs)?" },
+          { id:"4", name: "romanUrduUsage", label: " How often do you type in Roman Urdu?" },
+          { id:"5",name: "urduScriptUsage", label: " How often do you type in Urdu using the Urdu script (nastaliq, nakhs)?" },
         ].map(({ id, name, label }) => (
           <div key={name}>
             <label className="block mb-2">
@@ -136,8 +169,8 @@ export default function Questionnaire() {
 
         {/* Urdu Input Open */}
         {[
-          { id:"5",name: "urduContexts", label: "If you type in Urdu (either in Roman Urdu or Urdu script), what platforms or contexts do you use it for? (e.g., WhatsApp messages, Twitter posts, emails, blogs etc.)" },
-          { id:"6",name: "otherCommunication", label: "Besides text input, do you communicate in Urdu through other means? (voice messages etc.)" },
+          { id:"6",name: "urduContexts", label: "If you type in Urdu (either in Roman Urdu or Urdu script), what platforms or contexts do you use it for? (e.g., WhatsApp messages, Twitter posts, emails, blogs etc.)" },
+          { id:"7",name: "otherCommunication", label: "Besides text input, do you communicate in Urdu through other means? (voice messages etc.)" },
         ].map(({ id, name, label }) => (
           <div key={name}>
             <label className="block font-medium">
@@ -151,7 +184,7 @@ export default function Questionnaire() {
         {/* Urdu Access */}
         <div>
           <label className="block font-medium">
-          <span className="font-bold text-xl bg-black text-white px-1">Q7:</span> Please rate how strongly you agree or disagree with the following statement: "I can easily access digital content in Urdu (in the Urdu script)"
+          <span className="font-bold text-xl bg-black text-white px-1">Q8:</span> Please rate how strongly you agree or disagree with the following statement: "I can easily access digital content in Urdu (in the Urdu script)"
           </label>
           <span className="mx-8">
           {["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"].map((num) => (
@@ -166,9 +199,9 @@ export default function Questionnaire() {
 
 
         {[
-          { id:"8",name: "urduContent", label: "What types of digital Urdu content do you engage with? (e.g., newspapers, social media posts, digital books, online articles, YouTube videos, etc.)" },
-          { id:"9",name: "langaugeUse", label: "Please list all the languages you know in order of usage with the most used first. Feel free to provide additional information about your language usage if you like." },
-          { id:"10",name: "langaugeAcq", label: "Please list all the languages you know in order of acquisition with your mother tongue first. Feel free to provide additional information about your language acquisition if you like." },
+          { id:"9",name: "urduContent", label: "What types of digital Urdu content do you engage with? (e.g., newspapers, social media posts, digital books, online articles, YouTube videos, etc.)" },
+          { id:"10",name: "langaugeUse", label: "Please list all the languages you know in order of usage with the most used first. Feel free to provide additional information about your language usage if you like." },
+          { id:"11",name: "langaugeAcq", label: "Please list all the languages you know in order of acquisition with your mother tongue first. Feel free to provide additional information about your language acquisition if you like." },
         ].map(({ id, name, label }) => (
           <div key={name}>
             <label className="block font-medium">
@@ -182,21 +215,21 @@ export default function Questionnaire() {
         {/* Demo */}
         <div>
           <label className="block font-medium">
-          <span className="font-bold text-xl bg-black text-white px-1">Q11:</span> Year of birth</label>
+          <span className="font-bold text-xl bg-black text-white px-1">Q12:</span> Year of birth</label>
           <input {...register("birthYear")} type="number" className="w-full text-base border-3 p-2 rounded focus:outline-none focus:ring-0 focus:border-deep-blue" defaultValue="2000"/>
           {errors.birthYear && <p className="text-error font-bold text-sm">{errors.birthYear.message}</p>}
         </div>
 
         <div>
           <label className="block font-medium">
-          <span className="font-bold text-xl bg-black text-white px-1">Q12:</span> Gender</label>
+          <span className="font-bold text-xl bg-black text-white px-1">Q13:</span> Gender</label>
           <input {...register("gender")} className="w-full text-base border-3 p-2 rounded focus:outline-none focus:ring-0 focus:border-deep-blue" />
             {errors.gender && <p className="text-error font-bold text-sm">{errors.gender.message}</p>}
         </div>
 
         <div>
           <label className="block font-medium">
-          <span className="font-bold text-xl bg-black text-white px-1">Q13:</span> If there were any issues while completing the experiment please use this space to let us know.</label>
+          <span className="font-bold text-xl bg-black text-white px-1">Q14:</span> If there were any issues while completing the experiment please use this space to let us know.</label>
           <textarea {...register("feedback")} className="w-full h-30 text-base border-3 p-2 rounded focus:outline-none focus:ring-0 focus:border-deep-blue" placeholder="Optional"/>
         </div>
 

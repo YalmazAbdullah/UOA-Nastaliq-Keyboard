@@ -5,10 +5,10 @@ import uaLogo from '../assets/ua_logo.svg'
 // Home page. Requests user consent.
 export default function Consent() {
     return (
-        <div className="p-6 px-[10vw] flex-col space-y-3 ">
+        <div className="p-6 px-[10vw] flex-col space-y-3 text-black">
             <div>
-                <h1 className="text-7xl font-black ">Evaluation of Urdu Text Input Options.</h1>
-                <h3 className="text-2xl font-bold">Informed Consent</h3>
+                <h1 className="text-7xl font-black text-black">Evaluation of Urdu Text Input Options.</h1>
+                <h3 className="text-2xl font-bold text-black">Informed Consent</h3>
             </div>
 
             <h3 className=" px-3 bg-black text-white text-2xl">Hello! and thank you for participating.</h3>
@@ -18,7 +18,7 @@ export default function Consent() {
                 The purpose of this project is to improve Urdu text entry tools by evaluating currently available options and identifying their limitations. To do this, you will be asked to interact with three different Urdu text entry tools and answer a questionnaire afterwards. Your participation should take around 40-45 minutes. Specific study activities include:
             </p>
             <span>
-                <ul className="list-disc px-10">
+                <ul className="list-disc px-10 ">
                     <li>Type a series of pseudoword sentences using standard QWERTY input to obtain a baseline of your typing speed</li>
                     <li>Type a series of Urdu sentences using three different text entry options (CRULP, Windows, IME).</li>
                     <li>Complete a questionnaire about your experience with the tools and digital Urdu.</li>
@@ -29,7 +29,7 @@ export default function Consent() {
             </p>
 
             {/* CONSENT FORM */}
-            <div className="bg-white border-4">
+            <div className="bg-white border-4 border-black">
             <h3 className="text-3xl p-3 font-bold bg-black text-white">Consent Form.</h3>
             <div className="h-100 overflow-y-scroll scrollbar-visible">
             <div className="flex-col space-y-2  p-3">

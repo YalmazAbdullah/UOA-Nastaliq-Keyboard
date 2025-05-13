@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import InputLayout from "../components/InputLayout";
-import KeyboardVis from "../components/KeyboardVis";
-import {CRULP_LAYOUT} from "../assets/layouts"
-import {QWERTY_TO_CRULP} from "../assets/layouts"
-import {CRULP_TO_QWERTY} from "../assets/layouts"
-import ButtonWithdraw from "../components/ButtonWithdraw";
+import InputLayout from "../../components/InputLayout";
+import KeyboardVis from "../../components/KeyboardVis";
+import {CRULP_LAYOUT} from "../../assets/layouts"
+import {QWERTY_TO_CRULP} from "../../assets/layouts"
+import {CRULP_TO_QWERTY} from "../../assets/layouts"
+import ButtonWithdraw from "../../components/ButtonWithdraw";
 
 export default function Crulp() {
     const [currentStim, setCurrentStim] = useState(0);
@@ -23,9 +23,9 @@ export default function Crulp() {
             let currentCondition = conditions[conditionIndex];
             console.log(conditions)
             currentCondition = currentCondition.toLowerCase();
-            if (currentCondition !== "ime"){
+            if (currentCondition !== "crulp"){
                 console.log("condition already completed")
-                navigate("/"+currentCondition);
+                navigate("/"+currentCondition+"_inst");
             }
     
             // set user values
@@ -42,7 +42,7 @@ export default function Crulp() {
             localStorage.setItem("current_stim", 0);
             const conditions = localStorage.getItem("conditions");
             const next = JSON.parse(conditions)[conditionIndex].toLowerCase();
-            navigate("/" + next);
+            navigate("/" + next+"_inst");
         }else if(currentStim> 0){
             // update to stimulus index
             localStorage.setItem("current_stim", currentStim)
@@ -50,30 +50,24 @@ export default function Crulp() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
+        <div className={`${bg_color} text-balck  p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
             {/* Page title */}
             <div>
-                <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
-                <h3 className="text-2xl font-bold">CRULP</h3>
+                <h1 className="text-balck  text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
+                <h3 className="text-balck  text-2xl font-bold">CRULP</h3>
             </div>
-            
             {/* Subtitle */}
             <h3 className="px-3 bg-black text-white text-2xl">
                 In this condition we evaluate the CRULP Urdu Layout keyboard.
             </h3>
-
             {/* Instructions */}
-            {/* <p>
-                In this condition we will be evaluating the CRULP keyboard layout. This is a phonetic keyboard layout, meaning that the Urdu letters are mapped to similar sounding English letters. For example <span className="text-lg font-ur-sans">"د"</span> is mapped to "d" because they sound similar. Typing the uppercase 'D' will input <span className="text-lg font-ur-sans">"ڈ"</span>.  We can confirm this by examining a visualization of the layout shown below.
-            </p> */}
             <p>
-                As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
+                When you feel ready please click on the text in the box below to begin. As before the first two sentences are just to help you understand the input system.
             </p>
-
             {/* Input */}
             <div className={`${box_color} border-4 p-6`}>
                 <div className="flex justify-center pb-6">
-                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim}/{stimuli.length}</div>
+                    <div className=" w-20 text-2xl border-black border-2 bg-white text-center">{currentStim+1}/{stimuli.length}</div>
                 </div>
                 <InputLayout condition = {"crulp"} qwerty_ur = {QWERTY_TO_CRULP} ur_qwerty = {CRULP_TO_QWERTY}  targetText={stimuli[currentStim]} setCurrentStim ={setCurrentStim} setBoxColor = {setBoxColor} setBgColor = {setBgColor}/>
                 <KeyboardVis layout={CRULP_LAYOUT}/>

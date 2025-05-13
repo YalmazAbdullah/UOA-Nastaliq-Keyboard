@@ -55,7 +55,7 @@ export default function ButtonStartStudy() {
         localStorage.setItem("code", res.data["code"]);
         localStorage.setItem("conditions", JSON.stringify(res.data["conditions"]));
         localStorage.setItem("stimuli", JSON.stringify(res.data["stimuli"]));
-        navigate("/baseline");
+        navigate("/baseline_inst");
       }
 
     } catch (err) {

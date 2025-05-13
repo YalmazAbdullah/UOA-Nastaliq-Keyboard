@@ -180,12 +180,12 @@ def submit_data(data: schemas.QuestionData, uid: int = Query(-1)):
 
         cursor.execute(
             """INSERT INTO questions (
-                user, ranking, rankingReason, romanUrduUsage, urduScriptUsage, 
+                user, ranking, rankingReason, priorUse, romanUrduUsage, urduScriptUsage, 
                 urduContexts, otherCommunication, accessDifficulty, urduContent, 
                 langaugeUse, langaugeAcq, birthYear, gender, feedback
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
-                uid, dumps(data.ranking), data.rankingReason, data.romanUrduUsage,
+                uid, dumps(data.ranking), data.rankingReason, dumps(data.priorUse), data.romanUrduUsage,
                 data.urduScriptUsage, data.urduContexts, data.otherCommunication,
                 data.accessDifficulty, data.urduContent, data.langaugeUse,
                 data.langaugeAcq, data.birthYear, data.gender, data.feedback
