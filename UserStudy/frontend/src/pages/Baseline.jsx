@@ -46,7 +46,7 @@ export default function Baseline() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center`}>
+        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
             {/* Page title */}
             <div>
                 <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>

@@ -47,7 +47,7 @@ export default function Ime() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center`}>
+        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
             {/* Page title */}
             <div>
                 <h1 className="text-7xl font-black">Evaluation of Urdu Text Input Options.</h1>
@@ -60,9 +60,9 @@ export default function Ime() {
             </h3>
 
             {/* Instructions */}
-            <p>
+            {/* <p>
                 In this condition we will use the Input Method Editor (IME) tool for Urdu. This tool takes in Roman Urdu as input and converts it to Urdu script. For example if you start typing "salam" then the system will show you a drop down menu with potential Urdu transliterations such as <span className="text-lg font-ur-sans">"سلام"</span> and <span className="text-lg font-ur-sans">"سلم"</span>. You can select between these using the up and down arrow keys. To confirm your selection press <b>Enter</b> or <b>Space</b>.
-            </p>
+            </p> */}
             <p>
                 As before the first two sentences are just to help you understand the input system. When you feel ready please click on the text in the box below to begin.
             </p>

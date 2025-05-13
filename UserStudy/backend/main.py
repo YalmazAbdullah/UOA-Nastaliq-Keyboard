@@ -46,13 +46,15 @@ def get_db():
 stimuli_bins = []
 
 baseline_stims = [
-    'oleadossing gon lorick pells.',
-    'forten depencers wentor sunch fatimand starget.',
-    '"kickspeck kifferent pells fi, ints anding fi hanchoin jus resh."',
-    'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
-    '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."',
-    'savid hannicatrace gred sprin belents gandoff?',
-    'folden fi gast sunch tren hanchoin hanchoin?',
+    'crings fi fi paren.'
+    # 'oleadossing gon lorick pells.',
+    # 'forten depencers wentor sunch fatimand starget.',
+    # '"kickspeck kifferent pells fi, ints anding fi hanchoin jus resh."',
+    # 'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
+    # '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."',
+    # 'savid hannicatrace gred sprin belents gandoff?',
+    # 'folden fi gast sunch tren hanchoin hanchoin?',
+    # 'tast os askets classengers, jobjector tanin fi, besters gast.'
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key
@@ -156,6 +158,14 @@ async def withdraw(uid: int = Query(-1)):
 
         cursor.execute("UPDATE users SET status = ? WHERE uid = ?", ("WITHDRAWN", uid))
         con.commit()
+
+        # revert inprogress to incomplete
+        counter_balance = pd.read_csv(CSV_ADRESS)
+        cursor.execute("SELECT gls_id FROM users WHERE uid = ?", (uid,))
+        result = cursor.fetchone()
+        counter_balance.at[result[0], "State"] = "incomplete"
+        counter_balance.to_csv(CSV_ADRESS, index=False)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Invalid request: {str(e)}")
     finally:
@@ -183,6 +193,13 @@ def submit_data(data: schemas.QuestionData, uid: int = Query(-1)):
         )
         cursor.execute("UPDATE users SET status = ? WHERE uid = ?", ("COMPLETED", uid))
         con.commit()
+
+        # mark as complete in csv
+        counter_balance = pd.read_csv(CSV_ADRESS)
+        cursor.execute("SELECT gls_id FROM users WHERE uid = ?", (uid,))
+        result = cursor.fetchone()
+        counter_balance.at[result[0], "State"] = "complete"
+        counter_balance.to_csv(CSV_ADRESS, index=False)
         return {"message": "Data submitted successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
