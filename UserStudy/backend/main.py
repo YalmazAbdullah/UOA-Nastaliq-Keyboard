@@ -47,14 +47,15 @@ stimuli_bins = []
 
 baseline_stims = [
     'crings fi fi paren.'
-    # 'oleadossing gon lorick pells.',
-    # 'forten depencers wentor sunch fatimand starget.',
-    # '"kickspeck kifferent pells fi, ints anding fi hanchoin jus resh."',
-    # 'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
-    # '"ubas tecon bankit, plandle os stis os, besters hannicatrace twent."',
-    # 'savid hannicatrace gred sprin belents gandoff?',
-    # 'folden fi gast sunch tren hanchoin hanchoin?',
-    # 'tast os askets classengers, jobjector tanin fi, besters gast.'
+    'oleadossing gon lorick pells.',
+    'orten depencers wentor sunch fatimand starget.',
+    'kickspeck kifferent pells fi, ints anding fi hanchoin jus resh.'
+    'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
+    'ubas tecon bankit, plandle os stis os, besters hannicatrace twent.',
+    'savid hannicatrace gred sprin belents gandoff.',
+    'soundid togetting lenew squick, cancake gred ruggling gon kims.',
+    'tast os askets classengers, jobjector tanin fi, besters gast.',
+    'shood yeardering nat os twent kickspeck, thebemmer clively sprin hanchoin.'
 ]
 
 SECRET_KEY = b"user-code-seed"  # Encryption Key
