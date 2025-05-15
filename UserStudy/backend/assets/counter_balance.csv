@@ -1,5 +1,5 @@
 id,Condition 1,Bin 1,Condition 2,Bin 2,Condition 3,Bin 3,State
-0,CRULP,0,IME,1,WINDOWS,2,incomplete
+0,CRULP,0,IME,1,WINDOWS,2,inprogress
 1,IME,2,WINDOWS,0,CRULP,1,incomplete
 2,WINDOWS,1,CRULP,2,IME,0,incomplete
 3,CRULP,0,IME,1,WINDOWS,2,incomplete

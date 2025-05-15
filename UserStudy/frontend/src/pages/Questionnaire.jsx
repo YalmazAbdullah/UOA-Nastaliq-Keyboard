@@ -13,11 +13,7 @@ import { endpoint_live } from "../api";
 const schema = z.object({
   ranking: z.array(z.string()).length(3, "Please rank all three input systems"),
   rankingReason: z.string().min(1, "This field is required"),
-  priorUse: z.object({
-    CRULP: z.boolean().optional(),
-    WINDOWS: z.boolean().optional(),
-    IME: z.boolean().optional(),
-  }).optional(),
+  priorUse: z.array(z.enum(["CRULP", "IME", "WINDOWS"])).optional(),
   romanUrduUsage: z.string().min(1, "Please select an option"),
   urduScriptUsage: z.string().min(1, "Please select an option"),
   urduContexts: z.string().min(1, "This field is required"),
@@ -122,25 +118,24 @@ export default function Questionnaire() {
         {/* Prior use */}
         <div>
         <label className="block font-medium pb-1">
-          <span className="font-bold text-xl bg-black text-white px-1">Q3:</span> Please select the Urdu keyboards you have used before.
+          <span className="font-bold text-xl bg-black text-white px-1">Q3:</span> Please select the Urdu keyboards you have used before. If you have trouble recalling the keyboard please refer to the layout images above.
         </label>
         <div className="flex flex-col space-y-2 ml-8">
-          {["WINDOWS", "CRULP", "IME"].map((keyboard) => (
-            <label key={keyboard} className="inline-flex items-center space-x-2">
-              <Controller
-                name={`priorUse.${keyboard}`}
-                control={control}
-                defaultValue={false}
-                render={({ field }) => (
-                  <input
-                    type="checkbox"
-                    {...field}
-                    checked={field.value}
-                    className="mr-2"
-                  />
-                )}
+          {[
+              { id: "CRULP", label: "CRULP Keyboard", desc: "Phonetic layout keyboard." },
+              { id: "IME", label: "IME (Input Method Editor)", desc: "Roman Urdu text entery tool." },
+              { id: "WINDOWS", label: "Windows Keyboard", desc: "Frequency-based keyboard." },
+            ].map(({ id, label, desc }) => (
+            <label key={id} className="inline-flex items-center space-x-2">
+              <input
+                type="checkbox"
+                value={id}
+                {...register("priorUse")}
+                className="mt-1"
               />
-              <span>{keyboard}</span>
+              <div>
+                <p><span className="font-semibold">{label}</span>: {desc}</p>
+              </div>
             </label>
           ))}
         </div>

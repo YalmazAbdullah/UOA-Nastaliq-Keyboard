@@ -121,7 +121,6 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         } else if ((e.key === "Enter" || e.key === " ") && showSuggestions === true) {
             // option Selected. Apply.
             new_input = new_input + suggestions[selectedIndex]
-            console.log("called")
             if (e.key === "Enter"){
                 setInput(new_input+"");
             }

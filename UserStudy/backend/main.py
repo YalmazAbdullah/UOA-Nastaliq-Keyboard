@@ -46,10 +46,10 @@ def get_db():
 stimuli_bins = []
 
 baseline_stims = [
-    'crings fi fi paren.'
+    'crings fi fi paren.',
     'oleadossing gon lorick pells.',
     'orten depencers wentor sunch fatimand starget.',
-    'kickspeck kifferent pells fi, ints anding fi hanchoin jus resh.'
+    'kickspeck kifferent pells fi, ints anding fi hanchoin jus resh.',
     'sevent ruggling happentry rept, tex saidaw lasky upcoren nakes.',
     'ubas tecon bankit, plandle os stis os, besters hannicatrace twent.',
     'savid hannicatrace gred sprin belents gandoff.',

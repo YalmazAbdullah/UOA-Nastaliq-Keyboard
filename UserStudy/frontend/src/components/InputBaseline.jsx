@@ -57,7 +57,6 @@
                 e.preventDefault();
             default:
                 // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
-                console.log(e.key)
                 setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
             }
         }
@@ -179,7 +178,6 @@
                 current_stack = []
             }
             current_stack.push(input[i])
-            console.log(current_stack)
         }
         if (current_stack.length>0){
             result.push(
