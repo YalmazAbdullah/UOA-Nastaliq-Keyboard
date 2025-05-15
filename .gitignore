@@ -393,3 +393,5 @@ dist-ssr
 
 .env
 *.db
+
+backup/
