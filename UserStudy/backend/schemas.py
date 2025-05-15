@@ -17,7 +17,7 @@ class Measure(BaseModel):
 class QuestionData(BaseModel):
     ranking: list
     rankingReason: str
-    priorUse: dict
+    priorUse: list
     romanUrduUsage: str
     urduScriptUsage: str
     urduContexts: str
