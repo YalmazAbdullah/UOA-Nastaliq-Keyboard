@@ -163,7 +163,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
                     ommission_count : ommission_count,
                     substitution_count : substitution_count,
                     addition_count : addition_count,
-                    wpm : (end_time-startTime) / targetText.split("").length
+                    wpm : (end_time-startTime) / targetText.split(" ").length
                 }, {headers: {
                         "Content-Type": "application/json",
                     },
