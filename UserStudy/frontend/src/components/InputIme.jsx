@@ -213,7 +213,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                     ommission_count : ommission_count,
                     substitution_count : 0,
                     addition_count : addition_count,
-                    wpm : (end_time-startTime) / targetText.split(" ").length
+                    wpm : targetText.trim().split(/\s+/).length / (end_time-startTime)
                 }, {headers: {
                       "Content-Type": "application/json",
                     },

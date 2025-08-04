@@ -166,7 +166,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
                     ommission_count : ommission_count,
                     substitution_count : substitution_count,
                     addition_count : addition_count,
-                    wpm : (end_time-startTime) / targetText.split(" ").length
+                    wpm : targetText.trim().split(/\s+/).length / (end_time-startTime)
                 }, {headers: {
                         "Content-Type": "application/json",
                     },
