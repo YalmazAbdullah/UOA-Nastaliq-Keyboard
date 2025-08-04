@@ -63,13 +63,13 @@ def transform(dataset_name,write = False):
         windows_dyads (list):  list of lists which hold all dyads in sentence
         roman_dyads (list):  list of lists which hold all dyads in sentence
     '''
-    crulp,roman = read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)
-    windows,roman = read_tsv("interim/transformed/keystroke_Windows/"+dataset_name)
+    crulp,roman = read_tsv("Data_Discount/transformed_keystroke/CRULP/"+dataset_name)
+    windows,roman = read_tsv("Data_Discount/transformed_keystroke/WINDOWS/"+dataset_name)
     roman_dyads = generate_dyads(roman)
     crulp_dyads = generate_dyads(crulp)
     windows_dyads = generate_dyads(windows)
     if(write):
-        write_dyads(crulp_dyads,windows_dyads,roman_dyads,"interim/transformed/dyads/"+dataset_name)
+        write_dyads(crulp_dyads,windows_dyads,roman_dyads,"Data_Discount/transformed_dyads/"+dataset_name)
     return crulp_dyads,windows_dyads,roman_dyads
 
 ##################

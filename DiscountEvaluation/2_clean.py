@@ -32,8 +32,9 @@ STANDARD_SUBSTITUTIONS = {
 
 def standardize(native, roman):
     '''
-    Standardizes the data. All diacritics are removed from the text. The data contains a mix of ltr and rtl punctuation. Ltr punc in urdu with the proper rtl punctuation. The numerals are also not accessible on all keyboard so we replace all urdu numerals with  regular numbers. Lastly there are some chars like ى which have mixed urdu arabic encoding. Replaces these to follow the same encoding.
-    
+    Standardizes the data. All diacritics are removed from the text. The data contains a mix of ltr and rtl punctuation. 
+    Ltr punc in urdu with the proper rtl punctuation. The numerals are also not accessible on all keyboard so we replace all urdu numerals with  regular numbers. 
+    Lastly there are some chars like ى which have mixed urdu arabic encoding. Replaces these to follow the same encoding.
     This function only does substitution and addition. No subtraction.
 
     Args:
@@ -142,7 +143,8 @@ def remove_inaccessible(a_text,b_text,char_set):
 
 def clean(name,path,native_set,roman_set):
     """
-    Cleans the provided data by standardizing coding variances, removing inaccessible charachters, and removing tokens with missing romanziations. The results are writtend to disk as tsv
+    Cleans the provided data by standardizing coding variances, removing inaccessible charachters, 
+    and removing tokens with missing romanziations. The results are writtend to disk as tsv
     
     Args:
         name (str): name of the dataset being processed used when saving
@@ -163,7 +165,7 @@ def clean(name,path,native_set,roman_set):
     roman_cleaned,native_cleaned = remove_inaccessible(roman_cleaned,native_cleaned,roman_set)
 
     eval(len(native),len(native_cleaned))
-    write_tsv(native_cleaned,roman_cleaned,"interim/cleaned/"+name)
+    write_tsv(native_cleaned,roman_cleaned,"Data_Discount/cleaned/"+name)
 
 
 ##################
@@ -182,8 +184,8 @@ def main():
     print(union.difference(native_set))
 
     # clean the data
-    dakshina_path = "_raw/uncompressed/Dakshina/ur.romanized.rejoined.aligned"
-    roman_path = "interim/prepared/roUrParl_dataset"
+    dakshina_path = "Data_Discount/raw/Dakshina/ur.romanized.rejoined.aligned"
+    roman_path = "Data_Discount/prepared/roUrParl_dataset"
     print("Dataset: Dakshina".center(100, "="))
     clean("dakshina_dataset",dakshina_path,native_set,roman_set)
     print("Dataset: Roman Urdu Parl".center(100, "="))

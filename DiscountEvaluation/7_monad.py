@@ -76,8 +76,8 @@ def score(dataset_name):
     travel_dist["r_shift"] = RIGHT_MOD + PRESS_DEPTH
 
     # read data
-    crulp,roman = read_tsv("interim/transformed/keystroke_CRULP/"+dataset_name)
-    windows,roman = read_tsv("interim/transformed/keystroke_Windows/"+dataset_name)
+    crulp,roman = read_tsv("Data_Discount/transformed_keystroke/CRULP/"+dataset_name)
+    windows,roman = read_tsv("Data_Discount/transformed_keystroke/WINDOWS/"+dataset_name)
     data_sets = {"CRULP":crulp,"WINDOWS":windows,"IME":roman}
 
     # for each dataset
@@ -95,7 +95,7 @@ def score(dataset_name):
     
     # output results
     output = pd.concat([output["CRULP"],output["WINDOWS"],output["IME"]])
-    output.to_csv("../data/monad/"+dataset_name+".csv", index=True)
+    output.to_csv("../Data_Discount/scored/monad_"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##

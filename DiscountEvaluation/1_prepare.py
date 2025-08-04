@@ -6,6 +6,7 @@ from tqdm import tqdm
 from util import eval
 from util import write_tsv
 
+
 def prep_roman_ur_parl(native_file_path, roman_file_path):
     '''
     Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv. Prints out
@@ -60,7 +61,7 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
             print()
     
     # write to headless .tsv
-    write_tsv(native_out, roman_out, 'interim/prepared/roUrParl_dataset')
+    write_tsv(native_out, roman_out, 'Data_Discount/pre-processed/roUrParl_dataset')
     # print loss evaluation
     print("="*100)
     eval(raw_count,valid_count)
@@ -70,8 +71,8 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
 ##     MAIN     ##
 ##################
 def main(
-        native_file_path = '../_raw/uncompressed/Roman-Urdu-Parl/Urdu.txt', 
-        roman_file_path = '../_raw/uncompressed/Roman-Urdu-Parl/Roman-Urdu.txt'
+        native_file_path = '../Data_Discount/raw/Roman-Urdu-Parl/Urdu.txt', 
+        roman_file_path = '../Data_Discount/raw/Roman-Urdu-Parl/Roman-Urdu.txt'
     ):
     prep_roman_ur_parl(native_file_path, roman_file_path)
 

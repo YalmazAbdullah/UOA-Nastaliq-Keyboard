@@ -45,7 +45,7 @@ def score(dataset_name):
     dyad_data = dyad_data.set_index("dyad")
 
     # Retrive data for each keyboard dyad frequency counting
-    crulp,windows,roman = read_json("interim/transformed/dyads/"+dataset_name)
+    crulp,windows,roman = read_json("../Data_Discount/transformed_dyads/"+dataset_name)
     data_sets = {"CRULP":crulp,"WINDOWS":windows,"IME":roman}
 
     output = pd.DataFrame()
@@ -64,7 +64,7 @@ def score(dataset_name):
         output = pd.concat([output,combined])
     
     # write results
-    output.to_csv("../data/dyad/"+dataset_name+".csv", index=True)
+    output.to_csv("../Data_Discount/scored/dyad_"+dataset_name+".csv", index=True)
 
 ##################
 ##     MAIN     ##
