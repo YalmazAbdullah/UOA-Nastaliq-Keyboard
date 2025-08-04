@@ -50,11 +50,10 @@ log_data = json.loads(string_value)
 stim = data["stimulus"]
 wpm = data["wpm"]
 time = data["end_time"]-data["start_time"]
-for i in range(42,len(data)):
+for i in range(52,len(data)):
     words = stim[i].split()
-    print(time[i])
     print(words)
-    calc = float(len(words))/time[i]
+    calc = float(len(words)+len(words)-1)/time[i]
     if (wpm[i] != calc):
         print("error at line %",i)
         print(wpm[i])
