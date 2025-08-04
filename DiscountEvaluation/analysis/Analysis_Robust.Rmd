@@ -1,0 +1,150 @@
+---
+title: "Minimal"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r, echo=FALSE}
+# LOAD LUBRARIES
+library(tidyverse)
+library(rstatix)
+library(ggplot2)
+library(ggpubr)
+library(knitr)
+library(reshape2)
+library(WRS)
+library(kableExtra)
+library(xtable)
+library(readr)
+```
+
+```{r, echo=FALSE}
+# SET WORKING DIR
+knitr::opts_knit$set(root.dir = "~/UOA-Nastaliq-Keyboard/DiscountEvaluation/src_r/")
+```
+
+```{r}
+# LOAD DATA
+data_sentence <- read.csv("../data/sentence/score/combined_dataset.csv")
+```
+
+```{r, echo=FALSE}
+# Log Transforming Data
+log_data <- data.frame(
+  ID = data_sentence$ID,
+  Keyboard = data_sentence$Keyboard,
+  Press_L_Little = log(data_sentence$Press_L_Little+1),
+  Press_L_Ring = log(data_sentence$Press_L_Ring+1),
+  Press_L_Middle = log(data_sentence$Press_L_Middle+1),
+  Press_L_Index = log(data_sentence$Press_L_Index+1),
+  
+  Press_R_Little = log(data_sentence$Press_R_Little+1),
+  Press_R_Ring = log(data_sentence$Press_R_Ring+1),
+  Press_R_Middle = log(data_sentence$Press_R_Middle+1),
+  Press_R_Index = log(data_sentence$Press_R_Index+1),
+  
+  Dist_L_Little = log(data_sentence$Dist_L_Little+1),
+  Dist_L_Ring = log(data_sentence$Dist_L_Ring+1),
+  Dist_L_Middle = log(data_sentence$Dist_L_Middle+1),
+  Dist_L_Index = log(data_sentence$Dist_L_Index+1),
+  
+  Dist_R_Little = log(data_sentence$Dist_R_Little+1),
+  Dist_R_Ring = log(data_sentence$Dist_R_Ring+1),
+  Dist_R_Middle = log(data_sentence$Dist_R_Middle+1),
+  Dist_R_Index = log(data_sentence$Dist_R_Index+1)
+)
+```
+
+------------------------------------------------------------------------
+
+# Key Press
+
+Setting up the long form data
+
+```{r, echo=FALSE}
+data <- log_data[, c(1, 3:10, 2)]
+data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
+                value.name = "Press")
+data_long$Keyboard<-as.factor(data_long$Keyboard)
+print(data_long)
+```
+```{r, echo=FALSE}
+get_summary<-function(df,group,factor,value){
+  sub_set <- subset(df, Keyboard == group)
+  sub_set %>%
+    group_by_at(factor) %>%
+    get_summary_stats("Press", type = "common")
+}
+
+finger_summary<-function(df){
+  summary1 <- get_summary(df,"CRULP", "Finger", "Press")
+  summary2 <- get_summary(df,"IME", "Finger", "Press")
+  summary3 <- get_summary(df,"WINDOWS", "Finger", "Press")
+  return (
+    bind_rows(
+    summary1 %>% mutate(Keyboard = "CRULP"),
+    summary2 %>% mutate(Keyboard = "IME"),
+    summary3 %>% mutate(Keyboard = "WINDOWS"))%>%
+    dplyr::select(Keyboard, everything())%>%
+      dplyr::select(-variable,-n)
+    )
+}
+
+finger_summary(data_long)
+```
+
+```{r, echo=FALSE}
+data_list<-WRS::bw2list(data, 10, c(2:9))
+```
+
+```{r, echo=FALSE}
+tsplitbt(3, 8, data_list, alpha = 0.001, nboot= 500)
+```
+
+```{r, echo=FALSE}
+res <- bwamcp(3, 8, data_list, alpha = 0.01)
+clean_out <- data.frame(
+  contrasts = data.frame(res$test)$con.num,
+  psi = data.frame(res$psihat)$psihat,
+  t = data.frame(res$test)$t,
+  df = data.frame(res$test)$df,
+  p = data.frame(res$psihat)$p.value
+)
+
+clean_out
+```
+
+------------------------------------------------------------------------
+
+# Keyying Distance
+
+Setup again but this time for distance variable
+
+```{r, echo=FALSE}
+data <- log_data[, c(1, 11:18, 2)]
+data_long <- melt(data, id.vars = c("ID", "Keyboard"), variable.name = "Finger", 
+                value.name = "Dist")
+data_long$Keyboard<-as.factor(data_long$Keyboard)
+print(data_long)
+```
+
+```{r, echo=FALSE}
+data_list<-WRS::bw2list(data, 10, c(2:9))
+```
+
+```{r, echo=FALSE}
+tsplitbt(3, 8, data_list, alpha = 0.001, nboot= 500)
+```
+
+```{r, echo=FALSE}
+res<-bwamcp(3, 8, data_list, alpha = 0.01)
+
+clean_out <- data.frame(
+  contrasts = data.frame(res$test)$con.num,
+  t = data.frame(res$test)$t,
+  df = data.frame(res$test)$df,
+  psi = data.frame(res$psihat)$psihat,
+  p = data.frame(res$psihat)$p.value
+)
+```
