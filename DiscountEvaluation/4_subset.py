@@ -1,7 +1,7 @@
-# Vendor
+# VENDOR
 import pandas as pd
 
-# Custom
+# CUSTOM
 from util import read_tsv,write_tsv
 
 def generate():

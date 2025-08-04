@@ -2,7 +2,7 @@
 from tqdm import tqdm
 import json
 
-# Custom
+# CUSTOM
 from util import read_tsv
 
 def generate_dyads(text):

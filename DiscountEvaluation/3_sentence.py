@@ -1,7 +1,7 @@
 # STL
 from tqdm import tqdm
 
-# Custom
+# CUSTOM
 from util import eval
 from util import read_tsv,write_tsv
 

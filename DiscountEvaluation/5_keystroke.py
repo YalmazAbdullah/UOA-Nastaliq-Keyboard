@@ -1,10 +1,10 @@
-#STL
+# STL
 from tqdm import tqdm
 
-# Vendor
+# VENDOR
 import pandas as pd
 
-# Custom
+# CUSTOM
 from util import read_tsv, write_tsv
 from util import read_json
 from util import CRULP_MAPPTING,WINDOWS_MAPPING

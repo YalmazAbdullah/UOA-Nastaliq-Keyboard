@@ -3,11 +3,11 @@ import re
 from pprint import pprint
 from tqdm import tqdm
 
-# Vendor
+# VENDOR
 from urduhack import preprocessing
 from urduhack import normalization
 
-# Custom
+# CUSTOM
 from util import eval
 from util import read_tsv,write_tsv
 from util import read_json
