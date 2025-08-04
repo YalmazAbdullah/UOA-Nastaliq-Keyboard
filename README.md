@@ -8,3 +8,4 @@ pandas
 - something messing up the sentance formation it adds stupid ammounts of ""
 sudo docker compose up -d --build
 sudo docker compose down
+figure out a better folder structure
