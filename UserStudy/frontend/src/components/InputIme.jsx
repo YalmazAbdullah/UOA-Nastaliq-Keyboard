@@ -140,7 +140,11 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             // handle charachter deleting for confirmed text
             new_input = new_input.slice(0,-1)
             setInput(new_input)
-        }else if (punctuationMap[e.key]) {
+        }
+        // else if key in punctuation
+        // set as urdu input
+        // add to punctuation
+        else if (punctuationMap[e.key]) {
             // confirm currently selected
             e.preventDefault();
             if(showSuggestions){
@@ -154,9 +158,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             new_input = new_input + urduPunctuation
             setInput(new_input)
         }
-        // else if key in punctuation
-        // set as urdu input
-        // add to punctuation
+        
 
         // handle empty string as input
         if(new_input.length<1){setIsEmpty(true)}

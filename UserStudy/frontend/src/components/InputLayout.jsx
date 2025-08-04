@@ -53,7 +53,10 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
 
         // Filter the inputs and log
         switch (e.key) {
-        case "ArrowDown" || "ArrowUp" || "ArrowLeft" || "ArrowRight":
+        case "ArrowDown":
+        case "ArrowUp":
+        case "ArrowLeft":
+        case "ArrowRight":
             // prevent cursor navigation.
             e.preventDefault();
         default:
