@@ -59,6 +59,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
         case "ArrowRight":
             // prevent cursor navigation.
             e.preventDefault();
+            break
         default:
             // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
             setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);

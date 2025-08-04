@@ -58,6 +58,7 @@
             case "ArrowRight":
                 // prevent cursor navigation.
                 e.preventDefault();
+                break
             default:
                 // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
                 setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
@@ -142,7 +143,7 @@
                     ommission_count : ommission_count,
                     substitution_count : substitution_count,
                     addition_count : addition_count,
-                    wpm : (end_time-startTime)/targetText.trim().split(/\s+/).length
+                    wpm : (end_time-startTime)/(targetText.split(/\s+/).length)
                 }, {headers: {
                         "Content-Type": "application/json",
                     },

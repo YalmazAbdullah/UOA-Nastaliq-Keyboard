@@ -46,16 +46,16 @@ log_data = json.loads(string_value)
 #         target += key
 # # print(target)
 
-# testing wpm
+# testing milisecond per charachter
 stim = data["stimulus"]
 wpm = data["wpm"]
 time = data["end_time"]-data["start_time"]
-for i in range(52,len(data)):
-    words = stim[i].split()
-    print(words)
-    calc = float(len(words)+len(words)-1)/time[i]
-    if (wpm[i] != calc):
-        print("error at line %",i)
-        print(wpm[i])
-        print(calc)
-        break
+for i in range(62,len(data)):
+    words = stim[i]
+    calc = (data["end_time"][i]-data["start_time"][i])/float(len(words))
+    # if abs(wpm[i] - calc)>=0.00000000001:
+    print("error at line %",i)
+    print(wpm[i])
+    print(calc)
+    print(time[i])
+    break
