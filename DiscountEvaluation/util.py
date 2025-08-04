@@ -39,7 +39,7 @@ def write_tsv(native, roman, file_name):
 Read .json file, seperate into native and roman.
 '''
 def read_json(adress):
-    file = open("../"+adress+".json")
+    file = open(adress+".json")
     data = json.load(file)
     file.close()
     return data
