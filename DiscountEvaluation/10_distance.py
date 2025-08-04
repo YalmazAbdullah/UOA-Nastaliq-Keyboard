@@ -52,12 +52,12 @@ def edit_dist(dataset_name):
 ##################
 def main():
     print("Distance")
-    print("Dataset: Dakshina".center(100, "="))
-    edit_dist("dakshina_dataset")
-    print("Dataset: Roman Urdu Parl".center(100, "="))
-    edit_dist("roUrParl_dataset")
+    # print("Dataset: Dakshina".center(100, "="))
+    # edit_dist("dakshina_dataset")
+    # print("Dataset: Roman Urdu Parl".center(100, "="))
+    # edit_dist("roUrParl_dataset")
     print("Dataset: Combined Subset".center(100, "="))
-    edit_dist("combined_dataset")
+    edit_dist("combined_subset")
 
 if __name__ == "__main__":
     main()
