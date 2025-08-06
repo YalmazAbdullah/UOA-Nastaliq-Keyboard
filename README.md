@@ -5,12 +5,14 @@ pandas
 
 
 # Todo
-- something messing up the sentance formation it adds stupid ammounts of ""
 sudo docker compose up -d --build
 sudo docker compose down
-figure out a better folder structure
 
+add prints back in
 
-
-test for delete key and arrow key messing up logs
-test for wmp
+- procedures doc
+- error counts
+- triad per minute
+- word per minute
+- error target pairs
+- 
