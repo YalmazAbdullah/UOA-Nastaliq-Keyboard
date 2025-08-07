@@ -4,20 +4,20 @@ import kenlm
 import json
 import random
 
-MODEL_PATH = "user_study/lm/urdu_3gram.binary"
-DATA_PATH = "user_study/results/selected_sentences.json"
-OUTPUT_CSV_PATH = "user_study/results/stimuli.csv" 
+MODEL_PATH = "lm/urdu_3gram.binary"
+DATA_PATH = "results/selected_sentences.json"
+OUTPUT_CSV_PATH = "results/stimuli.csv" 
 
 def tokenize_urdu(sentence):
     return " ".join(sentence.split())
 
 # Shuffle and balance into 3 groups with similar average perplexities
-def balance_sets(df, n_sets=3, max_attempts=1000, tolerance=1.0):
+def balance_sets(df, n_sets=3, max_attempts=10000, tolerance=1.0):
     best_split = None
     best_diff = float('inf')
 
-    for _ in range(max_attempts):
-        shuffled = df.sample(frac=1, random_state=random.randint(0, 9999)).reset_index(drop=True)
+    for i in range(max_attempts):
+        shuffled = df.sample(frac=1, random_state=i).reset_index(drop=True)
         sets = [shuffled.iloc[i::n_sets].reset_index(drop=True) for i in range(n_sets)]
 
         avg_perps = [s['perplexity'].mean() for s in sets]
@@ -28,6 +28,7 @@ def balance_sets(df, n_sets=3, max_attempts=1000, tolerance=1.0):
             best_split = sets
 
         if diff <= tolerance:  # Close enough!
+            print(diff)
             break
 
     return best_split, best_diff
@@ -58,7 +59,7 @@ def main():
 
     results_df = pd.DataFrame(results_data)
 
-    balanced_sets, final_diff = balance_sets(results_df, n_sets=3, tolerance=1.0)
+    balanced_sets, final_diff = balance_sets(results_df)
 
     # Assign new set numbers instead of overwriting original position
     final_df = pd.concat([
@@ -78,7 +79,7 @@ def main():
     avg_perps = final_df.groupby('set_number')['perplexity'].mean()
     
     # Show average perplexity of each set
-    print("\n📊 Average Perplexity by Set:")
+    print("\nAverage Perplexity by Set:")
     for set_num, avg in avg_perps.items():
         print(f"  Set {set_num}: {avg:.2f}")
 
