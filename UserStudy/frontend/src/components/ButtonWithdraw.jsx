@@ -9,7 +9,14 @@ export default function ButtonWithdraw(){
 
     const withdraw = async () =>{
         // Prevent duplicate requests
-        if (loading) {return; }
+        if (loading) return;
+
+        // Show confirmation popup
+        const confirmed = window.confirm("Are you sure you want to withdraw?");
+        if (!confirmed) return; // Stop if user clicks Cancel
+
+        // Enable button after request intiated
+        setLoading(true);
         
         localStorage.setItem("status","withdrawn");
         navigate("/withdraw");
@@ -21,14 +28,14 @@ export default function ButtonWithdraw(){
         } catch (err) {
             console.error(err);
         } finally {
-            // Enable button after request completes
-            setLoading(true);
+            // Renable after complete
+            setLoading(false);
         }
     }
 
     return (<>
         <button 
-        type = "submit" 
+        type = "button" 
         onClick={withdraw}
         disabled={loading}
         className="px-10 mt-3 py-2 bg-gray text-black border-3 hover:bg-black hover:text-white text-lg hover:underline">
