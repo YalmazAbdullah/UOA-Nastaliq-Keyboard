@@ -53,7 +53,7 @@ export const QWERTY_LAYOUT = [
     
 
 export const CRULP_LAYOUT = [
-[ {en_upper : "~", ur_upper:" ً", en_lower: "`",  ur_lower:" ً"}, 
+[ {en_upper : "~", ur_upper:" ً", en_lower: "`",  ur_lower:" "}, 
 {en_upper : "!", ur_upper:"1", en_lower: "1",  ur_lower:"۱"}, 
 {en_upper : "@", ur_upper:"2", en_lower: "2",  ur_lower:"۲"},
 {en_upper : "#", ur_upper:"3", en_lower: "3",  ur_lower:"۳"},
