@@ -31,7 +31,7 @@ export default function ButtonWithdraw(){
         type = "submit" 
         onClick={withdraw}
         disabled={loading}
-        className="px-10 mt-3 py-2 bg-black text-white text-lg hover:underline">
+        className="px-10 mt-3 py-2 bg-gray text-black border-3 hover:bg-black hover:text-white text-lg hover:underline">
             Withdraw
         </button>
     </>)
