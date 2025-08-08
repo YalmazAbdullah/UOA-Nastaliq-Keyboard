@@ -31,6 +31,13 @@ function compare_safe(text,target){
     }
 }
 
+// Matches any of the common Urdu diacritic marks
+function has_urdu_diacritic(char) {
+  const urduDiacriticRegex = /[\u064B-\u065F]/;
+  return urduDiacriticRegex.test(char);
+}
+
+
 const punctuationMap = {
     '.': '۔',  // Full stop
     ',': '،',  // Comma
@@ -244,6 +251,11 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         for (let i = 0; i < input.length; i++){
             let new_status = compare_safe(input[i],targetText[i]);
             if(status!=new_status){
+                var orphan = null
+                if(has_urdu_diacritic(input[i])){
+                    console.log(current_stack)
+                    orphan = current_stack.pop()
+                }
                 result.push(
                     <span key={i} className={status ? "bg-correct" : "bg-error"}>
                         {convertSpaces(current_stack.join(''))}
@@ -251,6 +263,10 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                 );
                 status = new_status;
                 current_stack = []
+            }
+            if(orphan!= null){
+                current_stack.push(orphan)
+                orphan = null
             }
             current_stack.push(input[i])
         }
