@@ -4,22 +4,15 @@ import { useState, useRef, useEffect } from "react";
 import { endpoint_live } from "../api";
 
 // API call to google translitarate. Used to power the IME
-async function getTransliterations(text) {
+async function getTransliterations(text, signal) {
     const url = `https://inputtools.google.com/request?itc=ur-t-i0-und&text=${encodeURIComponent(text)}&num=5`;
+    const response = await fetch(url, { signal });
+    const data = await response.json();
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data[0] === "SUCCESS") {
-            return data[1][0][1]; // List of transliterations
-        } else {
-            throw new Error("Failed to fetch transliterations");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        return null;
+    if (data[0] === "SUCCESS") {
+        return data[1][0][1]; // List of transliterations
     }
+    return null;
 }
 
 // Comparison function for chars that treates different spaces as the same
@@ -112,6 +105,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             e.preventDefault();
         default:
             // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
+            console.log({ key: e.key, timestamp })
             setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
         }
 
@@ -177,14 +171,33 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         }
     };
 
+    const handleKeyUp = (e) => {
+        let timestamp = Date.now()
+        if(e.key=="Shift"){
+            console.log({ key:"ShiftUp", timestamp })
+            setKeyLog(prevLog => [...prevLog, { key: "ShiftUp", timestamp }]);
+        }
+    }
+
+    let abortController = null;
     // The input feild onyl deals with one token. The roman input
     const handleInputChange = (e) => {
         const raw_input = e.target.value
         const word = raw_input.trim();
         setCurrentWord(word)
+
+        if (abortController) {
+        abortController.abort(); // cancel previous request
+    }
+
         if(word.length>0){
             setShowSuggestions(true)
-            getTransliterations(word).then(setSuggestions);
+            abortController = new AbortController();
+            getTransliterations(word, abortController.signal).then((result) => {
+                setSuggestions(result || []);
+            }).catch(err => {
+                if (err.name !== 'AbortError') console.error(err);
+            });
         }else{
             setShowSuggestions(false)
             setSuggestions([])
@@ -352,6 +365,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                 className="absolute opacity-0 w-0 h-0"
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
+                onKeyUp={handleKeyUp}
                 onFocus={handleFocus}
                 onBlur={() => setFocus(false)}
                 value={current_word}
