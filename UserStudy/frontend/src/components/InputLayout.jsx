@@ -68,7 +68,16 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
             break
         default:
             // log key input that is not navigation keys. Still logs some unneccissary stuff but that can be cleaned later.
+            console.log({ key: e.key, timestamp })
             setKeyLog(prevLog => [...prevLog, { key: e.key, timestamp }]);
+        }
+    }
+
+    const handleKeyUp = (e) => {
+        let timestamp = Date.now()
+        if(e.key=="Shift"){
+            console.log({ key:"ShiftUp", timestamp })
+            setKeyLog(prevLog => [...prevLog, { key: "ShiftUp", timestamp }]);
         }
     }
 
@@ -281,6 +290,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
                 className="absolute opacity-0 w-0 h-0"
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
+                onKeyUp={handleKeyUp}
                 onFocus={handleFocus}
                 onBlur={() => setFocus(false)}
                 value={input}
