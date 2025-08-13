@@ -80,9 +80,23 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         setFocus(true)
         if (start === false){
             setStart(true);
-            setBoxColor("bg-white")
-            setBgColor("bg-gray")
         }
+        setBoxColor("bg-white")
+        setBgColor("bg-gray")
+
+        let timestamp = Date.now()
+        setKeyLog(prevLog => [...prevLog, { key: "focused", timestamp }]);
+        console.log("focused")
+    }
+
+    const handleUnfocus = (e) =>{
+        setFocus(false)
+        setBgColor("bg-white")
+        setBoxColor("bg-gray")
+
+        let timestamp = Date.now()
+        setKeyLog(prevLog => [...prevLog, { key: "unfocused", timestamp }]);
+        console.log("unfocused")
     }
 
     // unlike layout a majority of the ime logic is here at the key level.
@@ -121,12 +135,15 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             );
         } else if ((e.key === "Enter" || e.key === " ") && showSuggestions === true) {
             // option Selected. Apply.
-            new_input = new_input + suggestions[selectedIndex]
-            if (e.key === "Enter"){
-                setInput(new_input+"");
-            }
-            else{
-                setInput(new_input+"\u00A0");
+            let selected = suggestions[selectedIndex]
+            if(selected){
+                new_input = new_input + selected
+                if (e.key === "Enter"){
+                    setInput(new_input+"");
+                }
+                else{
+                    setInput(new_input+"\u00A0");
+                }
             }
             setCurrentWord("")
             setSelectedIndex(0)
@@ -149,7 +166,10 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
             // confirm currently selected
             e.preventDefault();
             if(showSuggestions){
-                new_input = new_input + suggestions[selectedIndex]
+                let selected = suggestions[selectedIndex]
+                if(selected){
+                    new_input = new_input + selected
+                }
                 setSelectedIndex(0)
                 setCurrentWord("")
                 setSelectedIndex(0)
@@ -304,16 +324,21 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
         return result 
     }
 
+    
     return(
         <div className="p-4 flex flex-col items-center">
             {/* Stimulus Text */}
-            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => {
+                if (!isFocused) {inputRef.current?.focus();}
+            }}>
                 {targetText}
             </div>
 
             {/* Rendered Input Field */}
             <div className="pt-7 pb-4">
-            <div ref = {inputAreaRef} className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div ref = {inputAreaRef} className="text-4xl font-ur-sans relative cursor-text" onClick={() => {
+                if (!isFocused) {inputRef.current?.focus();}
+            }}>
                 <span ref={inputTextRef}>{renderText()}</span>
                 {!isEmpty && (
                 <span
@@ -367,7 +392,7 @@ export default function InputIme({targetText = "", setCurrentStim, setBoxColor, 
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
                 onFocus={handleFocus}
-                onBlur={() => setFocus(false)}
+                onBlur={handleUnfocus}
                 value={current_word}
             />
         </div>

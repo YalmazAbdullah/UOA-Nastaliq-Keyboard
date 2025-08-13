@@ -41,9 +41,24 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
         setFocus(true)
         if (start === false){
             setStart(true);
-            setBoxColor("bg-white")
-            setBgColor("bg-gray")
         }
+
+        setBoxColor("bg-white")
+        setBgColor("bg-gray")
+
+        let timestamp = Date.now()
+        setKeyLog(prevLog => [...prevLog, { key: "focused", timestamp }]);
+        console.log("focused")
+    }
+
+    const handleUnfocus = (e) =>{
+        setFocus(false)
+        setBgColor("bg-white")
+        setBoxColor("bg-gray")
+
+        let timestamp = Date.now()
+        setKeyLog(prevLog => [...prevLog, { key: "unfocused", timestamp }]);
+        console.log("unfocused")
     }
 
     const handleKeyDown = (e) => {
@@ -257,13 +272,17 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
         <div className="p-4 flex flex-col items-center">
 
             {/* Stimulus Text */}
-            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => {
+                if (!isFocused) {inputRef.current?.focus();}
+            }}>
                 {targetText}
             </div>
 
             {/* Rendered Input Field */}
             <div className="pt-7 pb-4">
-            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => inputRef.current.focus()}>
+            <div className="text-4xl font-ur-sans relative cursor-text" onClick={() => {
+                if (!isFocused) {inputRef.current?.focus();}
+            }}>
                 <span>{renderText()}</span>
                 {!isEmpty && (
                 <span
@@ -292,7 +311,7 @@ export default function InputLayout({condition = "", qwerty_ur, ur_qwerty, targe
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
                 onFocus={handleFocus}
-                onBlur={() => setFocus(false)}
+                onBlur={handleUnfocus}
                 value={input}
             />
         </div>

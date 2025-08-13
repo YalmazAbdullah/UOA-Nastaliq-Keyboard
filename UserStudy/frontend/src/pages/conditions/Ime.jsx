@@ -47,7 +47,7 @@ export default function Ime() {
     }, [currentStim, navigate]);
 
     return (
-        <div className={`${bg_color} text-balck p-6 px-[10vw] flex-col space-y-3 justify-center h-[100vh]`}>
+        <div className={`${bg_color} p-6 px-[10vw] flex-col space-y-3 justify-center min-h-screen w-full`}>
             {/* Page title */}
             <div>
                 <h1 className="text-7xl text-balck font-black">Evaluation of Urdu Text Input Options.</h1>
