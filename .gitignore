@@ -166,7 +166,7 @@ DiscountEvaluation/run.sh
 
 
 Data_Discount/cleaned
-Data_Discount/pre-processed
+Data_Discount/prepared
 Data_Discount/raw
 Data_Discount/scored
 Data_Discount/transformed_dyads

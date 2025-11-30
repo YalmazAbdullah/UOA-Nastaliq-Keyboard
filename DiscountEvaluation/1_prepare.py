@@ -9,8 +9,9 @@ from util import write_tsv
 
 def prep_roman_ur_parl(native_file_path, roman_file_path):
     '''
-    Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv. Prints out
-    the number of tokens in the raw file, the number of tokens after pre-processing, and the loss
+    Formats the Roman Urdu Parallel dataset in the same format as Dakshina headless tsv. Discards and prints out
+    the lines where roman and urdu token counts dont lines up. Prints loss at the end which is the number of tokens 
+    removed/total number of tokens
     ratio.
     
     Args:
@@ -61,7 +62,7 @@ def prep_roman_ur_parl(native_file_path, roman_file_path):
             print()
     
     # write to headless .tsv
-    write_tsv(native_out, roman_out, 'Data_Discount/pre-processed/roUrParl_dataset')
+    write_tsv(native_out, roman_out, 'Data_Discount/prepared/roUrParl_dataset')
     # print loss evaluation
     print("="*100)
     eval(raw_count,valid_count)
