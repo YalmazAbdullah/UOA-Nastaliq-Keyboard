@@ -9,60 +9,60 @@ from util import read_tsv
 def get_stats(data):
     '''
     Gets the summary stats for roman-urdu-parl
+    NOTE: The token count for dakshina post cleaning is incorrect. That does not neccessarily follow the space based tokenizing format we need to do some other way of counting.
     '''
     lines = len(data)
-    tokens = 0
+    charahcters = 0
     min = math.inf
     max = -1
     counts = []
     for line in data:
-        tokenized = line.split()
-        tokens += len(tokenized)
-        counts.append(len(tokenized))
-        if (min>len(tokenized)):
-            min=len(tokenized)
-        if(max<len(tokenized)):
-            max=len(tokenized)
-    mean_tokens = float(tokens)/lines
-    median_tokens = median(counts)
+        charahcters += len(line)
+        counts.append(len(line))
+        if (min>len(line)):
+            min=len(line)
+        if(max<len(line)):
+            max=len(line)
+    mean_charachters = float(charahcters)/lines
+    median_charachters = median(counts)
     print ("Number of Lines: ", lines)
-    print ("Number of Tokens: ", tokens)
-    print ("Mean Tokens per Line: ", mean_tokens)
-    print ("Median Tokens per Line: ", median_tokens)
-    print ("Min Tokens per Line: ", min)
-    print ("Max Tokens per Line: ", max)
+    print ("Number of Charachters: ", charahcters)
+    print ("Mean Charachters per Line: ", mean_charachters)
+    print ("Median Charachters per Line: ", median_charachters)
+    print ("Min Charachters per Line: ", min)
+    print ("Max Charachters per Line: ", max)
 
 def get_stats2(data):
     '''
     Gets the summary stats for dakshina
     '''
     lines = 0
-    tokens = 0
-    tokens_in_line = 0
+    charachters = 0
+    charachters_in_line = 0
     min = math.inf
     max = -1
     counts = []
     for token in data:
         if(token == "</s>"):
-            if (min>tokens_in_line):
-                min=tokens_in_line
-            if(max<tokens_in_line):
-                max=tokens_in_line
+            if (min>charachters_in_line):
+                min=charachters_in_line
+            if(max<charachters_in_line):
+                max=charachters_in_line
             lines +=1
-            counts.append(tokens_in_line)
-            tokens_in_line = 0
+            counts.append(charachters_in_line)
+            charachters_in_line = 0
         else:
-            tokens +=1
-            tokens_in_line+=1
-    mean_tokens = float(tokens)/lines
-    median_tokens = median(counts)
+            charachters += len(token)
+            charachters_in_line += len(token)
+    mean_charachters = float(charachters)/lines
+    median_charachters = median(counts)
     
     print ("Number of Lines: ", lines)
-    print ("Number of Tokens: ", tokens)
-    print ("Mean Tokens per Line: ", mean_tokens)
-    print ("Median Tokens per Line: ", median_tokens)
-    print ("Min Tokens per Line: ", min)
-    print ("Max Tokens per Line: ", max)
+    print ("Number of Charachters: ", charachters)
+    print ("Mean Charachters per Line: ", mean_charachters)
+    print ("Median Charachters per Line: ", median_charachters)
+    print ("Min Charachters per Line: ", min)
+    print ("Max Charachters per Line: ", max)
 
 ##################
 ##     MAIN     ##

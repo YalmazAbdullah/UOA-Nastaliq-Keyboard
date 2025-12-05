@@ -1,0 +1,82 @@
+####################################################################################################
++++++++++++++++++++++++++++++++++++++++++++++RAW Stats++++++++++++++++++++++++++++++++++++++++++++++
+####################################################################################################
+=========================================Dataset: Dakshina==========================================
+------------------------------------------------Urdu------------------------------------------------
+Number of Lines:  9759
+Number of Charachters:  631918
+Mean Charachters per Line:  64.75233118147351
+Median Charachters per Line:  52
+Min Charachters per Line:  1
+Max Charachters per Line:  7133
+-----------------------------------------------Roman------------------------------------------------
+Number of Lines:  9759
+Number of Charachters:  787827
+Mean Charachters per Line:  80.7282508453735
+Median Charachters per Line:  64
+Min Charachters per Line:  1
+Max Charachters per Line:  9027
+
+======================================Dataset: Roman Urdu Parl======================================
+------------------------------------------------Urdu------------------------------------------------
+Number of Lines:  1107156
+Number of Charachters:  47009311
+Mean Charachters per Line:  42.45951880313163
+Median Charachters per Line:  33.0
+Min Charachters per Line:  1
+Max Charachters per Line:  11513
+-----------------------------------------------Roman------------------------------------------------
+Number of Lines:  1107156
+Number of Charachters:  54647189
+Mean Charachters per Line:  49.35816542564914
+Median Charachters per Line:  39.0
+Min Charachters per Line:  1
+Max Charachters per Line:  2457
+####################################################################################################
+++++++++++++++++++++++++++++++++++++++++++PROCESSED Stats+++++++++++++++++++++++++++++++++++++++++++
+####################################################################################################
+=========================================Dataset: Dakshina==========================================
+------------------------------------------------Urdu------------------------------------------------
+Number of Lines:  9239
+Number of Charachters:  748059
+Mean Charachters per Line:  80.96752895334993
+Median Charachters per Line:  65
+Min Charachters per Line:  5
+Max Charachters per Line:  8604
+-----------------------------------------------Roman------------------------------------------------
+Number of Lines:  9239
+Number of Charachters:  895359
+Mean Charachters per Line:  96.91081285853447
+Median Charachters per Line:  78
+Min Charachters per Line:  6
+Max Charachters per Line:  10371
+======================================Dataset: Roman Urdu Parl======================================
+------------------------------------------------Urdu------------------------------------------------
+Number of Lines:  1090210
+Number of Charachters:  43635872
+Mean Charachters per Line:  40.02519881490722
+Median Charachters per Line:  32.0
+Min Charachters per Line:  3
+Max Charachters per Line:  2078
+-----------------------------------------------Roman------------------------------------------------
+Number of Lines:  1090210
+Number of Charachters:  51494101
+Mean Charachters per Line:  47.23319452215628
+Median Charachters per Line:  38.0
+Min Charachters per Line:  3
+Max Charachters per Line:  2456
+======================================Dataset: Combined Subset======================================
+------------------------------------------------Urdu------------------------------------------------
+Number of Lines:  18000
+Number of Charachters:  1091047
+Mean Charachters per Line:  60.61372222222222
+Median Charachters per Line:  42.0
+Min Charachters per Line:  3
+Max Charachters per Line:  8604
+-----------------------------------------------Roman------------------------------------------------
+Number of Lines:  18000
+Number of Charachters:  1299551
+Mean Charachters per Line:  72.19727777777777
+Median Charachters per Line:  50.0
+Min Charachters per Line:  3
+Max Charachters per Line:  10371
